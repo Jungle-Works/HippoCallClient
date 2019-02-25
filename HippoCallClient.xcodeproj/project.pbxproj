@@ -1,0 +1,469 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C99E2ECF219D7D5500833F36 /* WebRTCClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99E2EBC219D7D5500833F36 /* WebRTCClient.swift */; };
+		C99E2ED0219D7D5500833F36 /* RTCIceCandidate+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99E2EBD219D7D5500833F36 /* RTCIceCandidate+JSON.swift */; };
+		C99E2ED1219D7D5500833F36 /* RTCSessionDescription+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99E2EBE219D7D5500833F36 /* RTCSessionDescription+JSON.swift */; };
+		C99E2ED2219D7D5500833F36 /* FuguChannel+SignalingClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99E2EBF219D7D5500833F36 /* FuguChannel+SignalingClient.swift */; };
+		C99E2ED3219D7D5500833F36 /* HippoUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99E2EC1219D7D5500833F36 /* HippoUser.swift */; };
+		C99E2ED4219D7D5500833F36 /* CallClientCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99E2EC3219D7D5500833F36 /* CallClientCredential.swift */; };
+		C99E2ED5219D7D5500833F36 /* CallPeer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99E2EC4219D7D5500833F36 /* CallPeer.swift */; };
+		C99E2ED6219D7D5500833F36 /* CallPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99E2EC5219D7D5500833F36 /* CallPresenter.swift */; };
+		C99E2ED7219D7D5500833F36 /* CallClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99E2EC6219D7D5500833F36 /* CallClient.swift */; };
+		C99E2ED8219D7D5500833F36 /* SignalingClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99E2EC7219D7D5500833F36 /* SignalingClient.swift */; };
+		C99E2ED9219D7D5500833F36 /* Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99E2EC8219D7D5500833F36 /* Call.swift */; };
+		C99E2EDA219D7D5500833F36 /* CallSignal.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99E2EC9219D7D5500833F36 /* CallSignal.swift */; };
+		C99E2EDB219D7D5500833F36 /* HippoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99E2ECB219D7D5500833F36 /* HippoHelper.swift */; };
+		C99E2EDC219D7D5500833F36 /* HippoCallClientDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99E2ECD219D7D5500833F36 /* HippoCallClientDelegate.swift */; };
+		C99E2EDD219D7D5500833F36 /* HippoCallClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99E2ECE219D7D5500833F36 /* HippoCallClient.swift */; };
+		C9D7D047219EECF20060D2A8 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = C9D7D046219EECF20060D2A8 /* README.md */; };
+		F638FD21F2938DF347522D23 /* Pods_HippoCallClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A485E8D8E3A721E962B17B2 /* Pods_HippoCallClient.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		10D6833AF52B0E26377195AB /* Pods-HippoCallClient.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HippoCallClient.release.xcconfig"; path = "Pods/Target Support Files/Pods-HippoCallClient/Pods-HippoCallClient.release.xcconfig"; sourceTree = "<group>"; };
+		3A485E8D8E3A721E962B17B2 /* Pods_HippoCallClient.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HippoCallClient.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BC0E1CCDFAA888F27B4BA516 /* Pods-HippoCallClient.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HippoCallClient.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HippoCallClient/Pods-HippoCallClient.debug.xcconfig"; sourceTree = "<group>"; };
+		C99E2E8A219C50F100833F36 /* HippoCallClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HippoCallClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C99E2E99219C50F400833F36 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C99E2EBC219D7D5500833F36 /* WebRTCClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebRTCClient.swift; sourceTree = "<group>"; };
+		C99E2EBD219D7D5500833F36 /* RTCIceCandidate+JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RTCIceCandidate+JSON.swift"; sourceTree = "<group>"; };
+		C99E2EBE219D7D5500833F36 /* RTCSessionDescription+JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RTCSessionDescription+JSON.swift"; sourceTree = "<group>"; };
+		C99E2EBF219D7D5500833F36 /* FuguChannel+SignalingClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FuguChannel+SignalingClient.swift"; sourceTree = "<group>"; };
+		C99E2EC1219D7D5500833F36 /* HippoUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HippoUser.swift; sourceTree = "<group>"; };
+		C99E2EC3219D7D5500833F36 /* CallClientCredential.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallClientCredential.swift; sourceTree = "<group>"; };
+		C99E2EC4219D7D5500833F36 /* CallPeer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallPeer.swift; sourceTree = "<group>"; };
+		C99E2EC5219D7D5500833F36 /* CallPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallPresenter.swift; sourceTree = "<group>"; };
+		C99E2EC6219D7D5500833F36 /* CallClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallClient.swift; sourceTree = "<group>"; };
+		C99E2EC7219D7D5500833F36 /* SignalingClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignalingClient.swift; sourceTree = "<group>"; };
+		C99E2EC8219D7D5500833F36 /* Call.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Call.swift; sourceTree = "<group>"; };
+		C99E2EC9219D7D5500833F36 /* CallSignal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallSignal.swift; sourceTree = "<group>"; };
+		C99E2ECB219D7D5500833F36 /* HippoHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HippoHelper.swift; sourceTree = "<group>"; };
+		C99E2ECD219D7D5500833F36 /* HippoCallClientDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HippoCallClientDelegate.swift; sourceTree = "<group>"; };
+		C99E2ECE219D7D5500833F36 /* HippoCallClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HippoCallClient.swift; sourceTree = "<group>"; };
+		C9D7D046219EECF20060D2A8 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C99E2E87219C50F100833F36 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F638FD21F2938DF347522D23 /* Pods_HippoCallClient.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		42F14C59FDD43769C56F6D75 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3A485E8D8E3A721E962B17B2 /* Pods_HippoCallClient.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C99E2E81219C50F100833F36 = {
+			isa = PBXGroup;
+			children = (
+				C9D7D046219EECF20060D2A8 /* README.md */,
+				C99E2E8C219C50F100833F36 /* HippoCallClient */,
+				C99E2E8B219C50F100833F36 /* Products */,
+				42F14C59FDD43769C56F6D75 /* Frameworks */,
+				E8526A71C2840C9BC24385C4 /* Pods */,
+			);
+			sourceTree = "<group>";
+		};
+		C99E2E8B219C50F100833F36 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C99E2E8A219C50F100833F36 /* HippoCallClient.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C99E2E8C219C50F100833F36 /* HippoCallClient */ = {
+			isa = PBXGroup;
+			children = (
+				C99E2ECA219D7D5500833F36 /* Helpers */,
+				C99E2EC0219D7D5500833F36 /* Models */,
+				C99E2EBB219D7D5500833F36 /* WebRTCClient */,
+				C99E2ECC219D7D5500833F36 /* Wrappers */,
+				C99E2E99219C50F400833F36 /* Info.plist */,
+			);
+			path = HippoCallClient;
+			sourceTree = "<group>";
+		};
+		C99E2EBB219D7D5500833F36 /* WebRTCClient */ = {
+			isa = PBXGroup;
+			children = (
+				C99E2EBC219D7D5500833F36 /* WebRTCClient.swift */,
+				C99E2EBD219D7D5500833F36 /* RTCIceCandidate+JSON.swift */,
+				C99E2EBE219D7D5500833F36 /* RTCSessionDescription+JSON.swift */,
+				C99E2EBF219D7D5500833F36 /* FuguChannel+SignalingClient.swift */,
+			);
+			path = WebRTCClient;
+			sourceTree = "<group>";
+		};
+		C99E2EC0219D7D5500833F36 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				C99E2EC1219D7D5500833F36 /* HippoUser.swift */,
+				C99E2EC2219D7D5500833F36 /* Call */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		C99E2EC2219D7D5500833F36 /* Call */ = {
+			isa = PBXGroup;
+			children = (
+				C99E2EC3219D7D5500833F36 /* CallClientCredential.swift */,
+				C99E2EC4219D7D5500833F36 /* CallPeer.swift */,
+				C99E2EC5219D7D5500833F36 /* CallPresenter.swift */,
+				C99E2EC6219D7D5500833F36 /* CallClient.swift */,
+				C99E2EC7219D7D5500833F36 /* SignalingClient.swift */,
+				C99E2EC8219D7D5500833F36 /* Call.swift */,
+				C99E2EC9219D7D5500833F36 /* CallSignal.swift */,
+			);
+			path = Call;
+			sourceTree = "<group>";
+		};
+		C99E2ECA219D7D5500833F36 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				C99E2ECB219D7D5500833F36 /* HippoHelper.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		C99E2ECC219D7D5500833F36 /* Wrappers */ = {
+			isa = PBXGroup;
+			children = (
+				C99E2ECD219D7D5500833F36 /* HippoCallClientDelegate.swift */,
+				C99E2ECE219D7D5500833F36 /* HippoCallClient.swift */,
+			);
+			path = Wrappers;
+			sourceTree = "<group>";
+		};
+		E8526A71C2840C9BC24385C4 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				BC0E1CCDFAA888F27B4BA516 /* Pods-HippoCallClient.debug.xcconfig */,
+				10D6833AF52B0E26377195AB /* Pods-HippoCallClient.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C99E2E89219C50F100833F36 /* HippoCallClient */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C99E2EB2219C50F400833F36 /* Build configuration list for PBXNativeTarget "HippoCallClient" */;
+			buildPhases = (
+				58C44456203D276025EC1068 /* [CP] Check Pods Manifest.lock */,
+				C99E2E86219C50F100833F36 /* Sources */,
+				C99E2E87219C50F100833F36 /* Frameworks */,
+				C99E2E88219C50F100833F36 /* Resources */,
+				7ED4999C8506C5212D4DA693 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HippoCallClient;
+			productName = HippoCallClient;
+			productReference = C99E2E8A219C50F100833F36 /* HippoCallClient.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C99E2E82219C50F100833F36 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1000;
+				LastUpgradeCheck = 1000;
+				ORGANIZATIONNAME = Vishal;
+				TargetAttributes = {
+					C99E2E89219C50F100833F36 = {
+						CreatedOnToolsVersion = 10.0;
+					};
+				};
+			};
+			buildConfigurationList = C99E2E85219C50F100833F36 /* Build configuration list for PBXProject "HippoCallClient" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = C99E2E81219C50F100833F36;
+			productRefGroup = C99E2E8B219C50F100833F36 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C99E2E89219C50F100833F36 /* HippoCallClient */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C99E2E88219C50F100833F36 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C9D7D047219EECF20060D2A8 /* README.md in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		58C44456203D276025EC1068 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-HippoCallClient-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7ED4999C8506C5212D4DA693 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-HippoCallClient/Pods-HippoCallClient-frameworks.sh",
+				"${PODS_ROOT}/GoogleWebRTC/Frameworks/frameworks/WebRTC.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebRTC.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HippoCallClient/Pods-HippoCallClient-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C99E2E86219C50F100833F36 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C99E2EDA219D7D5500833F36 /* CallSignal.swift in Sources */,
+				C99E2EDB219D7D5500833F36 /* HippoHelper.swift in Sources */,
+				C99E2ED0219D7D5500833F36 /* RTCIceCandidate+JSON.swift in Sources */,
+				C99E2ED1219D7D5500833F36 /* RTCSessionDescription+JSON.swift in Sources */,
+				C99E2ED4219D7D5500833F36 /* CallClientCredential.swift in Sources */,
+				C99E2ED9219D7D5500833F36 /* Call.swift in Sources */,
+				C99E2ED5219D7D5500833F36 /* CallPeer.swift in Sources */,
+				C99E2ED3219D7D5500833F36 /* HippoUser.swift in Sources */,
+				C99E2ED8219D7D5500833F36 /* SignalingClient.swift in Sources */,
+				C99E2ED2219D7D5500833F36 /* FuguChannel+SignalingClient.swift in Sources */,
+				C99E2ED7219D7D5500833F36 /* CallClient.swift in Sources */,
+				C99E2ED6219D7D5500833F36 /* CallPresenter.swift in Sources */,
+				C99E2EDC219D7D5500833F36 /* HippoCallClientDelegate.swift in Sources */,
+				C99E2ECF219D7D5500833F36 /* WebRTCClient.swift in Sources */,
+				C99E2EDD219D7D5500833F36 /* HippoCallClient.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		C99E2EB0219C50F400833F36 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		C99E2EB1219C50F400833F36 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C99E2EB3219C50F400833F36 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BC0E1CCDFAA888F27B4BA516 /* Pods-HippoCallClient.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9BMB7KMY7Q;
+				ENABLE_BITCODE = NO;
+				INFOPLIST_FILE = HippoCallClient/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = none.HippoCallClient;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C99E2EB4219C50F400833F36 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 10D6833AF52B0E26377195AB /* Pods-HippoCallClient.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9BMB7KMY7Q;
+				ENABLE_BITCODE = NO;
+				INFOPLIST_FILE = HippoCallClient/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = none.HippoCallClient;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C99E2E85219C50F100833F36 /* Build configuration list for PBXProject "HippoCallClient" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C99E2EB0219C50F400833F36 /* Debug */,
+				C99E2EB1219C50F400833F36 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C99E2EB2219C50F400833F36 /* Build configuration list for PBXNativeTarget "HippoCallClient" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C99E2EB3219C50F400833F36 /* Debug */,
+				C99E2EB4219C50F400833F36 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C99E2E82219C50F100833F36 /* Project object */;
+}
