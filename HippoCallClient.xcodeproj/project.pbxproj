@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C993CC372224251E0068BF8B /* HippoCallClient.podspec in Resources */ = {isa = PBXBuildFile; fileRef = C993CC362224251E0068BF8B /* HippoCallClient.podspec */; };
 		C99E2ECF219D7D5500833F36 /* WebRTCClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99E2EBC219D7D5500833F36 /* WebRTCClient.swift */; };
 		C99E2ED0219D7D5500833F36 /* RTCIceCandidate+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99E2EBD219D7D5500833F36 /* RTCIceCandidate+JSON.swift */; };
 		C99E2ED1219D7D5500833F36 /* RTCSessionDescription+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99E2EBE219D7D5500833F36 /* RTCSessionDescription+JSON.swift */; };
@@ -30,6 +31,7 @@
 		10D6833AF52B0E26377195AB /* Pods-HippoCallClient.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HippoCallClient.release.xcconfig"; path = "Pods/Target Support Files/Pods-HippoCallClient/Pods-HippoCallClient.release.xcconfig"; sourceTree = "<group>"; };
 		3A485E8D8E3A721E962B17B2 /* Pods_HippoCallClient.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HippoCallClient.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC0E1CCDFAA888F27B4BA516 /* Pods-HippoCallClient.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HippoCallClient.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HippoCallClient/Pods-HippoCallClient.debug.xcconfig"; sourceTree = "<group>"; };
+		C993CC362224251E0068BF8B /* HippoCallClient.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HippoCallClient.podspec; sourceTree = "<group>"; };
 		C99E2E8A219C50F100833F36 /* HippoCallClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HippoCallClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C99E2E99219C50F400833F36 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C99E2EBC219D7D5500833F36 /* WebRTCClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebRTCClient.swift; sourceTree = "<group>"; };
@@ -73,6 +75,7 @@
 		C99E2E81219C50F100833F36 = {
 			isa = PBXGroup;
 			children = (
+				C993CC362224251E0068BF8B /* HippoCallClient.podspec */,
 				C9D7D046219EECF20060D2A8 /* README.md */,
 				C99E2E8C219C50F100833F36 /* HippoCallClient */,
 				C99E2E8B219C50F100833F36 /* Products */,
@@ -221,6 +224,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C993CC372224251E0068BF8B /* HippoCallClient.podspec in Resources */,
 				C9D7D047219EECF20060D2A8 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -417,7 +421,10 @@
 				DEVELOPMENT_TEAM = 9BMB7KMY7Q;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = HippoCallClient/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = none.HippoCallClient;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
@@ -434,7 +441,10 @@
 				DEVELOPMENT_TEAM = 9BMB7KMY7Q;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = HippoCallClient/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = none.HippoCallClient;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
