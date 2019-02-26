@@ -83,5 +83,5 @@ HippoCallClient.shared.voipNotificationRecieved(dictionary: [AnyHashable: Any], 
 
 HippoCallClient SDK is still in development, and we would love to hear your thoughts and feedback on it.
 
-- **Have an idea or feature request?** [Open an issue](https://git.clicklabs.in/hippo-public/HippoCallClient/issues/new). Tell us more about the feature or an idea and why you think it's relevant.
-- **Have a bug to report?** [Open an issue](https://git.clicklabs.in/hippo-public/HippoCallClient/issues/new). If possible, include the version of the SDK you are using, and any technical details.
+- **Have an idea or feature request?** [Open an issue](https://github.com/Jungle-Works/hippocallclient/issues/new). Tell us more about the feature or an idea and why you think it's relevant.
+- **Have a bug to report?** [Open an issue](https://github.com/Jungle-Works/hippocallclient/issues/new). If possible, include the version of the SDK you are using, and any technical details.
