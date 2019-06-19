@@ -24,6 +24,7 @@ public struct CallSignal {
    let senderDeviceID: String
    let callType: Call.CallType
    var isForceSilent: Bool = false
+    var customData: CustomData?
    
    init(rtcSignal: [String: Any], signalType: SignalType, callUID: String, sender: CallPeer, senderDeviceID: String, callType: Call.CallType) {
       self.rtcSignal = rtcSignal
@@ -45,6 +46,7 @@ public extension CallSignal {
       case newIceCandidate = "NEW_ICE_CANDIDATE"
       case answer = "VIDEO_ANSWER"
       case callRejected = "CALL_REJECTED"
+      case custom = "CUSTOM_DATA"
    }
 }
 
@@ -88,8 +90,10 @@ public extension CallSignal {
       } else {
          callType = .audio
       }
-      
-      let signalObj = CallSignal(rtcSignal: signal, signalType: signalType, callUID: callUID, sender: user, senderDeviceID: senderDeviceID, callType: callType)
+    let rawCustomData: [String: Any] = json["custom_data"] as? [String: Any] ?? [:]
+    
+      var signalObj = CallSignal(rtcSignal: signal, signalType: signalType, callUID: callUID, sender: user, senderDeviceID: senderDeviceID, callType: callType)
+      signalObj.customData = CustomData(dict: rawCustomData)
       return signalObj
    }
 }
@@ -123,6 +127,10 @@ extension CallSignal: Publishable {
         
         if isForceSilent {
             fayeDict["is_silent"] = true
+        }
+        
+        if let data = customData {
+            fayeDict["custom_data"] = data.getJson()
         }
         
         return fayeDict

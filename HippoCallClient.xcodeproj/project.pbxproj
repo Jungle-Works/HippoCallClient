@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C97FB8CF22BA03F70089C065 /* CustomData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97FB8CE22BA03F70089C065 /* CustomData.swift */; };
 		C993CC372224251E0068BF8B /* HippoCallClient.podspec in Resources */ = {isa = PBXBuildFile; fileRef = C993CC362224251E0068BF8B /* HippoCallClient.podspec */; };
 		C99E2ECF219D7D5500833F36 /* WebRTCClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99E2EBC219D7D5500833F36 /* WebRTCClient.swift */; };
 		C99E2ED0219D7D5500833F36 /* RTCIceCandidate+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99E2EBD219D7D5500833F36 /* RTCIceCandidate+JSON.swift */; };
@@ -31,6 +32,7 @@
 		10D6833AF52B0E26377195AB /* Pods-HippoCallClient.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HippoCallClient.release.xcconfig"; path = "Pods/Target Support Files/Pods-HippoCallClient/Pods-HippoCallClient.release.xcconfig"; sourceTree = "<group>"; };
 		3A485E8D8E3A721E962B17B2 /* Pods_HippoCallClient.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HippoCallClient.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC0E1CCDFAA888F27B4BA516 /* Pods-HippoCallClient.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HippoCallClient.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HippoCallClient/Pods-HippoCallClient.debug.xcconfig"; sourceTree = "<group>"; };
+		C97FB8CE22BA03F70089C065 /* CustomData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomData.swift; sourceTree = "<group>"; };
 		C993CC362224251E0068BF8B /* HippoCallClient.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HippoCallClient.podspec; sourceTree = "<group>"; };
 		C99E2E8A219C50F100833F36 /* HippoCallClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HippoCallClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C99E2E99219C50F400833F36 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 			children = (
 				C99E2EC1219D7D5500833F36 /* HippoUser.swift */,
 				C99E2EC2219D7D5500833F36 /* Call */,
+				C97FB8CE22BA03F70089C065 /* CustomData.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -275,6 +278,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C97FB8CF22BA03F70089C065 /* CustomData.swift in Sources */,
 				C99E2EDA219D7D5500833F36 /* CallSignal.swift in Sources */,
 				C99E2EDB219D7D5500833F36 /* HippoHelper.swift in Sources */,
 				C99E2ED0219D7D5500833F36 /* RTCIceCandidate+JSON.swift in Sources */,

@@ -52,6 +52,9 @@ public protocol CallPresenter: class {
     
     func addLocalIncomingCallNotification(peerName: String, callType: Call.CallType, identifier: String)
     func addLocalMissedCallNotification(peerName: String, callType: Call.CallType, identifier: String)
+    
+    func newDataRecieved(data: CustomData)
+    var publishData: ((CustomData) -> Void)? { get set }
 }
 
 public struct PresentCallRequest {
