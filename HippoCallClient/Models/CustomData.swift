@@ -9,9 +9,9 @@
 import Foundation
 
 public class CustomData: NSObject {
-    var uniqueId: String
-    var flag: String
-    var message: String?
+    public var uniqueId: String
+    public var flag: String
+    public var message: String?
     
     public init?(uniqueId: String, flag: String, message: String?) {
         guard !uniqueId.isEmpty else {
@@ -31,7 +31,7 @@ public class CustomData: NSObject {
         
     }
     
-    func getJson() -> [String: Any] {
+    public func getJson() -> [String: Any] {
         var json: [String: Any] = [:]
         
         json["unique_id"] = uniqueId
