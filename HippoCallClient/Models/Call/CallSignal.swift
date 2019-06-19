@@ -131,6 +131,8 @@ extension CallSignal: Publishable {
         
         if let data = customData {
             fayeDict["custom_data"] = data.getJson()
+            fayeDict["server_push"] = 1
+            fayeDict["is_silent"] = true
         }
         
         return fayeDict
