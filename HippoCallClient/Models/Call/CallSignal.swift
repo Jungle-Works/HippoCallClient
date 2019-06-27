@@ -7,6 +7,7 @@
 //
 
 import Foundation
+
 #if canImport(WebRTC)
 import WebRTC
 #endif
@@ -55,7 +56,7 @@ public extension CallSignal {
 // MARK: - Type Methods
 public extension CallSignal {
     static func getFrom(json: [String: Any]) -> CallSignal? {
-        guard let rawSignalType = json["video_call_type"] as? String, let signalType = SignalType(rawValue: rawSignalType) else {
+        guard let rawSignalType = json["video_call_type"] as? String, let signalType = SignalType(rawValue: rawSignalType.uppercased()) else {
             return nil
         }
         
@@ -85,7 +86,7 @@ public extension CallSignal {
         }
         
         let callType: Call.CallType
-        if let rawCallType = json["call_type"] as? String, let type = Call.CallType(rawValue: rawCallType) {
+        if let rawCallType = json["call_type"] as? String, let type = Call.CallType(rawValue: rawCallType.uppercased()) {
             callType = type
         } else {
             callType = .audio
