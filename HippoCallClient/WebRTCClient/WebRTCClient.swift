@@ -2,8 +2,8 @@
 //  WebRTCClient.swift
 //  HippoCallClient
 //
-//  Created by Asim on 31/08/18.
-//  Copyright © 2018 Fugu-Click Labs Pvt. Ltd. All rights reserved.
+//  Created by Vishal on 31/08/18.
+//  Copyright © 2018 Vishal All rights reserved.
 //
 
 import Foundation
@@ -15,6 +15,8 @@ protocol WebRTCClientDelegate: class {
     func sendCandidateViaSignalling(json: [String: Any])
     
     func rtcConnectionDisconnected()
+    func rtcConnectionRetry()
+    func rtcConnecetd()
     
     func viewForRenderingLocalVideo() -> UIView?
     func viewForRenderingRemoteVideo() -> UIView?
@@ -40,9 +42,9 @@ class WebRTCClient: NSObject, RTCPeerConnectionDelegate {
     fileprivate let defaultAspectRatio = CGSize(width: 3, height: 4)
     
     #if swift(>=4.2)
-     fileprivate var currentAudioOveride = AVAudioSession.PortOverride.none
+    fileprivate var currentAudioOveride = AVAudioSession.PortOverride.none
     #else
-     fileprivate var currentAudioOveride = AVAudioSessionPortOverride.none
+    fileprivate var currentAudioOveride = AVAudioSessionPortOverride.none
     #endif
     
     fileprivate var isUsingFrontCamera = true
@@ -215,7 +217,7 @@ class WebRTCClient: NSObject, RTCPeerConnectionDelegate {
         let newOveride = isSwitching ? AVAudioSessionPortOverride.speaker : AVAudioSessionPortOverride.none
         #endif
         
-//        let newOveride = isSwitching ? AVAudioSessionPortOverride.speaker : AVAudioSessionPortOverride.none
+        //        let newOveride = isSwitching ? AVAudioSessionPortOverride.speaker : AVAudioSessionPortOverride.none
         
         if currentAudioOveride == newOveride {
             completion(true)
@@ -330,8 +332,8 @@ class WebRTCClient: NSObject, RTCPeerConnectionDelegate {
         config.mode = AVAudioSessionModeVoiceChat
         #endif
         
-//        config.category = AVAudioSessionCategoryPlayAndRecord
-//        config.mode = AVAudioSessionModeVoiceChat
+        //        config.category = AVAudioSessionCategoryPlayAndRecord
+        //        config.mode = AVAudioSessionModeVoiceChat
         if #available(iOS 10.0, *) {
             config.categoryOptions = [
                 .allowBluetooth,
@@ -555,12 +557,12 @@ class WebRTCClient: NSObject, RTCPeerConnectionDelegate {
         let frames = format.videoSupportedFrameRateRanges
         #else
         guard let frames = format.videoSupportedFrameRateRanges as? [AVFrameRateRange] else {
-        return nil
+            return nil
         }
         #endif
-//        guard let frames = format.videoSupportedFrameRateRanges as? [AVFrameRateRange] else {
-//            return nil
-//        }
+        //        guard let frames = format.videoSupportedFrameRateRanges as? [AVFrameRateRange] else {
+        //            return nil
+        //        }
         let fps: AVFrameRateRange? = frames.sorted {(f1, f2) -> Bool in
             return f1.maxFrameRate < f2.maxFrameRate
             }.last
@@ -572,9 +574,9 @@ class WebRTCClient: NSObject, RTCPeerConnectionDelegate {
         
         for desc in route.outputs {
             #if swift(>=4.2)
-             let isPortTypeHeadPhone = desc.portType == AVAudioSession.Port.headphones
+            let isPortTypeHeadPhone = desc.portType == AVAudioSession.Port.headphones || desc.portType == AVAudioSession.Port.bluetoothHFP
             #else
-             let isPortTypeHeadPhone = desc.portType == AVAudioSessionPortHeadphones
+            let isPortTypeHeadPhone = desc.portType == AVAudioSessionPortHeadphones || desc.portType == AVAudioSessionPortBluetoothHFP
             #endif
             
             if isPortTypeHeadPhone {
@@ -627,10 +629,14 @@ class WebRTCClient: NSObject, RTCPeerConnectionDelegate {
         print("didChange newState: RTCIceConnectionState: \(newState.rawValue)")
         
         switch newState {
-        case .disconnected:
+        case .failed, .closed:
             DispatchQueue.main.async {
                 self.delegate?.rtcConnectionDisconnected()
             }
+        case .disconnected:
+            self.delegate?.rtcConnectionRetry()
+        case .completed, .connected:
+            self.delegate?.rtcConnecetd()
         default:
             break
         }

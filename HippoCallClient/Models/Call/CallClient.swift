@@ -1,10 +1,10 @@
 
 //
 //  VideoCallManager.swift
-//  OfficeChat
+//  HippoCallClient
 //
-//  Created by Asim on 03/09/18.
-//  Copyright © 2018 Fugu-Click Labs Pvt. Ltd. All rights reserved.
+//  Created by Vishal on 03/09/18.
+//  Copyright © 2018 Vishal. All rights reserved.
 //
 
 import Foundation
@@ -93,7 +93,7 @@ class CallClient {
         
         registerCallHungupInCallPresenter()
         registerCallPresenterAccessories()
-        callPresenter.startConnectingCall(request: call, completion: {_ in })
+        callPresenter?.startConnectingCall(request: call, completion: {_ in })
     }
     private func shouldHandle(signal: CallSignal, call: Call) -> Bool {
         guard signal.senderDeviceID != currentDeviceID else {
@@ -142,7 +142,7 @@ class CallClient {
         
         activeCall?.status = .outgoingCall
         
-        let request = PresentCallRequest(peer: call.peer, callType: call.type)
+        let request = PresentCallRequest(peer: call.peer, callType: call.type, callUUID: call.uID)
         callPresenter?.startNewOutgoingCall(request: request) { [weak self] (success) in
             guard success, let weakSelf = self else {
                 self?.callDisconnected()
@@ -165,9 +165,9 @@ class CallClient {
             //            expireActiveCall()
             return
         }
-        let isSilent = call.timeElapsedSinceCallStart >= 1
+        
         let json = self.credentials.toJson()
-        self.sendSignalWith(json: json, signalType: .startCall, call: call, isSilent: isSilent)
+        self.sendSignalWith(json: json, signalType: .startCall, call: call)
         HippoDelay(2) {
             self.startSendingStartCallUntilItExpires(signal: signal, call: call)
         }
@@ -295,9 +295,6 @@ class CallClient {
     
     private func postMissedCallNotificationFor(call: Call) {
         callPresenter?.addLocalMissedCallNotification(peerName: call.peer.name, callType: call.type, identifier: call.uID)
-        //      let message = "🎥 Missed a Video Call from \(call.peer.name)"
-        //      let soundName = "disconnect_call.mp3"
-        //      addLocalNotificationWith(message: message, soundName: soundName, identifier: call.uID)
     }
     
     private func offerReceived(signal: CallSignal) {
@@ -324,7 +321,7 @@ class CallClient {
         registerCallHungupInCallPresenter()
         
         if activeCall?.rtcClient == nil {
-            let request = PresentCallRequest(peer: activeCall!.peer, callType: activeCall!.type)
+            let request = PresentCallRequest(peer: activeCall!.peer, callType: activeCall!.type, callUUID: activeCall!.uID)
             callPresenter?.reportIncomingCallWith(request: request) { [weak self] (success) in
                 guard success, let weakSelf = self else {
                     return
@@ -392,7 +389,7 @@ class CallClient {
         guard let call = activeCall, call.uID == signal.callUID, call.status == .outgoingCall else {
             return
         }
-        callPresenter.userBusy()
+        callPresenter?.userBusy()
         callDisconnected()
     }
     
@@ -404,7 +401,7 @@ class CallClient {
         activeCall?.status = .inCall
         activeCall?.rtcClient?.sdpReceivedFromSignalling(json: signal.rtcSignal)
         
-        callPresenter.callConnected()
+        callPresenter?.callConnected()
     }
     
     //MARK: -
@@ -426,7 +423,7 @@ class CallClient {
             guard let weakSelf = self, let call = weakSelf.activeCall else {
                 return
             }
-            self?.sendSignalWith(json: [:], signalType: .custom, call: call, isSilent: true, customData: data)
+            self?.sendSignalWith(json: [:], signalType: .custom, call: call, customData: data)
         }
     }
     
@@ -459,9 +456,9 @@ class CallClient {
             
             rtcClient.unmuteAudio(completion: { (success) in
                 if success {
-                    self?.callPresenter.callUnMuted()
+                    self?.callPresenter?.callUnMuted()
                 } else {
-                    self?.callPresenter.callMuted()
+                    self?.callPresenter?.callMuted()
                 }
             })
         }
@@ -475,9 +472,9 @@ class CallClient {
             }
             rtcClient.muteAudio(completion: { (success) in
                 if success {
-                    self?.callPresenter.callMuted()
+                    self?.callPresenter?.callMuted()
                 } else {
-                    self?.callPresenter.callUnMuted()
+                    self?.callPresenter?.callUnMuted()
                 }
             })
         }
@@ -493,7 +490,7 @@ class CallClient {
         callPresenter?.callAnswered = { [weak self] in
             self?.activeCall?.rtcClient?.incomingCallAnswered()
             self?.activeCall?.status = .inCall
-            self?.callPresenter.callConnected()
+            self?.callPresenter?.callConnected()
         }
     }
     
@@ -592,17 +589,25 @@ class CallClient {
         callPresenter?.remoteUserHungUp()
         callDisconnected()
     }
+    fileprivate func connectionRetry()  {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.callPresenter?.remoteRetryToConnect()
+        }
+    }
     
+    fileprivate func connected() {
+        callPresenter?.remoteConnected()
+    }
 }
 
 // MARK: - WebRTC Client Delegate
 extension CallClient: WebRTCClientDelegate {
     func viewForRenderingLocalVideo() -> UIView? {
-        return callPresenter.viewForLocalVideoRendering()
+        return callPresenter?.viewForLocalVideoRendering()
     }
     
     func viewForRenderingRemoteVideo() -> UIView? {
-        return callPresenter.viewForRemoteVideoRendering()
+        return callPresenter?.viewForRemoteVideoRendering()
     }
     
     func sendOfferViaSignalling(json: [String : Any]) {
@@ -617,12 +622,14 @@ extension CallClient: WebRTCClientDelegate {
         sendSignalWith(json: json, signalType: .newIceCandidate, call: activeCall!)
     }
     
-    func sendSignalWith(json: [String: Any], signalType: CallSignal.SignalType, call: Call, isSilent: Bool = false, customData: CustomData? = nil) {
+    func sendSignalWith(json: [String: Any], signalType: CallSignal.SignalType, call: Call, customData: CustomData? = nil) {
         var signal = CallSignal(rtcSignal: json, signalType: signalType, callUID: call.uID, sender: call.currentUser, senderDeviceID: currentDeviceID, callType: call.type)
         
         //For Sending multiole start call sliently
-        signal.isForceSilent = isSilent
+        signal.isForceSilent = call.isStartCallSend
         signal.customData = customData
+        
+        call.isStartCallSend = true
         
         call.signalingClient.connectClient(completion: { (success) in
             call.signalingClient.sendSignalToPeer(signal: signal, completion: { (success, error) in
@@ -655,8 +662,11 @@ extension CallClient: WebRTCClientDelegate {
     func rtcConnectionDisconnected() {
         self.connectionLost()
     }
+    func rtcConnectionRetry() {
+        self.connectionRetry()
+    }
     
+    func rtcConnecetd() {
+        self.connected()
+    }
 }
-
-
-

@@ -1,6 +1,6 @@
 //
 //  VideoSignal.swift
-//  OfficeChat
+//  HippoCallClient
 //
 //  Created by Asim on 09/09/18.
 //  Copyright © 2018 Fugu-Click Labs Pvt. Ltd. All rights reserved.
@@ -8,7 +8,7 @@
 
 import Foundation
 #if canImport(WebRTC)
-   import WebRTC
+import WebRTC
 #endif
 
 public protocol Publishable {
@@ -16,86 +16,86 @@ public protocol Publishable {
 }
 
 public struct CallSignal {
-   // MARK: - Properties
-   let rtcSignal: [String: Any]
-   let signalType: SignalType
-   let callUID: String
-   let sender: CallPeer
-   let senderDeviceID: String
-   let callType: Call.CallType
-   var isForceSilent: Bool = false
+    // MARK: - Properties
+    let rtcSignal: [String: Any]
+    let signalType: SignalType
+    let callUID: String
+    let sender: CallPeer
+    let senderDeviceID: String
+    let callType: Call.CallType
+    var isForceSilent: Bool = false
     var customData: CustomData?
-   
-   init(rtcSignal: [String: Any], signalType: SignalType, callUID: String, sender: CallPeer, senderDeviceID: String, callType: Call.CallType) {
-      self.rtcSignal = rtcSignal
-      self.signalType = signalType
-      self.callUID = callUID
-      self.sender = sender
-      self.senderDeviceID = senderDeviceID
-      self.callType = callType
-   }
+    
+    init(rtcSignal: [String: Any], signalType: SignalType, callUID: String, sender: CallPeer, senderDeviceID: String, callType: Call.CallType) {
+        self.rtcSignal = rtcSignal
+        self.signalType = signalType
+        self.callUID = callUID
+        self.sender = sender
+        self.senderDeviceID = senderDeviceID
+        self.callType = callType
+    }
 }
 
 public extension CallSignal {
-   enum SignalType: String {
-      case startCall = "START_CALL"
-      case readyToConnect = "READY_TO_CONNECT"
-      case callHungUp = "CALL_HUNG_UP"
-      case userBusy = "USER_BUSY"
-      case offer = "VIDEO_OFFER"
-      case newIceCandidate = "NEW_ICE_CANDIDATE"
-      case answer = "VIDEO_ANSWER"
-      case callRejected = "CALL_REJECTED"
-      case custom = "CUSTOM_DATA"
-   }
+    enum SignalType: String {
+        case startCall = "START_CALL"
+        case readyToConnect = "READY_TO_CONNECT"
+        case callHungUp = "CALL_HUNG_UP"
+        case userBusy = "USER_BUSY"
+        case offer = "VIDEO_OFFER"
+        case newIceCandidate = "NEW_ICE_CANDIDATE"
+        case answer = "VIDEO_ANSWER"
+        case callRejected = "CALL_REJECTED"
+        case custom = "CUSTOM_DATA"
+    }
 }
 
 
 
 // MARK: - Type Methods
 public extension CallSignal {
-   static func getFrom(json: [String: Any]) -> CallSignal? {
-      guard let rawSignalType = json["video_call_type"] as? String, let signalType = SignalType(rawValue: rawSignalType) else {
-         return nil
-      }
-      
-      let callUID = json["muid"] as? String ?? ""
-      
-      let signal: [String: Any]
-      switch signalType {
-      case .newIceCandidate:
-         signal = json["rtc_candidate"] as? [String: Any] ?? [:]
-      case .answer, .offer:
-         signal = json["sdp"] as? [String: Any] ?? [:]
-      default:
-         signal = [:]
-      }
-      
-      guard let user = HippoUser(json: json) else {
-         print("User not intialized in Video Signal")
-         return nil
-      }
-      
-      var senderDeviceID = ""
-      if let deviceID = (json["device_id"] as? String) {
-
-         senderDeviceID = deviceID
-      } else if let devicePayload = json["device_payload"] as? [String: Any], let deviceID = devicePayload["device_id"] as? String {
-         senderDeviceID = deviceID
-      }
-      
-      let callType: Call.CallType
-      if let rawCallType = json["call_type"] as? String, let type = Call.CallType(rawValue: rawCallType) {
-         callType = type
-      } else {
-         callType = .audio
-      }
-    let rawCustomData: [String: Any] = json["custom_data"] as? [String: Any] ?? [:]
-    
-      var signalObj = CallSignal(rtcSignal: signal, signalType: signalType, callUID: callUID, sender: user, senderDeviceID: senderDeviceID, callType: callType)
-      signalObj.customData = CustomData(dict: rawCustomData)
-      return signalObj
-   }
+    static func getFrom(json: [String: Any]) -> CallSignal? {
+        guard let rawSignalType = json["video_call_type"] as? String, let signalType = SignalType(rawValue: rawSignalType) else {
+            return nil
+        }
+        
+        let callUID = json["muid"] as? String ?? ""
+        
+        let signal: [String: Any]
+        switch signalType {
+        case .newIceCandidate:
+            signal = json["rtc_candidate"] as? [String: Any] ?? [:]
+        case .answer, .offer:
+            signal = json["sdp"] as? [String: Any] ?? [:]
+        default:
+            signal = [:]
+        }
+        
+        guard let user = HippoUser(json: json) else {
+            print("User not intialized in Video Signal")
+            return nil
+        }
+        
+        var senderDeviceID = ""
+        if let deviceID = (json["device_id"] as? String) {
+            
+            senderDeviceID = deviceID
+        } else if let devicePayload = json["device_payload"] as? [String: Any], let deviceID = devicePayload["device_id"] as? String {
+            senderDeviceID = deviceID
+        }
+        
+        let callType: Call.CallType
+        if let rawCallType = json["call_type"] as? String, let type = Call.CallType(rawValue: rawCallType) {
+            callType = type
+        } else {
+            callType = .audio
+        }
+        let rawCustomData: [String: Any] = json["custom_data"] as? [String: Any] ?? [:]
+        
+        var signalObj = CallSignal(rtcSignal: signal, signalType: signalType, callUID: callUID, sender: user, senderDeviceID: senderDeviceID, callType: callType)
+        signalObj.customData = CustomData(dict: rawCustomData)
+        return signalObj
+    }
 }
 
 extension CallSignal: Publishable {

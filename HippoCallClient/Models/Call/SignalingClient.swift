@@ -1,6 +1,6 @@
 //
 //  SignalClient.swift
-//  OfficeChat
+//  HippoCallClient
 //
 //  Created by Asim on 05/09/18.
 //  Copyright © 2018 Fugu-Click Labs Pvt. Ltd. All rights reserved.
