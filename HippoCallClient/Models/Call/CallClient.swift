@@ -590,7 +590,7 @@ class CallClient {
         callDisconnected()
     }
     fileprivate func connectionRetry()  {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        DispatchQueue.main.asyncAfter(deadline: .now()) {
             self.callPresenter?.remoteRetryToConnect()
         }
     }
@@ -611,6 +611,7 @@ extension CallClient: WebRTCClientDelegate {
     }
     
     func sendOfferViaSignalling(json: [String : Any]) {
+        callPresenter?.sendingOffer()
         sendSignalWith(json: json, signalType: .offer, call: activeCall!)
     }
     

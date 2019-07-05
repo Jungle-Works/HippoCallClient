@@ -58,7 +58,7 @@ public protocol CallPresenter: class {
     func newDataRecieved(data: CustomData)
     var publishData: ((CustomData) -> Void)? { get set }
     
-    
+    func sendingOffer()
 }
 
 public struct PresentCallRequest {

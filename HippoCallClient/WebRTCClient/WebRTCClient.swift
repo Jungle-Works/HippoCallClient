@@ -72,6 +72,9 @@ class WebRTCClient: NSObject, RTCPeerConnectionDelegate {
         
         let config = RTCConfiguration()
         config.iceServers = credentials.getIceServers()
+        config.iceTransportPolicy = .all
+        config.bundlePolicy = .maxBundle
+        config.rtcpMuxPolicy = .require
         
         // Unified plan is more superior than planB
         config.sdpSemantics = .planB
@@ -634,9 +637,13 @@ class WebRTCClient: NSObject, RTCPeerConnectionDelegate {
                 self.delegate?.rtcConnectionDisconnected()
             }
         case .disconnected:
-            self.delegate?.rtcConnectionRetry()
+            DispatchQueue.main.async {
+               self.delegate?.rtcConnectionRetry()
+            }
         case .completed, .connected:
-            self.delegate?.rtcConnecetd()
+            DispatchQueue.main.async {
+                self.delegate?.rtcConnecetd()
+            }
         default:
             break
         }
