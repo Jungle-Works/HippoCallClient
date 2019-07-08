@@ -152,8 +152,6 @@ class CallClient {
             let signal = CallSignal(rtcSignal: [:], signalType: .startCall, callUID: call.uID, sender: call.currentUser, senderDeviceID: weakSelf.currentDeviceID, callType: call.type)
             self?.startTimerToExpireNotConnectedCallIn(signal: signal)
             self?.startSendingStartCallUntilItExpires(signal: signal, call: call)
-            //            let json = weakSelf.credentials.toJson()
-            //            self?.sendSignalWith(json: json, signalType: .startCall, call: call)
         }
     }
     private func startSendingStartCallUntilItExpires(signal: CallSignal, call: Call) {
@@ -162,7 +160,6 @@ class CallClient {
         }
         
         if call.timeElapsedSinceCallStart > maxTimeInNotConnectedState {
-            //            expireActiveCall()
             return
         }
         
@@ -243,9 +240,8 @@ class CallClient {
             activeCall = newCall
             registerActiveCallsSignallingClient()
         }
-        //      if newCall.type == .video {
+        
         startPublishingLocalNotificationForIncomingCallWith(signal: signal)
-        //      }
         sendReadyToConnectFor(signal: signal)
         startTimerToExpireNotConnectedCallIn(signal: signal)
     }
@@ -289,6 +285,9 @@ class CallClient {
             postMissedCallNotificationFor(call: call)
         }
         
+        if call.status == .outgoingCall {
+            sendSignalWhenCallHungUp()
+        }
         callPresenter?.remoteUserRejectedTheCall()
         callDisconnected()
     }
