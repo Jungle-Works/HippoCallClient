@@ -18,7 +18,9 @@ Pod::Spec.new do |s|
     s.exclude_files = 'Classes/Exclude'
     s.static_framework = false
     s.preserve_paths = 'README.md'
-    s.dependency 'GoogleWebRTC'
+    s.vendored_framework = "WebRTC.framework"
+    
+   # s.dependency 'GoogleWebRTC'
 
 
     s.pod_target_xcconfig = { 'ENABLE_BITCODE' => 'No' }
