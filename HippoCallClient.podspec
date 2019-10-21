@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name         = 'HippoCallClient'
-    s.version      = '0.0.21'
+    s.version      = '0.0.22'
     s.summary      = 'Hippo Call Client'
     s.description  = <<-DESC
                     Hippo Call Client to start video call and audio call
@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
     s.exclude_files = 'Classes/Exclude'
     s.static_framework = false
     s.preserve_paths = 'README.md'
-    s.vendored_framework = "WebRTC.framework"
+    s.ios.vendored_frameworks = 'WebRTC.framework'
     
    # s.dependency 'GoogleWebRTC'
 
