@@ -137,6 +137,8 @@ class WebRTCClient: NSObject, RTCPeerConnectionDelegate {
                 }
             case .offer:
                 break
+            @unknown default:
+                break
             }
         }
         
