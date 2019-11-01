@@ -24,7 +24,7 @@
 		C980E30023588D9E004433FF /* FuguChannel+SignalingClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C980E2EF23588D9D004433FF /* FuguChannel+SignalingClient.swift */; };
 		C980E30123588D9E004433FF /* HippoCallClientDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C980E2F123588D9D004433FF /* HippoCallClientDelegate.swift */; };
 		C980E30223588D9E004433FF /* HippoCallClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C980E2F223588D9D004433FF /* HippoCallClient.swift */; };
-		C9B410E0235D89E40029799A /* WebRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C980E30323588DA9004433FF /* WebRTC.framework */; };
+		C9F6B809236BF8BF00245D08 /* WebRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C980E30323588DA9004433FF /* WebRTC.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,7 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C9B410E0235D89E40029799A /* WebRTC.framework in Frameworks */,
+				C9F6B809236BF8BF00245D08 /* WebRTC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
