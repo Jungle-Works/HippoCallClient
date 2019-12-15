@@ -30,6 +30,7 @@ class CallClient {
     fileprivate var credentials: CallClientCredential!
     fileprivate var credentialRetry = 0
     
+    
     // MARK: - Methods
     func setCredentials(rawCredentials: [String: Any]) {
         self.credentials = CallClientCredential(rawCredentials: rawCredentials)
@@ -321,15 +322,30 @@ class CallClient {
         
         if activeCall?.rtcClient == nil {
             let request = PresentCallRequest(peer: activeCall!.peer, callType: activeCall!.type, callUUID: activeCall!.uID)
-            callPresenter?.reportIncomingCallWith(request: request) { [weak self] (success) in
-                guard success, let weakSelf = self else {
-                    return
+            
+            if activeCall?.forceReadyToConnectSent ?? false {
+                self.callAnswered()
+            } else {
+                callPresenter?.reportIncomingCallWith(request: request) { [weak self] (success) in
+                    guard success, let weakSelf = self else {
+                        return
+                    }
+                    
+                    weakSelf.activeCall?.rtcClient = WebRTCClient(delegate: weakSelf, credentials: weakSelf.credentials, isVoiceOnlyCall: weakSelf.activeCall!.type == .audio)
+                    weakSelf.activeCall?.status = .incomingCall
+                    weakSelf.activeCall?.rtcClient?.sdpReceivedFromSignalling(json: signal.rtcSignal)
+                    
                 }
-                
-                weakSelf.activeCall?.rtcClient = WebRTCClient(delegate: weakSelf, credentials: weakSelf.credentials, isVoiceOnlyCall: weakSelf.activeCall!.type == .audio)
-                weakSelf.activeCall?.status = .incomingCall
-                weakSelf.activeCall?.rtcClient?.sdpReceivedFromSignalling(json: signal.rtcSignal)
             }
+            //            callPresenter?.reportIncomingCallWith(request: request) { [weak self] (success) in
+            //                guard success, let weakSelf = self else {
+            //                    return
+            //                }
+            //
+            //                weakSelf.activeCall?.rtcClient = WebRTCClient(delegate: weakSelf, credentials: weakSelf.credentials, isVoiceOnlyCall: weakSelf.activeCall!.type == .audio)
+            //                weakSelf.activeCall?.status = .incomingCall
+            //                weakSelf.activeCall?.rtcClient?.sdpReceivedFromSignalling(json: signal.rtcSignal)
+            //            }
         } else {
             activeCall?.rtcClient?.sdpReceivedFromSignalling(json: signal.rtcSignal)
         }
@@ -487,12 +503,24 @@ class CallClient {
     
     private func registerCallAnsweredInCallPresenter() {
         callPresenter?.callAnswered = { [weak self] in
-            self?.activeCall?.rtcClient?.incomingCallAnswered()
-            self?.activeCall?.status = .inCall
-            self?.callPresenter?.callConnected()
+            if self?.activeCall?.lastStateSend == nil, let call = self?.activeCall, let currentDeviceID = self?.currentDeviceID {
+                let signal = CallSignal(rtcSignal: [:], signalType: .readyToConnect, callUID: call.uID, sender: call.currentUser, senderDeviceID: currentDeviceID, callType: call.type)
+                call.forceReadyToConnectSent = true
+                self?.sendReadyToConnectFor(signal: signal)
+                return
+            } else {
+                self?.callAnswered()
+            }
+
         }
     }
     
+    private func callAnswered() {
+        self.activeCall?.rtcClient?.incomingCallAnswered()
+        self.activeCall?.status = .inCall
+        self.callPresenter?.callConnected()
+    }
+
     private func registerSwitchCameraInCallPresenter() {
         callPresenter?.switchCameraButtonPressed = { [weak self] in
             guard let rtcClient = self?.activeCall?.rtcClient else {
