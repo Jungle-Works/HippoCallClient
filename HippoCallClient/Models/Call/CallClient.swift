@@ -71,6 +71,7 @@ class CallClient {
         
         if signal.signalType == .startCall || signal.signalType == .callRejected || signal.signalType == .callHungUp {
             takeActionOnSignalReceived(signal, forCall: call)
+            loadCallPresenterView()
         }
         return
     }
@@ -191,6 +192,9 @@ class CallClient {
         let request = CallPresenterRequest.init(uuid: id, callType: activeCall?.type ?? defaultType, isDialedByUser: isDialedByUser)
         self.callPresenter =  HippoCallClient.shared.delgate?.loadCallPresenterView(request: request)
         registerPublishDataInCallPresenter()
+        registerCallPresenterAccessories()
+        registerCallAnsweredInCallPresenter()
+        registerCallHungupInCallPresenter()
     }
     
     // MARK: - Signal Handling
@@ -309,7 +313,7 @@ class CallClient {
         guard isUserWaitingForOffer() else {
             return
         }
-        
+        activeCall?.lastStateSend = .offer
         loadCallPresenterView()
         
         //Check if callPresenter is given nil from service user
@@ -323,9 +327,8 @@ class CallClient {
         if activeCall?.rtcClient == nil {
             let request = PresentCallRequest(peer: activeCall!.peer, callType: activeCall!.type, callUUID: activeCall!.uID)
             
-            if activeCall?.forceReadyToConnectSent ?? false {
-                self.callAnswered()
-            } else {
+           
+//            } else {
                 callPresenter?.reportIncomingCallWith(request: request) { [weak self] (success) in
                     guard success, let weakSelf = self else {
                         return
@@ -336,6 +339,8 @@ class CallClient {
                     weakSelf.activeCall?.rtcClient?.sdpReceivedFromSignalling(json: signal.rtcSignal)
                     
                 }
+            if activeCall?.forceReadyToConnectSent ?? false {
+                           self.callAnswered()
             }
             //            callPresenter?.reportIncomingCallWith(request: request) { [weak self] (success) in
             //                guard success, let weakSelf = self else {
