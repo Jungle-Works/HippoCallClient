@@ -24,7 +24,7 @@ class CallClient {
     // MARK: - Properties
     private(set) var activeCall: Call?
     fileprivate var callPresenter: CallPresenter!
-    fileprivate var currentDeviceID = UIDevice.current.identifierForVendor?.uuidString ?? ""
+    var currentDeviceID = UIDevice.current.identifierForVendor?.uuidString ?? ""
     fileprivate let maxTimeInNotConnectedState = 30
     
     fileprivate var credentials: CallClientCredential!
@@ -37,10 +37,22 @@ class CallClient {
     
     func voipNotificationReceived(dictionary: [AnyHashable: Any], peer: CallPeer, signalingClient: SignalingClient, currentUser: CallPeer) {
         
-        guard let jsonDict = dictionary as? [String: Any], let signal = CallSignal.getFrom(json: jsonDict) else {
+        guard let jsonDict = dictionary as? [String: Any] else {
             return
         }
         
+        if let notificationType = jsonDict["notification_type"] as? Int, notificationType == 20 {
+            guard let signal = JitsiCallSignal.getFrom(json: jsonDict) else {
+                return
+            }
+            let call = Call(peer: peer, signalingClient: signalingClient, uID: signal.callUID, currentUser: currentUser, type: signal.callType)
+            self.handleCallEvent(for: jsonDict, call: call, jitsiSignal: signal )
+         return
+        }
+        
+        guard let signal = CallSignal.getFrom(json: jsonDict) else {
+            return
+        }
         guard credentials != nil else {
             NSLog("Credential Not found")
             return
@@ -74,6 +86,21 @@ class CallClient {
         return
     }
     
+    func handleCallEvent(for data: [String: Any], call: Call, jitsiSignal: JitsiCallSignal) {
+        let jsonDict = data
+        if let signal = jsonDict["video_call_type"] as? String, let signalType = JitsiCallSignal.JitsiSignalType(rawValue:signal), let deviceId = jsonDict["device_id"] as? String, let uniqueKey = jsonDict["user_unique_key"] as? String  {
+            print("handleCallEvent callClient 87", signalType, deviceId, CallClient.shared.currentDeviceID)
+            if ((signalType == .HUNGUP_CONFERENCE || signalType == .REJECT_CONFERENCE) && (CallClient.shared.currentDeviceID != deviceId)){ //&& (uniqueKey == Sessions.shared?.user.id ?? "")
+               JitsiCallManager.shared.otherUserCallHungup()
+               return
+            } else if signalType == .START_CONFERENCE_IOS{
+                JitsiCallManager.shared.startReceivedCall(newCall: call, signal: jitsiSignal)
+                return
+            } else {
+                JitsiCallManager.shared.addSignalReceiver()
+            }
+        }
+    }
     func userLoggedOut() {
         callPresenter?.remoteUserRejectedTheCall()
         callDisconnected()
@@ -154,6 +181,7 @@ class CallClient {
             self?.startSendingStartCallUntilItExpires(signal: signal, call: call)
         }
     }
+    
     private func startSendingStartCallUntilItExpires(signal: CallSignal, call: Call) {
         guard let call = activeCall, call.uID == signal.callUID, call.status != .inCall else {
             return
@@ -580,7 +608,7 @@ class CallClient {
         }
     }
     
-    private func isUserBusy() -> Bool {
+    func isUserBusy() -> Bool {
         return activeCall != nil
     }
     

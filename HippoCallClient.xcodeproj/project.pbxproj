@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -24,10 +24,48 @@
 		C980E30023588D9E004433FF /* FuguChannel+SignalingClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C980E2EF23588D9D004433FF /* FuguChannel+SignalingClient.swift */; };
 		C980E30123588D9E004433FF /* HippoCallClientDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C980E2F123588D9D004433FF /* HippoCallClientDelegate.swift */; };
 		C980E30223588D9E004433FF /* HippoCallClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C980E2F223588D9D004433FF /* HippoCallClient.swift */; };
-		C9A78693236F446B0042EB7B /* Pods_HippoCustomer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9A78692236F446B0042EB7B /* Pods_HippoCustomer.framework */; };
+		CD1EFB462444D235008C093B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1EFB1E2444D235008C093B /* Extensions.swift */; };
+		CD1EFB472444D235008C093B /* JitsiConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1EFB1F2444D235008C093B /* JitsiConstants.swift */; };
+		CD1EFB492444D235008C093B /* JitsiCallManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1EFB222444D235008C093B /* JitsiCallManager.swift */; };
+		CD1EFB4A2444D235008C093B /* JitsiCallSignal.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1EFB232444D235008C093B /* JitsiCallSignal.swift */; };
+		CD1EFB4B2444D235008C093B /* CallStartAndReceivedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1EFB242444D235008C093B /* CallStartAndReceivedView.swift */; };
+		CD1EFB4E2444D235008C093B /* CallStartAndReceivedView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD1EFB272444D235008C093B /* CallStartAndReceivedView.xib */; };
+		CD1EFB4F2444D235008C093B /* TitilliumWeb-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CD1EFB292444D235008C093B /* TitilliumWeb-Bold.ttf */; };
+		CD1EFB502444D235008C093B /* TitilliumWeb-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CD1EFB2A2444D235008C093B /* TitilliumWeb-Regular.ttf */; };
+		CD1EFB512444D235008C093B /* TitilliumWeb-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CD1EFB2B2444D235008C093B /* TitilliumWeb-SemiBold.ttf */; };
+		CD1EFB522444D235008C093B /* OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = CD1EFB2C2444D235008C093B /* OFL.txt */; };
+		CD1EFB532444D235008C093B /* TitilliumWeb-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CD1EFB2D2444D235008C093B /* TitilliumWeb-Italic.ttf */; };
+		CD1EFB542444D235008C093B /* FuguColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1EFB2F2444D235008C093B /* FuguColor.swift */; };
+		CD1EFB552444D235008C093B /* FuguFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1EFB302444D235008C093B /* FuguFont.swift */; };
+		CD1EFB582444D235008C093B /* MicAndCameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1EFB342444D235008C093B /* MicAndCameraManager.swift */; };
+		CD1EFB5B2444D235008C093B /* FloatRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1EFB372444D235008C093B /* FloatRatingView.swift */; };
+		CD1EFB5E2444D235008C093B /* Conference.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD1EFB3A2444D235008C093B /* Conference.storyboard */; };
+		CD1EFB632444D235008C093B /* UITextView+Placeholder.m in Sources */ = {isa = PBXBuildFile; fileRef = CD1EFB402444D235008C093B /* UITextView+Placeholder.m */; };
+		CD1EFB642444D235008C093B /* UITextView+Placeholder.h in Headers */ = {isa = PBXBuildFile; fileRef = CD1EFB412444D235008C093B /* UITextView+Placeholder.h */; };
+		CD1EFB682444D235008C093B /* PullUpControllerNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1EFB452444D235008C093B /* PullUpControllerNew.swift */; };
+		CD1EFB6B2444D3C1008C093B /* JitsiConfrenceCallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1EFB692444D3C1008C093B /* JitsiConfrenceCallView.swift */; };
+		CD1EFB6C2444D3C1008C093B /* JitsiConfrenceCallView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD1EFB6A2444D3C1008C093B /* JitsiConfrenceCallView.xib */; };
+		CD254A1024405D2600B7DCEE /* Pods_HippoCallClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A485E8D8E3A721E962B17B2 /* Pods_HippoCallClient.framework */; platformFilter = ios; };
+		CD254A1124405D2600B7DCEE /* Pods_HippoCallClient.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3A485E8D8E3A721E962B17B2 /* Pods_HippoCallClient.framework */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		CD254A0D24405B1900B7DCEE /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				CD254A1124405D2600B7DCEE /* Pods_HippoCallClient.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		11D4BC719893B3ECDD82325B /* Pods-HippoCallClient.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HippoCallClient.debug.xcconfig"; path = "Target Support Files/Pods-HippoCallClient/Pods-HippoCallClient.debug.xcconfig"; sourceTree = "<group>"; };
+		1DA5E276E2D083536A2B1628 /* Pods-HippoCallClient.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HippoCallClient.release.xcconfig"; path = "Target Support Files/Pods-HippoCallClient/Pods-HippoCallClient.release.xcconfig"; sourceTree = "<group>"; };
 		3A485E8D8E3A721E962B17B2 /* Pods_HippoCallClient.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HippoCallClient.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C980E2D623588D6E004433FF /* HippoCallClient.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = HippoCallClient.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C980E2D823588D6F004433FF /* HippoCallClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HippoCallClient.h; sourceTree = "<group>"; };
@@ -48,9 +86,30 @@
 		C980E2EF23588D9D004433FF /* FuguChannel+SignalingClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FuguChannel+SignalingClient.swift"; sourceTree = "<group>"; };
 		C980E2F123588D9D004433FF /* HippoCallClientDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HippoCallClientDelegate.swift; sourceTree = "<group>"; };
 		C980E2F223588D9D004433FF /* HippoCallClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HippoCallClient.swift; sourceTree = "<group>"; };
-		C993CC362224251E0068BF8B /* HippoCallClient.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HippoCallClient.podspec; sourceTree = "<group>"; };
+		C993CC362224251E0068BF8B /* HippoCallClient.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HippoCallClient.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		C9A78692236F446B0042EB7B /* Pods_HippoCustomer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_HippoCustomer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9D7D046219EECF20060D2A8 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		CD1EFB1E2444D235008C093B /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		CD1EFB1F2444D235008C093B /* JitsiConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JitsiConstants.swift; sourceTree = "<group>"; };
+		CD1EFB222444D235008C093B /* JitsiCallManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JitsiCallManager.swift; sourceTree = "<group>"; };
+		CD1EFB232444D235008C093B /* JitsiCallSignal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JitsiCallSignal.swift; sourceTree = "<group>"; };
+		CD1EFB242444D235008C093B /* CallStartAndReceivedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallStartAndReceivedView.swift; sourceTree = "<group>"; };
+		CD1EFB272444D235008C093B /* CallStartAndReceivedView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallStartAndReceivedView.xib; sourceTree = "<group>"; };
+		CD1EFB292444D235008C093B /* TitilliumWeb-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TitilliumWeb-Bold.ttf"; sourceTree = "<group>"; };
+		CD1EFB2A2444D235008C093B /* TitilliumWeb-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TitilliumWeb-Regular.ttf"; sourceTree = "<group>"; };
+		CD1EFB2B2444D235008C093B /* TitilliumWeb-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TitilliumWeb-SemiBold.ttf"; sourceTree = "<group>"; };
+		CD1EFB2C2444D235008C093B /* OFL.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OFL.txt; sourceTree = "<group>"; };
+		CD1EFB2D2444D235008C093B /* TitilliumWeb-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TitilliumWeb-Italic.ttf"; sourceTree = "<group>"; };
+		CD1EFB2F2444D235008C093B /* FuguColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FuguColor.swift; sourceTree = "<group>"; };
+		CD1EFB302444D235008C093B /* FuguFont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FuguFont.swift; sourceTree = "<group>"; };
+		CD1EFB342444D235008C093B /* MicAndCameraManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MicAndCameraManager.swift; sourceTree = "<group>"; };
+		CD1EFB372444D235008C093B /* FloatRatingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatRatingView.swift; sourceTree = "<group>"; };
+		CD1EFB3A2444D235008C093B /* Conference.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Conference.storyboard; sourceTree = "<group>"; };
+		CD1EFB402444D235008C093B /* UITextView+Placeholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextView+Placeholder.m"; sourceTree = "<group>"; };
+		CD1EFB412444D235008C093B /* UITextView+Placeholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextView+Placeholder.h"; sourceTree = "<group>"; };
+		CD1EFB452444D235008C093B /* PullUpControllerNew.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PullUpControllerNew.swift; sourceTree = "<group>"; };
+		CD1EFB692444D3C1008C093B /* JitsiConfrenceCallView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JitsiConfrenceCallView.swift; sourceTree = "<group>"; };
+		CD1EFB6A2444D3C1008C093B /* JitsiConfrenceCallView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JitsiConfrenceCallView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,7 +117,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C9A78693236F446B0042EB7B /* Pods_HippoCustomer.framework in Frameworks */,
+				CD254A1024405D2600B7DCEE /* Pods_HippoCallClient.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,6 +136,7 @@
 		C980E2D723588D6F004433FF /* HippoCallClient */ = {
 			isa = PBXGroup;
 			children = (
+				CD1EFB1D2444D235008C093B /* ConferenceCall */,
 				C980E2DE23588D9D004433FF /* Helpers */,
 				C980E2E023588D9D004433FF /* Models */,
 				C980E2EB23588D9D004433FF /* WebRTCClient */,
@@ -147,6 +207,7 @@
 				C980E2D723588D6F004433FF /* HippoCallClient */,
 				C99E2E8B219C50F100833F36 /* Products */,
 				42F14C59FDD43769C56F6D75 /* Frameworks */,
+				F3C5494781C8331B9CC34B69 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -158,6 +219,83 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		CD1EFB1D2444D235008C093B /* ConferenceCall */ = {
+			isa = PBXGroup;
+			children = (
+				CD1EFB1E2444D235008C093B /* Extensions.swift */,
+				CD1EFB1F2444D235008C093B /* JitsiConstants.swift */,
+				CD1EFB202444D235008C093B /* NewConferenceViewAndLogic */,
+				CD1EFB282444D235008C093B /* Fonts */,
+				CD1EFB2E2444D235008C093B /* Themes */,
+				CD1EFB312444D235008C093B /* src */,
+			);
+			path = ConferenceCall;
+			sourceTree = "<group>";
+		};
+		CD1EFB202444D235008C093B /* NewConferenceViewAndLogic */ = {
+			isa = PBXGroup;
+			children = (
+				CD1EFB222444D235008C093B /* JitsiCallManager.swift */,
+				CD1EFB232444D235008C093B /* JitsiCallSignal.swift */,
+				CD1EFB692444D3C1008C093B /* JitsiConfrenceCallView.swift */,
+				CD1EFB6A2444D3C1008C093B /* JitsiConfrenceCallView.xib */,
+				CD1EFB242444D235008C093B /* CallStartAndReceivedView.swift */,
+				CD1EFB272444D235008C093B /* CallStartAndReceivedView.xib */,
+			);
+			path = NewConferenceViewAndLogic;
+			sourceTree = "<group>";
+		};
+		CD1EFB282444D235008C093B /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				CD1EFB292444D235008C093B /* TitilliumWeb-Bold.ttf */,
+				CD1EFB2A2444D235008C093B /* TitilliumWeb-Regular.ttf */,
+				CD1EFB2B2444D235008C093B /* TitilliumWeb-SemiBold.ttf */,
+				CD1EFB2C2444D235008C093B /* OFL.txt */,
+				CD1EFB2D2444D235008C093B /* TitilliumWeb-Italic.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		CD1EFB2E2444D235008C093B /* Themes */ = {
+			isa = PBXGroup;
+			children = (
+				CD1EFB2F2444D235008C093B /* FuguColor.swift */,
+				CD1EFB302444D235008C093B /* FuguFont.swift */,
+			);
+			path = Themes;
+			sourceTree = "<group>";
+		};
+		CD1EFB312444D235008C093B /* src */ = {
+			isa = PBXGroup;
+			children = (
+				CD1EFB342444D235008C093B /* MicAndCameraManager.swift */,
+				CD1EFB372444D235008C093B /* FloatRatingView.swift */,
+				CD1EFB3A2444D235008C093B /* Conference.storyboard */,
+				CD1EFB3F2444D235008C093B /* Sources */,
+				CD1EFB452444D235008C093B /* PullUpControllerNew.swift */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		CD1EFB3F2444D235008C093B /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				CD1EFB402444D235008C093B /* UITextView+Placeholder.m */,
+				CD1EFB412444D235008C093B /* UITextView+Placeholder.h */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		F3C5494781C8331B9CC34B69 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				11D4BC719893B3ECDD82325B /* Pods-HippoCallClient.debug.xcconfig */,
+				1DA5E276E2D083536A2B1628 /* Pods-HippoCallClient.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -165,6 +303,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD1EFB642444D235008C093B /* UITextView+Placeholder.h in Headers */,
 				C980E2DA23588D6F004433FF /* HippoCallClient.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -176,10 +315,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C980E2DB23588D6F004433FF /* Build configuration list for PBXNativeTarget "HippoCallClient" */;
 			buildPhases = (
+				A8C398BC5DB89F1FA578883E /* [CP] Check Pods Manifest.lock */,
 				C980E2D123588D6E004433FF /* Headers */,
 				C980E2D223588D6E004433FF /* Sources */,
 				C980E2D323588D6E004433FF /* Frameworks */,
 				C980E2D423588D6E004433FF /* Resources */,
+				CD254A0D24405B1900B7DCEE /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -197,7 +338,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1000;
-				LastUpgradeCheck = 1000;
+				LastUpgradeCheck = 1120;
 				ORGANIZATIONNAME = Vishal;
 				TargetAttributes = {
 					C980E2D523588D6E004433FF = {
@@ -228,10 +369,43 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD1EFB6C2444D3C1008C093B /* JitsiConfrenceCallView.xib in Resources */,
+				CD1EFB522444D235008C093B /* OFL.txt in Resources */,
+				CD1EFB4F2444D235008C093B /* TitilliumWeb-Bold.ttf in Resources */,
+				CD1EFB4E2444D235008C093B /* CallStartAndReceivedView.xib in Resources */,
+				CD1EFB5E2444D235008C093B /* Conference.storyboard in Resources */,
+				CD1EFB502444D235008C093B /* TitilliumWeb-Regular.ttf in Resources */,
+				CD1EFB512444D235008C093B /* TitilliumWeb-SemiBold.ttf in Resources */,
+				CD1EFB532444D235008C093B /* TitilliumWeb-Italic.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		A8C398BC5DB89F1FA578883E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-HippoCallClient-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C980E2D223588D6E004433FF /* Sources */ = {
@@ -242,18 +416,30 @@
 				C980E30123588D9E004433FF /* HippoCallClientDelegate.swift in Sources */,
 				C980E2F523588D9E004433FF /* HippoUser.swift in Sources */,
 				C980E2FB23588D9E004433FF /* Call.swift in Sources */,
+				CD1EFB632444D235008C093B /* UITextView+Placeholder.m in Sources */,
 				C980E2F723588D9E004433FF /* CallPeer.swift in Sources */,
 				C980E2FC23588D9E004433FF /* CallSignal.swift in Sources */,
+				CD1EFB552444D235008C093B /* FuguFont.swift in Sources */,
 				C980E2F923588D9E004433FF /* CallClient.swift in Sources */,
+				CD1EFB472444D235008C093B /* JitsiConstants.swift in Sources */,
 				C980E2FE23588D9E004433FF /* RTCIceCandidate+JSON.swift in Sources */,
 				C980E2FA23588D9E004433FF /* SignalingClient.swift in Sources */,
+				CD1EFB682444D235008C093B /* PullUpControllerNew.swift in Sources */,
 				C980E2F823588D9E004433FF /* CallPresenter.swift in Sources */,
 				C980E2F423588D9E004433FF /* CustomData.swift in Sources */,
 				C980E30223588D9E004433FF /* HippoCallClient.swift in Sources */,
 				C980E2F323588D9E004433FF /* HippoHelper.swift in Sources */,
+				CD1EFB5B2444D235008C093B /* FloatRatingView.swift in Sources */,
 				C980E2FD23588D9E004433FF /* WebRTCClient.swift in Sources */,
+				CD1EFB542444D235008C093B /* FuguColor.swift in Sources */,
+				CD1EFB462444D235008C093B /* Extensions.swift in Sources */,
+				CD1EFB4A2444D235008C093B /* JitsiCallSignal.swift in Sources */,
+				CD1EFB582444D235008C093B /* MicAndCameraManager.swift in Sources */,
 				C980E30023588D9E004433FF /* FuguChannel+SignalingClient.swift in Sources */,
+				CD1EFB6B2444D3C1008C093B /* JitsiConfrenceCallView.swift in Sources */,
 				C980E2F623588D9E004433FF /* CallClientCredential.swift in Sources */,
+				CD1EFB4B2444D235008C093B /* CallStartAndReceivedView.swift in Sources */,
+				CD1EFB492444D235008C093B /* JitsiCallManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -262,7 +448,9 @@
 /* Begin XCBuildConfiguration section */
 		C980E2DC23588D6F004433FF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 11D4BC719893B3ECDD82325B /* Pods-HippoCallClient.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = NO;
 				CODE_SIGN_STYLE = Manual;
@@ -276,10 +464,12 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/HippoCallClient/Conference/ConferenceCall/ConferenceCall",
+					"$(PROJECT_DIR)/Conference/ConferenceCall/ConferenceCall",
 				);
 				INFOPLIST_FILE = HippoCallClient/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -299,7 +489,9 @@
 		};
 		C980E2DD23588D6F004433FF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1DA5E276E2D083536A2B1628 /* Pods-HippoCallClient.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = NO;
 				CODE_SIGN_STYLE = Manual;
@@ -313,10 +505,12 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/HippoCallClient/Conference/ConferenceCall/ConferenceCall",
+					"$(PROJECT_DIR)/Conference/ConferenceCall/ConferenceCall",
 				);
 				INFOPLIST_FILE = HippoCallClient/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -337,6 +531,7 @@
 		C99E2EB0219C50F400833F36 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -398,6 +593,7 @@
 		C99E2EB1219C50F400833F36 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;

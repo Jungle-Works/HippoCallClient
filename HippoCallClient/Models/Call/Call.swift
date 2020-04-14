@@ -18,7 +18,7 @@ public class Call {
     var timeElapsedSinceCallStart = 0
     let type: CallType
     var isStartCallSend: Bool = false
-    
+    var isCallByMe: Bool = false
     public init(peer: CallPeer, signalingClient: SignalingClient, uID: String, currentUser: CallPeer, type: CallType) {
         self.peer = peer
         self.signalingClient = signalingClient
