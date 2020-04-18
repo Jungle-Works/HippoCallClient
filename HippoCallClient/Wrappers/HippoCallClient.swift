@@ -48,7 +48,11 @@ public class HippoCallClient {
     ///   - call: Call object that contain information about call
     ///   - completion: Callback that provide status whether the call is made or not
     public func startCall(call: Call, completion: @escaping (Bool) -> Void) {
-        CallClient.shared.startNew(call: call, completion: completion)
+        JitsiCallManager.shared.startCall(with: call) { (versionMismatch) in
+            if versionMismatch != nil, versionMismatch {
+                CallClient.shared.startNew(call: call, completion: completion)
+            }
+        }
     }
     
     
