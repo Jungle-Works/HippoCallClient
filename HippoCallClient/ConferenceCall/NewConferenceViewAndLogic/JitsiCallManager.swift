@@ -10,7 +10,13 @@ import Foundation
 import UIKit
 typealias VersionMismatchCallBack = ((_ versionMismatch: Bool) -> Void)
 class JitsiCallManager {
-    private(set) var activeCall: Call!
+    private(set) var activeCall: Call! {
+        didSet{
+            if activeCall == nil {
+                print("active call nil")
+            }
+        }
+    }
     static let shared = JitsiCallManager()
     var link: String!
     var repeatTimer: Timer?
@@ -39,15 +45,16 @@ class JitsiCallManager {
     
     func startReceivedCall(newCall: Call, signal: JitsiCallSignal) {
         
-        if !CallClient.shared.isUserBusy(), activeCall!.uID != newCall.uID { //user busy on another call
+        if CallClient.shared.isUserBusy() { //, activeCall?.uID != newCall.uID user busy on another call
             sendBusy(with: activeCall, and: signal)
             return
         }
         
-        if activeCall == nil {
+//        if activeCall == nil {
             activeCall = newCall
+            link = activeCall?.inviteLink ?? ""
             addSignalReceiver()
-        }
+//        }
         
 //        startPublishingLocalNotificationForIncomingCallWith(signal: signal)
         sendReadyToConnect()
@@ -106,17 +113,30 @@ extension JitsiCallManager {
     }
     
     
+//    func userDataforDailCall()-> [String : Any] {
+//        var dict = [String : Any]()
+//        if activeCall == nil { return dict}
+//        dict["invite_link"] = link
+//        dict["muid"] = activeCall.uID
+//        dict["label"] = activeCall.peer.name
+//        
+////        dict["user_id"] = activeCall.peer
+//        dict["image"] = activeCall.peer.image
+//        return dict
+//    }
+    
     func userDataforDailCall()-> [String : Any] {
-        var dict = [String : Any]()
-        if activeCall == nil { return dict}
-        dict["invite_link"] = link
-        dict["muid"] = activeCall.uID
-        dict["label"] = activeCall.peer.name
-        
-//        dict["user_id"] = activeCall.peer
-        dict["image"] = activeCall.peer.image
-        return dict
+    var dict = [String : Any]()
+    if activeCall == nil { return dict}
+    dict["invite_link"] = link
+    dict["muid"] = activeCall.uID
+    dict["label"] = activeCall.peer.name
+
+    // dict["user_id"] = activeCall.peer
+    dict["user_thumbnail_image"] = activeCall.peer.image
+    return dict
     }
+    
 }
 
 
@@ -125,7 +145,7 @@ extension JitsiCallManager {
     
     func addSignalReceiver() {
         if activeCall != nil {
-            activeCall.signalingClient.signalReceivedFromPeer = nil // free the pervious
+//            activeCall.signalingClient.signalReceivedFromPeer = nil // free the pervious
             activeCall?.signalingClient.signalReceivedFromPeer  = { [weak self] (jsonDict) in
                 guard let signalTypeRaw = jsonDict["video_call_type"] as? String,let  signalType = JitsiCallSignal.JitsiSignalType(rawValue:signalTypeRaw) else {
                     return
@@ -142,9 +162,11 @@ extension JitsiCallManager {
                 guard signal?.senderDeviceID != CallClient.shared.currentDeviceID else {
                     return
                 }
-                guard signal?.sender.peerId == self?.activeCall.currentUser.peerId else {
-                    return
-                }
+                
+//                guard signal?.sender.peerId == self?.activeCall?.currentUser.peerId else {
+//                    return
+//                }
+                
 //                guard let senderId = userId , activeCall.currentUser.peerId != senderId  else {
 //                    return
 //                }
@@ -212,22 +234,22 @@ extension JitsiCallManager {
         }
     }
     
-    func sendData(dict: [String : Any], completion: VersionMismatchCallBack? = nil) {
-        //Logger.shared.printVar(for: dict)
-        activeCall?.signalingClient.connectClient(completion: { (success) in
-            self.activeCall.signalingClient.sendJitsiObject(json: dict) { [weak self] (mark, error) in
-                if !mark{
-                   // Logger.shared.printVar(for: error?.localizedDescription)
-                    if (error?.code == 415 && error?.domain == "VERSION_MISMATCH"){
-                        self?.removeDialAndReceivedView()
-                        self?.removeStartConTimer(for: false, createCall: true)
-                        self?.resetAllResourceForNewCall()
-                        completion?(true)
-                    }
-                }
-            }
-        })
-    }
+     func sendData(dict: [String : Any], completion: VersionMismatchCallBack? = nil) {
+           //Logger.shared.printVar(for: dict)
+           activeCall?.signalingClient.connectClient(completion: { (success) in
+               self.activeCall.signalingClient.sendJitsiObject(json: dict) { [weak self] (mark, error) in
+                   if !mark{
+                      // Logger.shared.printVar(for: error?.localizedDescription)
+                       if (error?.code == 415){
+                           self?.removeDialAndReceivedView()
+                           self?.removeStartConTimer(for: false, createCall: true)
+                           self?.resetAllResourceForNewCall()
+                           completion?(true)
+                       }
+                   }
+               }
+           })
+       }
     
     func sendStartCallFirstTime(completion: VersionMismatchCallBack? = nil) {
         let signal = JitsiCallSignal(signalType: .START_CONFERENCE, callUID: activeCall!.uID, sender: activeCall!.currentUser, senderDeviceID: activeCall?.uID ?? "", callType: activeCall!.type , link: link, isFSilent: false)
@@ -248,7 +270,7 @@ extension JitsiCallManager {
     }
     
     func sendStartCallFirstTimeForiOS(completion: VersionMismatchCallBack? = nil) {
-        let signal = JitsiCallSignal(signalType: .START_CONFERENCE_IOS, callUID: activeCall!.uID, sender: activeCall!.currentUser, senderDeviceID: activeCall?.uID ?? "", callType: activeCall!.type , link: link, isFSilent: true)
+        let signal = JitsiCallSignal(signalType: .START_CONFERENCE_IOS, callUID: activeCall!.uID, sender: activeCall!.currentUser, senderDeviceID: activeCall?.uID ?? "", callType: activeCall!.type , link: link, isFSilent: false /*true*/)
         let dict = signal.getJsonToSendToFaye()
         sendData(dict: dict) { (mismatch) in
             if completion != nil{
@@ -453,6 +475,7 @@ extension JitsiCallManager {
         let tempLink = getLinkAfertRemoveAudio(link: link)
         let data = getURLOrRoomId(for: tempLink)
         //Logger.shared.printVar(for: data.url.absoluteString)
+        print("tempLink is", tempLink, data.url)
         let userModel = JitsiMeetDataModel(userName: userName, userEmail: email, userImage: imageURL, audioOnly: audioOnly, serverURl: data.url, roomID: data.roomId)
         return userModel
     }
@@ -538,21 +561,21 @@ extension JitsiCallManager {
     
     
     func sendSignalWith(json: [String: Any], completion: VersionMismatchCallBack? = nil) {
-        activeCall?.signalingClient.connectClient(completion: { [weak self]  (success) in
-            self?.activeCall?.signalingClient.sendJitsiObject(json: json, completion: {(success, error) in
-                
-                if !success{
-                   // Logger.shared.printVar(for: error?.localizedDescription)
-                    if (error?.code == 415 && error?.domain == "VERSION_MISMATCH"){
-                        self?.removeDialAndReceivedView()
-                        self?.removeStartConTimer(for: false, createCall: true)
-                        self?.resetAllResourceForNewCall()
-                        completion?(true)
+            activeCall?.signalingClient.connectClient(completion: { [weak self]  (success) in
+                self?.activeCall?.signalingClient.sendJitsiObject(json: json, completion: {(success, error) in
+                    
+                    if !success{
+                       // Logger.shared.printVar(for: error?.localizedDescription)
+                        if (error?.code == 415){
+                            self?.removeDialAndReceivedView()
+                            self?.removeStartConTimer(for: false, createCall: true)
+                            self?.resetAllResourceForNewCall()
+                            completion?(true)
+                        }
                     }
-                }
+                })
             })
-        })
-    }
+        }
 }
 
 
@@ -581,14 +604,14 @@ extension JitsiCallManager : JitsiConfrenceCallViewDelegate  {
 
 
 //func changeAudioRouteToSpeaker(_ isSwitching: Bool, completion: @escaping (Bool) -> Void) {
-//   
+//
 //   let newOveride = isSwitching ? AVAudioSessionPortOverride.speaker : AVAudioSessionPortOverride.none
-//   
+//
 //   if currentAudioOveride == newOveride {
 //      completion(true)
 //      return
 //   }
-//   
+//
 //   RTCDispatcher.dispatchAsync(on: .typeAudioSession) {
 //      let session = RTCAudioSession.sharedInstance()
 //      session.lockForConfiguration()

@@ -12,9 +12,22 @@ public class HippoUser {
     var imageThunbnailUrl: String
     var userId: Int?
     
+//    public init?(json: [String: Any]) {
+//        fullName = json["full_name"] as? String ?? ""
+//        imageThunbnailUrl = json["thumbnail_url"] as? String ?? json["user_image"] as? String ?? json["image_url"] as? String ?? ""
+//        userId = json["user_id"] as? Int ?? -222
+//
+//        fullName = fullName.trimmingCharacters(in: .whitespacesAndNewlines)
+//
+//        if fullName.isEmpty {
+//            fullName = "User"
+//        }
+//    }
+    
+    
     public init?(json: [String: Any]) {
         fullName = json["full_name"] as? String ?? ""
-        imageThunbnailUrl = json["thumbnail_url"] as? String ?? json["user_image"] as? String ?? json["image_url"] as? String ?? ""
+        imageThunbnailUrl = json["thumbnail_url"] as? String ?? json["user_image"] as? String ?? json["image_url"] as? String ?? json["user_thumbnail_image"] as? String ?? ""
         userId = json["user_id"] as? Int ?? -222
         
         fullName = fullName.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -23,6 +36,7 @@ public class HippoUser {
             fullName = "User"
         }
     }
+    
     public init?(name: String, userID: Int, imageURL: String?) {
         fullName = name.trimmingCharacters(in: .whitespacesAndNewlines)
         imageThunbnailUrl = imageURL ?? ""

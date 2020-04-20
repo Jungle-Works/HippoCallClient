@@ -45,7 +45,8 @@ class CallStartAndReceivedView: UIView {
     }
 
     class  func loadView()-> CallStartAndReceivedView? {
-        let view = Bundle.main.loadNibNamed("CallStartAndReceivedView", owner: nil, options: nil)?.first as? CallStartAndReceivedView
+        
+        let view = Bundle.init(identifier: "org.cocoapods.HippoCallClient")?.loadNibNamed("CallStartAndReceivedView", owner: nil, options: nil)?.first as? CallStartAndReceivedView
         let frame =  UIApplication.shared.keyWindow?.frame
         UIApplication.shared.keyWindow?.endEditing(true)
         view?.frame = frame ?? .zero
@@ -58,19 +59,22 @@ class CallStartAndReceivedView: UIView {
         nameLabel.textColor = UIColor.iLightBlack
         callStateMessageLabel.font = FuguFont.titilliumWebRegular(with: 17)
         callStateMessageLabel.textColor = UIColor.iLightBlack
+        ansButton.setImage(UIImage(named: "connectCall"), for: .normal)
         ansButton.layer.cornerRadius = ansButton.frame.height / 2
         ansButton.layer.masksToBounds = true
         cancelButton.layer.cornerRadius = cancelButton.frame.height / 2
+        cancelButton.setImage(UIImage(named: "disconnectCall"), for: .normal)
         cancelButton.layer.masksToBounds = true
         userImageView.layer.cornerRadius = userImageView.frame.height / 2
+        dailCallCancelButton.setImage(UIImage(named: "disconnectCall"), for: .normal)
         dailCallCancelButton.layer.cornerRadius = dailCallCancelButton.frame.height / 2
         dailCallCancelButton.layer.masksToBounds = true
         userImageView.layer.borderWidth = 0.5
         userImageView.layer.borderColor = UIColor.lightGray.cgColor
         nameLabel.text = userInfo["label"] as? String
-        let url =  URL(string: userInfo["image"] as? String ?? "")
+        let url = URL(string: userInfo["user_thumbnail_image"] as? String ?? "")
         if let someUrl = url {
-            userImageView.setImage(with: someUrl)
+            userImageView.kf.setImage(with: someUrl)
         }
     }
     

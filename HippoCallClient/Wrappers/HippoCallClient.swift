@@ -35,6 +35,7 @@ public class HippoCallClient {
     ///   - signalingClient: Class that satisfy SignalingClient Protocol, and this class is used for your signaling
     ///   - currentUser: Information of current user in your app
     public func voipNotificationRecieved(dictionary: [AnyHashable: Any], peer: CallPeer, signalingClient: SignalingClient, currentUser: CallPeer) {
+         NSLog("66666")
         CallClient.shared.voipNotificationReceived(dictionary: dictionary, peer: peer, signalingClient: signalingClient, currentUser: currentUser)
     }
     /// This is function is called to hangup current ongoing call if any
@@ -55,6 +56,27 @@ public class HippoCallClient {
         }
     }
     
+    public func startCall(call:Call, completion: @escaping (Bool, NSError?) -> Void) {
+        
+        JitsiCallManager.shared.startCall(with: call) { (versionMismatch) in
+            
+            if versionMismatch != nil, versionMismatch {
+                
+                let info = [NSLocalizedDescriptionKey:"Calling faild due to verison mismatch."];
+                let versionMismatchError = NSError(domain: "error.hippo", code: 415, userInfo: info)
+                completion(false,versionMismatchError)
+            }
+            else {
+                completion(true,nil)
+            }
+        }
+        
+    }
+    
+    public func startWebRTCCall(call:Call, completion: @escaping (Bool) -> Void) {
+        
+        CallClient.shared.startNew(call: call, completion: completion)
+    }
     
     /// This function is add on just to show Connecting status no actual call is made here
     ///

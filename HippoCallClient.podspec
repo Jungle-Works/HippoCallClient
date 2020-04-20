@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
     s.source       = { :git => 'https://github.com/Jungle-Works/HippoCallClient.git', :tag => s.version}
 
     s.swift_version = '4.2'
-    s.source_files  = 'HippoCallClient/**/*.{h,m,swift}'
+    s.source_files  = 'HippoCallClient/**/*.{h,m,swift,xib,storyboard}'
     s.exclude_files = 'Classes/Exclude'
     s.static_framework = false
     s.preserve_paths = 'README.md'

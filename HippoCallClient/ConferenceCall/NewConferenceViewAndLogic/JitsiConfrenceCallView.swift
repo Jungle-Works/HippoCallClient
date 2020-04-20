@@ -24,7 +24,7 @@ class JitsiConfrenceCallView: UIView {
     var player: AVAudioPlayer?
     
     class  func loadView(with frame: CGRect)-> JitsiConfrenceCallView? {
-        let view = Bundle.main.loadNibNamed("JitsiConfrenceCallView", owner: nil, options: nil)?.first as? JitsiConfrenceCallView
+        let view = Bundle.init(identifier: "org.cocoapods.HippoCallClient")?.loadNibNamed("JitsiConfrenceCallView", owner: nil, options: nil)?.first as? JitsiConfrenceCallView
         view?.frame = frame
         return view
     }
@@ -32,6 +32,7 @@ class JitsiConfrenceCallView: UIView {
     func setupJitsi(for data: JitsiMeetDataModel) {
         
         let userInfo =  JitsiMeetUserInfo(displayName: data.userName, andEmail: data.userEmail, andAvatar: data.userImage)
+        print("server url is", data.serverURL)
         let conferenceOptions =  JitsiMeetConferenceOptions.fromBuilder { (ptionsBuilder) in
             ptionsBuilder.audioOnly = data.audioOnly
             ptionsBuilder.serverURL = data.serverURL

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -40,28 +40,10 @@
 		CD1EFB582444D235008C093B /* MicAndCameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1EFB342444D235008C093B /* MicAndCameraManager.swift */; };
 		CD1EFB5B2444D235008C093B /* FloatRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1EFB372444D235008C093B /* FloatRatingView.swift */; };
 		CD1EFB5E2444D235008C093B /* Conference.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD1EFB3A2444D235008C093B /* Conference.storyboard */; };
-		CD1EFB632444D235008C093B /* UITextView+Placeholder.m in Sources */ = {isa = PBXBuildFile; fileRef = CD1EFB402444D235008C093B /* UITextView+Placeholder.m */; };
-		CD1EFB642444D235008C093B /* UITextView+Placeholder.h in Headers */ = {isa = PBXBuildFile; fileRef = CD1EFB412444D235008C093B /* UITextView+Placeholder.h */; };
 		CD1EFB682444D235008C093B /* PullUpControllerNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1EFB452444D235008C093B /* PullUpControllerNew.swift */; };
 		CD1EFB6B2444D3C1008C093B /* JitsiConfrenceCallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1EFB692444D3C1008C093B /* JitsiConfrenceCallView.swift */; };
 		CD1EFB6C2444D3C1008C093B /* JitsiConfrenceCallView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD1EFB6A2444D3C1008C093B /* JitsiConfrenceCallView.xib */; };
-		CD254A1024405D2600B7DCEE /* Pods_HippoCallClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A485E8D8E3A721E962B17B2 /* Pods_HippoCallClient.framework */; platformFilter = ios; };
-		CD254A1124405D2600B7DCEE /* Pods_HippoCallClient.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3A485E8D8E3A721E962B17B2 /* Pods_HippoCallClient.framework */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		CD254A0D24405B1900B7DCEE /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				CD254A1124405D2600B7DCEE /* Pods_HippoCallClient.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		11D4BC719893B3ECDD82325B /* Pods-HippoCallClient.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HippoCallClient.debug.xcconfig"; path = "Target Support Files/Pods-HippoCallClient/Pods-HippoCallClient.debug.xcconfig"; sourceTree = "<group>"; };
@@ -105,8 +87,6 @@
 		CD1EFB342444D235008C093B /* MicAndCameraManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MicAndCameraManager.swift; sourceTree = "<group>"; };
 		CD1EFB372444D235008C093B /* FloatRatingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatRatingView.swift; sourceTree = "<group>"; };
 		CD1EFB3A2444D235008C093B /* Conference.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Conference.storyboard; sourceTree = "<group>"; };
-		CD1EFB402444D235008C093B /* UITextView+Placeholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextView+Placeholder.m"; sourceTree = "<group>"; };
-		CD1EFB412444D235008C093B /* UITextView+Placeholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextView+Placeholder.h"; sourceTree = "<group>"; };
 		CD1EFB452444D235008C093B /* PullUpControllerNew.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PullUpControllerNew.swift; sourceTree = "<group>"; };
 		CD1EFB692444D3C1008C093B /* JitsiConfrenceCallView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JitsiConfrenceCallView.swift; sourceTree = "<group>"; };
 		CD1EFB6A2444D3C1008C093B /* JitsiConfrenceCallView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JitsiConfrenceCallView.xib; sourceTree = "<group>"; };
@@ -117,7 +97,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CD254A1024405D2600B7DCEE /* Pods_HippoCallClient.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -272,19 +251,9 @@
 				CD1EFB342444D235008C093B /* MicAndCameraManager.swift */,
 				CD1EFB372444D235008C093B /* FloatRatingView.swift */,
 				CD1EFB3A2444D235008C093B /* Conference.storyboard */,
-				CD1EFB3F2444D235008C093B /* Sources */,
 				CD1EFB452444D235008C093B /* PullUpControllerNew.swift */,
 			);
 			path = src;
-			sourceTree = "<group>";
-		};
-		CD1EFB3F2444D235008C093B /* Sources */ = {
-			isa = PBXGroup;
-			children = (
-				CD1EFB402444D235008C093B /* UITextView+Placeholder.m */,
-				CD1EFB412444D235008C093B /* UITextView+Placeholder.h */,
-			);
-			path = Sources;
 			sourceTree = "<group>";
 		};
 		F3C5494781C8331B9CC34B69 /* Pods */ = {
@@ -303,7 +272,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CD1EFB642444D235008C093B /* UITextView+Placeholder.h in Headers */,
 				C980E2DA23588D6F004433FF /* HippoCallClient.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -320,7 +288,6 @@
 				C980E2D223588D6E004433FF /* Sources */,
 				C980E2D323588D6E004433FF /* Frameworks */,
 				C980E2D423588D6E004433FF /* Resources */,
-				CD254A0D24405B1900B7DCEE /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -416,7 +383,6 @@
 				C980E30123588D9E004433FF /* HippoCallClientDelegate.swift in Sources */,
 				C980E2F523588D9E004433FF /* HippoUser.swift in Sources */,
 				C980E2FB23588D9E004433FF /* Call.swift in Sources */,
-				CD1EFB632444D235008C093B /* UITextView+Placeholder.m in Sources */,
 				C980E2F723588D9E004433FF /* CallPeer.swift in Sources */,
 				C980E2FC23588D9E004433FF /* CallSignal.swift in Sources */,
 				CD1EFB552444D235008C093B /* FuguFont.swift in Sources */,
@@ -450,7 +416,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 11D4BC719893B3ECDD82325B /* Pods-HippoCallClient.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = NO;
 				CODE_SIGN_STYLE = Manual;
@@ -491,7 +456,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1DA5E276E2D083536A2B1628 /* Pods-HippoCallClient.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = NO;
 				CODE_SIGN_STYLE = Manual;

@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-import Kingfisher
+//import Kingfisher
 
 public extension UIColor {
    convenience init(hex: Int, alpha: CGFloat = 1.0) {
@@ -89,9 +89,9 @@ public extension UIWindow {
         }
     }
 }
-public extension UIImageView{
-     func setImage(with imageURL: URL) {
-        self.kf.setImage(with: imageURL)
-    }
-}
+//public extension UIImageView{
+//     func setImage(with imageURL: URL) {
+//        self.kf.setImage(with: imageURL)
+//    }
+//}
 

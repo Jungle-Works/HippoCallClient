@@ -1,0 +1,16 @@
+PODS:
+  - FuguConference (0.0.1)
+
+DEPENDENCIES:
+  - FuguConference (from `Conference/ConferenceCall`)
+
+EXTERNAL SOURCES:
+  FuguConference:
+    :path: Conference/ConferenceCall
+
+SPEC CHECKSUMS:
+  FuguConference: 83d5cee2f313d98e71dd6ea4302b68b173f872e1
+
+PODFILE CHECKSUM: b02e6836d6b750d69cd5049af04da210ef583847
+
+COCOAPODS: 1.9.1
