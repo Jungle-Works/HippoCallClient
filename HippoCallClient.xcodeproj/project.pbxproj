@@ -43,6 +43,10 @@
 		CD1EFB682444D235008C093B /* PullUpControllerNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1EFB452444D235008C093B /* PullUpControllerNew.swift */; };
 		CD1EFB6B2444D3C1008C093B /* JitsiConfrenceCallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1EFB692444D3C1008C093B /* JitsiConfrenceCallView.swift */; };
 		CD1EFB6C2444D3C1008C093B /* JitsiConfrenceCallView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD1EFB6A2444D3C1008C093B /* JitsiConfrenceCallView.xib */; };
+<<<<<<< HEAD
+=======
+		CD254A1024405D2600B7DCEE /* Pods_HippoCallClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A485E8D8E3A721E962B17B2 /* Pods_HippoCallClient.framework */; };
+>>>>>>> b469390be31c9b2eace45816d4377cd5cff335d6
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */

@@ -36,6 +36,7 @@ class CallClient {
     }
     
     func voipNotificationReceived(dictionary: [AnyHashable: Any], peer: CallPeer, signalingClient: SignalingClient, currentUser: CallPeer) {
+<<<<<<< HEAD
         NSLog("Voip received in call client 777777")
         guard let jsonDict = dictionary as? [String: Any] else {
              NSLog("88888")
@@ -99,6 +100,69 @@ class CallClient {
         }
         else {
             handleForWebRtc()
+=======
+       NSLog("Voip received in call client")
+        guard let jsonDict = dictionary as? [String: Any] else {
+        return
+        }
+
+        guard credentials != nil else {
+        NSLog("Credential Not found")
+        return
+        }
+
+        func handleForGitSi() {
+        guard let signal = JitsiCallSignal.getFrom(json: jsonDict) else {
+        return
+        }
+        let call = Call(peer: peer, signalingClient: signalingClient, uID: signal.callUID, currentUser: currentUser, type: signal.callType, link: signal.conferenceLink ?? "")
+        self.handleCallEvent(for: jsonDict, call: call, jitsiSignal: signal )
+        }
+
+        func handleForWebRtc() {
+
+        let timeout = TimeInterval(maxTimeInNotConnectedState)
+        func isPushExpired(pushRecievedAt date: Date) -> Bool {
+        let currentDate = Date()
+        return date.addingTimeInterval(timeout).compare(currentDate) == .orderedAscending
+        }
+        guard let signal = CallSignal.getFrom(json: jsonDict) else {
+        return
+        }
+        guard
+        let dateString = jsonDict["date_time"] as? String,
+        let date = utcDateFormatter.date(from: dateString),
+        (!isPushExpired(pushRecievedAt: date) || signal.signalType != .startCall) else {
+        NSLog("Expired Voip Push received")
+        return
+        }
+
+        let call = Call(peer: peer, signalingClient: signalingClient, uID: signal.callUID, currentUser: currentUser, type: signal.callType, link: "")
+
+        if !shouldHandle(signal: signal, call: call) {
+        print("ERROR -> VOIP PUSH FROM CURRENT USER")
+        return
+        }
+        if signal.signalType == .startCall || signal.signalType == .callRejected || signal.signalType == .callHungUp {
+        takeActionOnSignalReceived(signal, forCall: call)
+        }
+        }
+
+        if let notificationTypeInt = jsonDict["notification_type"] as? Int {
+
+        switch notificationTypeInt {
+        case 20: // gitsi
+        handleForGitSi()
+        default:
+        handleForWebRtc()
+        }
+        }
+        else if let _ = JitsiCallSignal.getFrom(json: jsonDict) {
+        handleForGitSi()
+        }
+        else {
+        handleForWebRtc()
+>>>>>>> b469390be31c9b2eace45816d4377cd5cff335d6
         }
     }
     

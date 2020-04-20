@@ -21,7 +21,7 @@ Pod::Spec.new do |s|
     s.vendored_frameworks =  ['Conference/ConferenceCall/ConferenceCall/JitsiMeet.framework', 'Conference/ConferenceCall/ConferenceCall/WebRTC.framework']
 #    s.framework = 'JitsiMeet.framework'
 #    s.dependency 'FuguConference'
-    s.dependency 'Kingfisher'
+#    s.dependency 'Kingfisher'
 
 
     s.pod_target_xcconfig = { 'ENABLE_BITCODE' => 'No' }

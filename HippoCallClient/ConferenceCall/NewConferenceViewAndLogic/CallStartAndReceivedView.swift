@@ -8,7 +8,7 @@
 
 import UIKit
 import AVFoundation
-import Kingfisher
+//import Kingfisher
 
 protocol CallStartAndReceivedViewDelegate: class {
     func userDidAnswered()
@@ -74,7 +74,12 @@ class CallStartAndReceivedView: UIView {
         nameLabel.text = userInfo["label"] as? String
         let url = URL(string: userInfo["user_thumbnail_image"] as? String ?? "")
         if let someUrl = url {
+<<<<<<< HEAD
             userImageView.kf.setImage(with: someUrl)
+=======
+//            userImageView.kf.setImage(with: url, placeholder: placeHolderImage)
+//            userImageView.setImage(with: someUrl)
+>>>>>>> b469390be31c9b2eace45816d4377cd5cff335d6
         }
     }
     
