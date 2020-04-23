@@ -14,7 +14,7 @@ public class HippoUser {
     
     public init?(json: [String: Any]) {
         fullName = json["full_name"] as? String ?? ""
-        imageThunbnailUrl = json["thumbnail_url"] as? String ?? json["user_image"] as? String ?? json["image_url"] as? String ?? ""
+        imageThunbnailUrl = json["thumbnail_url"] as? String ?? json["user_image"] as? String ?? json["image_url"] as? String ?? json["user_thumbnail_image"] as? String ?? ""
         userId = json["user_id"] as? Int ?? -222
         
         fullName = fullName.trimmingCharacters(in: .whitespacesAndNewlines)

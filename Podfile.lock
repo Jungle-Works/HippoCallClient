@@ -1,0 +1,25 @@
+PODS:
+  - FuguConference (0.0.1)
+  - Kingfisher (5.13.4):
+    - Kingfisher/Core (= 5.13.4)
+  - Kingfisher/Core (5.13.4)
+
+DEPENDENCIES:
+  - FuguConference (from `Conference/ConferenceCall`)
+  - Kingfisher
+
+SPEC REPOS:
+  trunk:
+    - Kingfisher
+
+EXTERNAL SOURCES:
+  FuguConference:
+    :path: Conference/ConferenceCall
+
+SPEC CHECKSUMS:
+  FuguConference: 83d5cee2f313d98e71dd6ea4302b68b173f872e1
+  Kingfisher: d2279a7abece3c7f25a80cd2b7f363ca5cf3f44c
+
+PODFILE CHECKSUM: 2534d16d3a448aa9555c55ef95b44f58522f8283
+
+COCOAPODS: 1.9.1

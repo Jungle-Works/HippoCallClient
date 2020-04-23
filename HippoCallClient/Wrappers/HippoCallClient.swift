@@ -48,6 +48,32 @@ public class HippoCallClient {
     ///   - call: Call object that contain information about call
     ///   - completion: Callback that provide status whether the call is made or not
     public func startCall(call: Call, completion: @escaping (Bool) -> Void) {
+        JitsiCallManager.shared.startCall(with: call) { (versionMismatch) in
+            if versionMismatch != nil, versionMismatch {
+                CallClient.shared.startNew(call: call, completion: completion)
+            }
+        }
+    }
+    
+    public func startCall(call:Call, completion: @escaping (Bool, NSError?) -> Void) {
+        
+        JitsiCallManager.shared.startCall(with: call) { (versionMismatch) in
+            
+            if versionMismatch != nil, versionMismatch {
+                
+                let info = [NSLocalizedDescriptionKey:"Calling faild due to verison mismatch."];
+                let versionMismatchError = NSError(domain: "error.hippo", code: 415, userInfo: info)
+                completion(false,versionMismatchError)
+            }
+            else {
+                completion(true,nil)
+            }
+        }
+        
+    }
+    
+    public func startWebRTCCall(call:Call, completion: @escaping (Bool) -> Void) {
+        
         CallClient.shared.startNew(call: call, completion: completion)
     }
     
