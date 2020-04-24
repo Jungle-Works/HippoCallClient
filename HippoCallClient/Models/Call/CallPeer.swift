@@ -11,6 +11,7 @@ import Foundation
 public protocol CallPeer: CallerInfo {
    var peerId: String { get }
 }
+
 public protocol CallerInfo {
     var name: String { get }
     var image: String { get }

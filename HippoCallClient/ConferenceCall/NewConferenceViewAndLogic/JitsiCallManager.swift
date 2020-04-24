@@ -79,6 +79,9 @@ extension JitsiCallManager {
             if CallStartAndReceivedView.shared == nil {
                 CallStartAndReceivedView.shared = CallStartAndReceivedView.loadView()
                 CallStartAndReceivedView.shared.userInfo = userDataforDailCall()
+                guard CallStartAndReceivedView.shared.userInfo.keys.count > 0 else {
+                    return
+                }
                 CallStartAndReceivedView.shared.receivedCallSetup()
                 CallStartAndReceivedView.shared.delegate = self
                 keyWindow.addSubview(CallStartAndReceivedView.shared)
@@ -201,7 +204,7 @@ extension JitsiCallManager {
                     self?.otherUserBusyOnOtherCall()
                 case .READY_TO_CONNECT_CONFERENCE_IOS:
                     self?.endRepeatStartCalliOS()
-                    if (CallStartAndReceivedView.shared != nil){
+                    if (CallStartAndReceivedView.shared != nil) {
                         CallStartAndReceivedView.shared.callStateText = "Ringing......"
                     }
                     self?.sendOffer()

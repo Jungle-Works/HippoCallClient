@@ -164,7 +164,9 @@ class CallClient {
                return
             } else if signalType == .START_CONFERENCE_IOS, let deviceId = devicePayload["device_id"] as? String ,CallClient.shared.currentDeviceID != deviceId {
                 //if CallStartAndReceivedView.shared != nil {
+//                if activeCall == nil {
                     JitsiCallManager.shared.startReceivedCall(newCall: call, signal: jitsiSignal)
+//                }
                // }
                 return
             } else {
@@ -176,9 +178,9 @@ class CallClient {
                JitsiCallManager.shared.otherUserCallHungup()
                return
             } else if signalType == .START_CONFERENCE_IOS, CallClient.shared.currentDeviceID != deviceId {
-                //if CallStartAndReceivedView.shared != nil {
+//                if activeCall == nil {
                     JitsiCallManager.shared.startReceivedCall(newCall: call, signal: jitsiSignal)
-               // }
+//                }
                 return
             } else {
                 JitsiCallManager.shared.addSignalReceiver()

@@ -9,6 +9,6 @@
 import Foundation
 
 public class JitsiConstants{
-    static var inviteLink = "https://conference.hippochat.io"
+    static var inviteLink = "https://conference.hippochat.io/"
 //    "https://conference-dev.officechat.io/"
 }
