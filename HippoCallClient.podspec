@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name         = 'HippoCallClient'
-    s.version      = '1.0.2'#'0.0.21'
+    s.version      = '1.0.2'
     s.summary      = 'Hippo Call Client'
     s.description  = <<-DESC
                     Hippo Call Client to start video call and audio call
@@ -25,9 +25,7 @@ Pod::Spec.new do |s|
     s.static_framework = false
     s.preserve_paths = 'README.md'
     s.vendored_frameworks =  ['Conference/ConferenceCall/ConferenceCall/JitsiMeet.framework', 'Conference/ConferenceCall/ConferenceCall/WebRTC.framework']
-#    s.framework = 'JitsiMeet.framework'
-#    s.dependency 'FuguConference'
-     s.dependency 'Kingfisher'
+    s.dependency 'Kingfisher'
 
 
     s.pod_target_xcconfig = { 'ENABLE_BITCODE' => 'No' }
