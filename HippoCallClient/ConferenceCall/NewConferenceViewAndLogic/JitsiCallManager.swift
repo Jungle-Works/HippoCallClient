@@ -527,7 +527,7 @@ extension JitsiCallManager {
 extension JitsiCallManager {
     
     func createLink(for call: Call)-> String {
-        let url = JitsiConstants.inviteLink
+        let url = "https://conference.hippochat.io/" //JitsiConstants.inviteLink
         let randomStr = randomString(length: 11) + "iOS"
         var link = url + randomStr
         if call.type == .audio {
