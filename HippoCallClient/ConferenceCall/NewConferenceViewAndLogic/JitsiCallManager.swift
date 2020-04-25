@@ -183,6 +183,8 @@ extension JitsiCallManager {
                         if signal?.senderDeviceID != CallClient.shared.currentDeviceID /*|| signal?.senderDeviceID == "" && deviceType == 3 )*/ {
                              self?.removeDialAndReceivedView()
                         } else {
+                            self?.endRepeatStartCalliOS()
+                            self?.endRepeatStartCall()
                              self?.receivedAnswerFromOtherUser()
                             self?.removeStartConTimer(for: true, createCall: false)
                         }
@@ -190,6 +192,8 @@ extension JitsiCallManager {
                     }
                     
                     if (CallStartAndReceivedView.shared != nil) {
+                        self?.endRepeatStartCalliOS()
+                        self?.endRepeatStartCall()
                         self?.receivedAnswerFromOtherUser()
                         self?.removeStartConTimer(for: true, createCall: false)
                     }
@@ -300,7 +304,8 @@ extension JitsiCallManager {
             let signal = JitsiCallSignal(signalType: .START_CONFERENCE_IOS, callUID: activeCall!.uID, sender: activeCall!.currentUser, senderDeviceID: activeCall?.uID ?? "", callType: activeCall!.type , link: link, isFSilent: true)
             let dict = signal.getJsonToSendToFaye()
             sendData(dict: dict)
-        }else {
+        } else {
+            self.endRepeatStartCalliOS()
             // remove
             //Logger.shared.printVar(for: "timer over")
 //            userDidCanceledDialCall()

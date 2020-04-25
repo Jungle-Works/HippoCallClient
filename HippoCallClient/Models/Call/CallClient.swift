@@ -170,9 +170,10 @@ class CallClient {
                // }
                 return
             } else {
+                
                 JitsiCallManager.shared.addSignalReceiver()
             }
-        } else if let signal = jsonDict["video_call_type"] as? String, let signalType = JitsiCallSignal.JitsiSignalType(rawValue:signal), let deviceId = jsonDict["device_id"] as? String {
+        } /*else if let signal = jsonDict["video_call_type"] as? String, let signalType = JitsiCallSignal.JitsiSignalType(rawValue:signal), let deviceId = jsonDict["device_id"] as? String {
             print("handleCallEvent callClient 87", signalType,  CallClient.shared.currentDeviceID)
             if ((signalType == .HUNGUP_CONFERENCE || signalType == .REJECT_CONFERENCE) && call.isCallByMe ){
                JitsiCallManager.shared.otherUserCallHungup()
@@ -185,7 +186,7 @@ class CallClient {
             } else {
                 JitsiCallManager.shared.addSignalReceiver()
             }
-        } else {
+        } */else {
             print("FAILLLLLL")
         }
     }
