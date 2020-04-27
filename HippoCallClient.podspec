@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
     
     s.resource_bundles = {
       'HippoCallClient' =>
-      ['HippoCallClient/Assets/**/*.imageset', 'HippoCallClient/ConferenceCall/NewConferenceViewAndLogic']
+      ['HippoCallClient/Assets/**/*.{imageset, xib}', 'HippoCallClient/ConferenceCall/NewConferenceViewAndLogic']
     }
     s.resources = ['HippoCallClient/*.xcassets']
     s.exclude_files = 'Classes/Exclude'
