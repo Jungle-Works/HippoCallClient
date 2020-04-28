@@ -75,7 +75,7 @@ class CallStartAndReceivedView: UIView {
         userImageView.layer.borderColor = UIColor.lightGray.cgColor
         nameLabel.text = userInfo["label"] as? String
         let url =  URL(string: userInfo["user_thumbnail_image"] as? String ?? "")
-        if let someUrl = url {
+        if let someUrl = url, someUrl != nil {
             userImageView.kf.setImage(with: someUrl)
         } else {
             userImageView.image = FuguImage.userImagePlaceholder
