@@ -85,10 +85,10 @@ extension JitsiCallManager {
                 }
                 
                 CallStartAndReceivedView.shared.userInfo = userDataforDailCall()
-                guard CallStartAndReceivedView.shared.userInfo.keys.count > 0 else {
-                    CallStartAndReceivedView.shared = nil
-                    return
-                }
+//                guard CallStartAndReceivedView.shared.userInfo.keys.count > 0 else {
+//                    CallStartAndReceivedView.shared = nil
+//                    return
+//                }
                 CallStartAndReceivedView.shared.receivedCallSetup()
                 CallStartAndReceivedView.shared.delegate = self
                 print("ADD VIEW ON WINDOW***************")
