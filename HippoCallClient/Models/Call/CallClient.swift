@@ -157,17 +157,17 @@ class CallClient {
     func handleCallEvent(for data: [String: Any], call: Call, jitsiSignal: JitsiCallSignal) {
         
         let jsonDict = data
-        if let signal = jsonDict["video_call_type"] as? String, let signalType = JitsiCallSignal.JitsiSignalType(rawValue:signal), let devicePayload = jsonDict["device_payload"] as? [String:Any] {
+        if let signal = jsonDict["video_call_type"] as? String, let signalType = JitsiCallSignal.JitsiSignalType(rawValue:signal) {
             print("handleCallEvent callClient 87", signalType,  CallClient.shared.currentDeviceID)
             if ((signalType == .HUNGUP_CONFERENCE || signalType == .REJECT_CONFERENCE) && call.isCallByMe ){
                JitsiCallManager.shared.otherUserCallHungup()
                return
-            } else if signalType == .START_CONFERENCE_IOS, let deviceId = devicePayload["device_id"] as? String ,CallClient.shared.currentDeviceID != deviceId {
-                //if CallStartAndReceivedView.shared != nil {
-//                if activeCall == nil {
+            } else if signalType == .START_CONFERENCE_IOS {
+                if let devicePayload = jsonDict["device_payload"] as? [String:Any], let deviceId = devicePayload["device_id"] as? String ,CallClient.shared.currentDeviceID != deviceId  {
                     JitsiCallManager.shared.startReceivedCall(newCall: call, signal: jitsiSignal)
-//                }
-               // }
+                } else if let deviceId = jsonDict["device_id"] as? String ,CallClient.shared.currentDeviceID != deviceId {
+                    JitsiCallManager.shared.startReceivedCall(newCall: call, signal: jitsiSignal)
+                }
                 return
             } else {
                 

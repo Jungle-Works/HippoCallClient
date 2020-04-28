@@ -78,12 +78,20 @@ extension JitsiCallManager {
         if let keyWindow = UIApplication.shared.keyWindow {
             if CallStartAndReceivedView.shared == nil {
                 CallStartAndReceivedView.shared = CallStartAndReceivedView.loadView()
+                
+                guard  !keyWindow.subviews.contains(CallStartAndReceivedView.shared) else {
+                    CallStartAndReceivedView.shared = nil
+                    return
+                }
+                
                 CallStartAndReceivedView.shared.userInfo = userDataforDailCall()
                 guard CallStartAndReceivedView.shared.userInfo.keys.count > 0 else {
+                    CallStartAndReceivedView.shared = nil
                     return
                 }
                 CallStartAndReceivedView.shared.receivedCallSetup()
                 CallStartAndReceivedView.shared.delegate = self
+                print("ADD VIEW ON WINDOW***************")
                 keyWindow.addSubview(CallStartAndReceivedView.shared)
                 CallStartAndReceivedView.shared.playReceivedCallSound()
             }
@@ -199,7 +207,10 @@ extension JitsiCallManager {
                     }
                     
                 case .OFFER_CONFERENCE:
-                    self?.showReceivedCallView()
+                    if CallStartAndReceivedView.shared == nil {
+                        self?.showReceivedCallView()
+                    }
+                    
                 case .REJECT_CONFERENCE:
                     self?.receivedRejectCallFromOtherUser()
                 case .HUNGUP_CONFERENCE:
@@ -249,6 +260,9 @@ extension JitsiCallManager {
     func sendData(dict: [String : Any], completion: VersionMismatchCallBack? = nil) {
         //Logger.shared.printVar(for: dict)
         activeCall?.signalingClient.connectClient(completion: { (success) in
+            guard self.activeCall != nil else {
+                return
+            }
             self.activeCall.signalingClient.sendJitsiObject(json: dict) { [weak self] (mark, error) in
                 if !mark{
                    // Logger.shared.printVar(for: error?.localizedDescription)
