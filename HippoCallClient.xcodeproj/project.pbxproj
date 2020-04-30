@@ -48,7 +48,7 @@
 		C980E2EF23588D9D004433FF /* FuguChannel+SignalingClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FuguChannel+SignalingClient.swift"; sourceTree = "<group>"; };
 		C980E2F123588D9D004433FF /* HippoCallClientDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HippoCallClientDelegate.swift; sourceTree = "<group>"; };
 		C980E2F223588D9D004433FF /* HippoCallClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HippoCallClient.swift; sourceTree = "<group>"; };
-		C993CC362224251E0068BF8B /* HippoCallClient.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HippoCallClient.podspec; sourceTree = "<group>"; };
+		C993CC362224251E0068BF8B /* HippoCallClient.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HippoCallClient.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		C9A78692236F446B0042EB7B /* Pods_HippoCustomer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_HippoCustomer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9D7D046219EECF20060D2A8 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */

@@ -18,13 +18,15 @@ public class Call {
     var timeElapsedSinceCallStart = 0
     let type: CallType
     var isStartCallSend: Bool = false
+    var inviteLink: String = ""
     
-    public init(peer: CallPeer, signalingClient: SignalingClient, uID: String, currentUser: CallPeer, type: CallType) {
+    public init(peer: CallPeer, signalingClient: SignalingClient, uID: String, currentUser: CallPeer, type: CallType, link: String) {
         self.peer = peer
         self.signalingClient = signalingClient
         self.uID = uID
         self.currentUser = currentUser
         self.type = type
+        self.inviteLink = link
     }
 }
 

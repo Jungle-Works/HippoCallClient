@@ -61,7 +61,7 @@ class CallClient {
                 return
         }
         
-        let call = Call(peer: peer, signalingClient: signalingClient, uID: signal.callUID, currentUser: currentUser, type: signal.callType)
+        let call = Call(peer: peer, signalingClient: signalingClient, uID: signal.callUID, currentUser: currentUser, type: signal.callType, link: "")
         
         if !shouldHandle(signal: signal, call: call) {
             print("ERROR -> VOIP PUSH FROM CURRENT USER")
