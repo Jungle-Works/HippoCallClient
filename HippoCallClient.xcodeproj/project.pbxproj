@@ -9,6 +9,30 @@
 /* Begin PBXBuildFile section */
 		2B1167862450B922008FA330 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B1167852450B922008FA330 /* Assets.xcassets */; };
 		2EA3796E8A79EAC5B2B272C6 /* Pods_HippoCallClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A485E8D8E3A721E962B17B2 /* Pods_HippoCallClient.framework */; };
+		6B041B5524695E4D00A96DBD /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B041B3D24695E4D00A96DBD /* ImageCache.swift */; };
+		6B041B5624695E4D00A96DBD /* ThreadHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B041B3E24695E4D00A96DBD /* ThreadHelper.swift */; };
+		6B041B5724695E4D00A96DBD /* Kingfisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B041B3F24695E4D00A96DBD /* Kingfisher.swift */; };
+		6B041B5824695E4D00A96DBD /* RequestModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B041B4024695E4D00A96DBD /* RequestModifier.swift */; };
+		6B041B5924695E4D00A96DBD /* ImageView+Kingfisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B041B4124695E4D00A96DBD /* ImageView+Kingfisher.swift */; };
+		6B041B5A24695E4D00A96DBD /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B041B4224695E4D00A96DBD /* Image.swift */; };
+		6B041B5B24695E4D00A96DBD /* Indicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B041B4324695E4D00A96DBD /* Indicator.swift */; };
+		6B041B5C24695E4D00A96DBD /* CacheSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B041B4424695E4D00A96DBD /* CacheSerializer.swift */; };
+		6B041B5D24695E4D00A96DBD /* UIButton+Kingfisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B041B4524695E4D00A96DBD /* UIButton+Kingfisher.swift */; };
+		6B041B5E24695E4D00A96DBD /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B041B4624695E4D00A96DBD /* Resource.swift */; };
+		6B041B5F24695E4D00A96DBD /* ImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B041B4724695E4D00A96DBD /* ImageDownloader.swift */; };
+		6B041B6024695E4D00A96DBD /* Kingfisher.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B041B4824695E4D00A96DBD /* Kingfisher.h */; };
+		6B041B6124695E4D00A96DBD /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B041B4924695E4D00A96DBD /* Box.swift */; };
+		6B041B6224695E4D00A96DBD /* KingfisherManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B041B4A24695E4D00A96DBD /* KingfisherManager.swift */; };
+		6B041B6324695E4D00A96DBD /* FormatIndicatedCacheSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B041B4B24695E4D00A96DBD /* FormatIndicatedCacheSerializer.swift */; };
+		6B041B6424695E4D00A96DBD /* ImageTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B041B4C24695E4D00A96DBD /* ImageTransition.swift */; };
+		6B041B6524695E4D00A96DBD /* AnimatedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B041B4D24695E4D00A96DBD /* AnimatedImageView.swift */; };
+		6B041B6624695E4D00A96DBD /* String+MD5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B041B4E24695E4D00A96DBD /* String+MD5.swift */; };
+		6B041B6724695E4D00A96DBD /* ImageProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B041B4F24695E4D00A96DBD /* ImageProcessor.swift */; };
+		6B041B6824695E4D00A96DBD /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B041B5024695E4D00A96DBD /* Filter.swift */; };
+		6B041B6924695E4D00A96DBD /* Placeholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B041B5124695E4D00A96DBD /* Placeholder.swift */; };
+		6B041B6A24695E4D00A96DBD /* KingfisherOptionsInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B041B5224695E4D00A96DBD /* KingfisherOptionsInfo.swift */; };
+		6B041B6B24695E4D00A96DBD /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6B041B5324695E4D00A96DBD /* Info.plist */; };
+		6B041B6C24695E4D00A96DBD /* ImagePrefetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B041B5424695E4D00A96DBD /* ImagePrefetcher.swift */; };
 		C980E2DA23588D6F004433FF /* HippoCallClient.h in Headers */ = {isa = PBXBuildFile; fileRef = C980E2D823588D6F004433FF /* HippoCallClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C980E2F323588D9E004433FF /* HippoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C980E2DF23588D9D004433FF /* HippoHelper.swift */; };
 		C980E2F423588D9E004433FF /* CustomData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C980E2E123588D9D004433FF /* CustomData.swift */; };
@@ -52,6 +76,30 @@
 		1DA5E276E2D083536A2B1628 /* Pods-HippoCallClient.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HippoCallClient.release.xcconfig"; path = "Target Support Files/Pods-HippoCallClient/Pods-HippoCallClient.release.xcconfig"; sourceTree = "<group>"; };
 		2B1167852450B922008FA330 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3A485E8D8E3A721E962B17B2 /* Pods_HippoCallClient.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HippoCallClient.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6B041B3D24695E4D00A96DBD /* ImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
+		6B041B3E24695E4D00A96DBD /* ThreadHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadHelper.swift; sourceTree = "<group>"; };
+		6B041B3F24695E4D00A96DBD /* Kingfisher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Kingfisher.swift; sourceTree = "<group>"; };
+		6B041B4024695E4D00A96DBD /* RequestModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestModifier.swift; sourceTree = "<group>"; };
+		6B041B4124695E4D00A96DBD /* ImageView+Kingfisher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ImageView+Kingfisher.swift"; sourceTree = "<group>"; };
+		6B041B4224695E4D00A96DBD /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
+		6B041B4324695E4D00A96DBD /* Indicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Indicator.swift; sourceTree = "<group>"; };
+		6B041B4424695E4D00A96DBD /* CacheSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheSerializer.swift; sourceTree = "<group>"; };
+		6B041B4524695E4D00A96DBD /* UIButton+Kingfisher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+Kingfisher.swift"; sourceTree = "<group>"; };
+		6B041B4624695E4D00A96DBD /* Resource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
+		6B041B4724695E4D00A96DBD /* ImageDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageDownloader.swift; sourceTree = "<group>"; };
+		6B041B4824695E4D00A96DBD /* Kingfisher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kingfisher.h; sourceTree = "<group>"; };
+		6B041B4924695E4D00A96DBD /* Box.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
+		6B041B4A24695E4D00A96DBD /* KingfisherManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KingfisherManager.swift; sourceTree = "<group>"; };
+		6B041B4B24695E4D00A96DBD /* FormatIndicatedCacheSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormatIndicatedCacheSerializer.swift; sourceTree = "<group>"; };
+		6B041B4C24695E4D00A96DBD /* ImageTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageTransition.swift; sourceTree = "<group>"; };
+		6B041B4D24695E4D00A96DBD /* AnimatedImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatedImageView.swift; sourceTree = "<group>"; };
+		6B041B4E24695E4D00A96DBD /* String+MD5.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+MD5.swift"; sourceTree = "<group>"; };
+		6B041B4F24695E4D00A96DBD /* ImageProcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageProcessor.swift; sourceTree = "<group>"; };
+		6B041B5024695E4D00A96DBD /* Filter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
+		6B041B5124695E4D00A96DBD /* Placeholder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Placeholder.swift; sourceTree = "<group>"; };
+		6B041B5224695E4D00A96DBD /* KingfisherOptionsInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KingfisherOptionsInfo.swift; sourceTree = "<group>"; };
+		6B041B5324695E4D00A96DBD /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6B041B5424695E4D00A96DBD /* ImagePrefetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePrefetcher.swift; sourceTree = "<group>"; };
 		C980E2D623588D6E004433FF /* HippoCallClient.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = HippoCallClient.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C980E2D823588D6F004433FF /* HippoCallClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HippoCallClient.h; sourceTree = "<group>"; };
 		C980E2D923588D6F004433FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -116,6 +164,37 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		6B041B3C24695E4D00A96DBD /* Kingfisher */ = {
+			isa = PBXGroup;
+			children = (
+				6B041B3D24695E4D00A96DBD /* ImageCache.swift */,
+				6B041B3E24695E4D00A96DBD /* ThreadHelper.swift */,
+				6B041B3F24695E4D00A96DBD /* Kingfisher.swift */,
+				6B041B4024695E4D00A96DBD /* RequestModifier.swift */,
+				6B041B4124695E4D00A96DBD /* ImageView+Kingfisher.swift */,
+				6B041B4224695E4D00A96DBD /* Image.swift */,
+				6B041B4324695E4D00A96DBD /* Indicator.swift */,
+				6B041B4424695E4D00A96DBD /* CacheSerializer.swift */,
+				6B041B4524695E4D00A96DBD /* UIButton+Kingfisher.swift */,
+				6B041B4624695E4D00A96DBD /* Resource.swift */,
+				6B041B4724695E4D00A96DBD /* ImageDownloader.swift */,
+				6B041B4824695E4D00A96DBD /* Kingfisher.h */,
+				6B041B4924695E4D00A96DBD /* Box.swift */,
+				6B041B4A24695E4D00A96DBD /* KingfisherManager.swift */,
+				6B041B4B24695E4D00A96DBD /* FormatIndicatedCacheSerializer.swift */,
+				6B041B4C24695E4D00A96DBD /* ImageTransition.swift */,
+				6B041B4D24695E4D00A96DBD /* AnimatedImageView.swift */,
+				6B041B4E24695E4D00A96DBD /* String+MD5.swift */,
+				6B041B4F24695E4D00A96DBD /* ImageProcessor.swift */,
+				6B041B5024695E4D00A96DBD /* Filter.swift */,
+				6B041B5124695E4D00A96DBD /* Placeholder.swift */,
+				6B041B5224695E4D00A96DBD /* KingfisherOptionsInfo.swift */,
+				6B041B5324695E4D00A96DBD /* Info.plist */,
+				6B041B5424695E4D00A96DBD /* ImagePrefetcher.swift */,
+			);
+			path = Kingfisher;
+			sourceTree = "<group>";
+		};
 		C980E2D723588D6F004433FF /* HippoCallClient */ = {
 			isa = PBXGroup;
 			children = (
@@ -133,6 +212,7 @@
 		C980E2DE23588D9D004433FF /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				6B041B3C24695E4D00A96DBD /* Kingfisher */,
 				C980E2DF23588D9D004433FF /* HippoHelper.swift */,
 			);
 			path = Helpers;
@@ -277,6 +357,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6B041B6024695E4D00A96DBD /* Kingfisher.h in Headers */,
 				C980E2DA23588D6F004433FF /* HippoCallClient.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -349,6 +430,7 @@
 				CD1EFB502444D235008C093B /* TitilliumWeb-Regular.ttf in Resources */,
 				CD1EFB512444D235008C093B /* TitilliumWeb-SemiBold.ttf in Resources */,
 				2B1167862450B922008FA330 /* Assets.xcassets in Resources */,
+				6B041B6B24695E4D00A96DBD /* Info.plist in Resources */,
 				CD1EFB532444D235008C093B /* TitilliumWeb-Italic.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -391,8 +473,15 @@
 				C980E2FB23588D9E004433FF /* Call.swift in Sources */,
 				C980E2F723588D9E004433FF /* CallPeer.swift in Sources */,
 				C980E2FC23588D9E004433FF /* CallSignal.swift in Sources */,
+				6B041B6124695E4D00A96DBD /* Box.swift in Sources */,
+				6B041B6924695E4D00A96DBD /* Placeholder.swift in Sources */,
 				CD1EFB552444D235008C093B /* FuguFont.swift in Sources */,
+				6B041B5D24695E4D00A96DBD /* UIButton+Kingfisher.swift in Sources */,
+				6B041B5F24695E4D00A96DBD /* ImageDownloader.swift in Sources */,
 				C980E2F923588D9E004433FF /* CallClient.swift in Sources */,
+				6B041B5924695E4D00A96DBD /* ImageView+Kingfisher.swift in Sources */,
+				6B041B5824695E4D00A96DBD /* RequestModifier.swift in Sources */,
+				6B041B6524695E4D00A96DBD /* AnimatedImageView.swift in Sources */,
 				CD1EFB472444D235008C093B /* JitsiConstants.swift in Sources */,
 				C980E2FE23588D9E004433FF /* RTCIceCandidate+JSON.swift in Sources */,
 				C980E2FA23588D9E004433FF /* SignalingClient.swift in Sources */,
@@ -400,17 +489,32 @@
 				C980E2F823588D9E004433FF /* CallPresenter.swift in Sources */,
 				C980E2F423588D9E004433FF /* CustomData.swift in Sources */,
 				C980E30223588D9E004433FF /* HippoCallClient.swift in Sources */,
+				6B041B5724695E4D00A96DBD /* Kingfisher.swift in Sources */,
+				6B041B5624695E4D00A96DBD /* ThreadHelper.swift in Sources */,
+				6B041B6A24695E4D00A96DBD /* KingfisherOptionsInfo.swift in Sources */,
+				6B041B6424695E4D00A96DBD /* ImageTransition.swift in Sources */,
 				C980E2F323588D9E004433FF /* HippoHelper.swift in Sources */,
+				6B041B6824695E4D00A96DBD /* Filter.swift in Sources */,
+				6B041B6224695E4D00A96DBD /* KingfisherManager.swift in Sources */,
 				CD1EFB5B2444D235008C093B /* FloatRatingView.swift in Sources */,
 				C980E2FD23588D9E004433FF /* WebRTCClient.swift in Sources */,
+				6B041B5C24695E4D00A96DBD /* CacheSerializer.swift in Sources */,
 				CD1EFB542444D235008C093B /* FuguColor.swift in Sources */,
+				6B041B5B24695E4D00A96DBD /* Indicator.swift in Sources */,
+				6B041B6324695E4D00A96DBD /* FormatIndicatedCacheSerializer.swift in Sources */,
 				CD1EFB462444D235008C093B /* Extensions.swift in Sources */,
 				CD1EFB4A2444D235008C093B /* JitsiCallSignal.swift in Sources */,
 				CD1EFB582444D235008C093B /* MicAndCameraManager.swift in Sources */,
+				6B041B6624695E4D00A96DBD /* String+MD5.swift in Sources */,
 				C980E30023588D9E004433FF /* FuguChannel+SignalingClient.swift in Sources */,
+				6B041B6C24695E4D00A96DBD /* ImagePrefetcher.swift in Sources */,
+				6B041B6724695E4D00A96DBD /* ImageProcessor.swift in Sources */,
 				CD1EFB6B2444D3C1008C093B /* JitsiConfrenceCallView.swift in Sources */,
 				C980E2F623588D9E004433FF /* CallClientCredential.swift in Sources */,
 				CD1EFB4B2444D235008C093B /* CallStartAndReceivedView.swift in Sources */,
+				6B041B5524695E4D00A96DBD /* ImageCache.swift in Sources */,
+				6B041B5A24695E4D00A96DBD /* Image.swift in Sources */,
+				6B041B5E24695E4D00A96DBD /* Resource.swift in Sources */,
 				CD1EFB492444D235008C093B /* JitsiCallManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -6,7 +6,7 @@ target 'HippoCallClient' do
   use_frameworks!
 	# Pods for HippoCallClient
 	pod 'FuguConference', :path => 'Conference/ConferenceCall'
-  pod 'Kingfisher'
+ # pod 'Kingfisher'
    post_install do |installer|
       
       installer.pods_project.targets.each do |target|
