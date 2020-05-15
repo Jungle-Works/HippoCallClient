@@ -278,6 +278,9 @@ extension JitsiCallManager {
     }
     
     func sendStartCallFirstTime(completion: VersionMismatchCallBack? = nil) {
+        if activeCall == nil{
+            return
+        }
         let signal = JitsiCallSignal(signalType: .START_CONFERENCE, callUID: activeCall!.uID, sender: activeCall!.currentUser, senderDeviceID: activeCall?.uID ?? "", callType: activeCall!.type , link: link, isFSilent: false)
         let dict = signal.getJsonToSendToFaye()
         sendData(dict: dict) { (mismatch) in
@@ -296,6 +299,9 @@ extension JitsiCallManager {
     }
     
     func sendStartCallFirstTimeForiOS(completion: VersionMismatchCallBack? = nil) {
+        if activeCall == nil{
+            return
+        }
         let signal = JitsiCallSignal(signalType: .START_CONFERENCE_IOS, callUID: activeCall!.uID, sender: activeCall!.currentUser, senderDeviceID: activeCall?.uID ?? "", callType: activeCall!.type , link: link, isFSilent: false /*true*/)
         let dict = signal.getJsonToSendToFaye()
         sendData(dict: dict) { (mismatch) in
