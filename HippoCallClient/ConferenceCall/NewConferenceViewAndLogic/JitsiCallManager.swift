@@ -187,7 +187,7 @@ extension JitsiCallManager {
 //                        return
 //                    }
                     
-                    guard signal?.sender.peerId != self?.activeCall.currentUser.peerId  else {
+                    guard signal?.sender.peerId != self?.activeCall?.currentUser.peerId  else {
                         if signal?.senderDeviceID != CallClient.shared.currentDeviceID /*|| signal?.senderDeviceID == "" && deviceType == 3 )*/ {
                              self?.removeDialAndReceivedView()
                         } else {
@@ -207,6 +207,9 @@ extension JitsiCallManager {
                     }
                     
                 case .OFFER_CONFERENCE:
+                    guard signal?.sender.peerId != self?.activeCall?.currentUser.peerId  else {
+                        return
+                    }
                     if CallStartAndReceivedView.shared == nil {
                         self?.showReceivedCallView()
                     }
@@ -219,9 +222,9 @@ extension JitsiCallManager {
                     self?.otherUserBusyOnOtherCall()
                 case .READY_TO_CONNECT_CONFERENCE_IOS:
                     self?.endRepeatStartCalliOS()
-                    if (CallStartAndReceivedView.shared != nil) {
-                        CallStartAndReceivedView.shared.callStateText = "Ringing......"
-                    }
+//                    if (CallStartAndReceivedView.shared != nil) {
+//                        CallStartAndReceivedView.shared.callStateText = "Ringing......"
+//                    }
                     self?.sendOffer()
                     break
                 }

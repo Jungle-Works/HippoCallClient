@@ -126,7 +126,7 @@ extension CallStartAndReceivedView {
     func receivedCallSetup() {
         setup()
         dailCallCancelButton.isHidden = true
-        callStateMessageLabel.text = ""
+        callStateMessageLabel.text = "is calling you......"
     }
     
     func playDailCallSound() {
