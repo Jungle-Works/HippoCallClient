@@ -156,6 +156,8 @@ class CallClient {
     
     func handleCallEvent(for data: [String: Any], call: Call, jitsiSignal: JitsiCallSignal) {
         
+        JitsiCallManager.shared.activeCall?.signalingClient.signalReceivedFromPeer?(data)
+
         let jsonDict = data
         if let signal = jsonDict["video_call_type"] as? String, let signalType = JitsiCallSignal.JitsiSignalType(rawValue:signal) {
             print("handleCallEvent callClient 87", signalType,  CallClient.shared.currentDeviceID)

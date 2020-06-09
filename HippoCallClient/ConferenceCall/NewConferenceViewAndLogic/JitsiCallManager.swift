@@ -19,9 +19,9 @@ class JitsiCallManager {
     }
     static let shared = JitsiCallManager()
     var link: String!
-    var repeatTimer: Timer?
-    var repeatTimeriOS: Timer?
-    var startConTimer: Timer?
+    var repeatTimer = Timer()
+    var repeatTimeriOS = Timer()
+    var startConTimer = Timer()
     var timeSinceStartCon = 0
     var maxRepeatTime: Int = 60
     var timeElapsedSinceCallStart: Int = 0
@@ -193,7 +193,7 @@ extension JitsiCallManager {
                         } else {
                             self?.endRepeatStartCalliOS()
                             self?.endRepeatStartCall()
-                             self?.receivedAnswerFromOtherUser()
+                            self?.receivedAnswerFromOtherUser()
                             self?.removeStartConTimer(for: true, createCall: false)
                         }
                         return
@@ -222,9 +222,9 @@ extension JitsiCallManager {
                     self?.otherUserBusyOnOtherCall()
                 case .READY_TO_CONNECT_CONFERENCE_IOS:
                     self?.endRepeatStartCalliOS()
-//                    if (CallStartAndReceivedView.shared != nil) {
-//                        CallStartAndReceivedView.shared.callStateText = "Ringing......"
-//                    }
+                    if (CallStartAndReceivedView.shared != nil) {
+                        CallStartAndReceivedView.shared.callStateText = "Ringing......"
+                    }
                     self?.sendOffer()
                     break
                 }
@@ -233,7 +233,7 @@ extension JitsiCallManager {
     }
     
     func startTimerForConference(createCall: Bool){
-        if (activeCall != nil && startConTimer == nil){
+        if (activeCall != nil){
             startConTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateStartConTimer(_:)), userInfo: nil, repeats: true)
         } else {
             removeStartConTimer(for: false, createCall: false)
@@ -247,8 +247,8 @@ extension JitsiCallManager {
         }
     }
     func removeStartConTimer(for answer: Bool, createCall: Bool){
-        startConTimer?.invalidate()
-        startConTimer = nil
+        startConTimer.invalidate()
+        //startConTimer = nil
         timeSinceStartCon = 0
         if createCall {
             userDidCanceledDialCall()
@@ -292,13 +292,11 @@ extension JitsiCallManager {
             }
         }
         
-        if repeatTimer == nil {
-            repeatTimer =  Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: { [weak self]_ in
-                //Logger.shared.printVar(for: "timer")
-                self?.timeElapsedSinceCallStart += 5
-                self?.sendRepeatStartCall()
-            })
-        }
+        repeatTimer =  Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: { [weak self]_ in
+            //Logger.shared.printVar(for: "timer")
+            self?.timeElapsedSinceCallStart += 5
+            self?.sendRepeatStartCall()
+        })
     }
     
     func sendStartCallFirstTimeForiOS(completion: VersionMismatchCallBack? = nil) {
@@ -313,13 +311,11 @@ extension JitsiCallManager {
             }
         }
         
-        if repeatTimeriOS == nil {
-            repeatTimeriOS =  Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: { [weak self]_ in
-                //Logger.shared.printVar(for: "timer")
-                self?.timeElapsedSinceCallStartiOS += 5
-                self?.sendRepeatStartCalliOS()
-            })
-        }
+        repeatTimeriOS =  Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: { [weak self]_ in
+            //Logger.shared.printVar(for: "timer")
+            self?.timeElapsedSinceCallStartiOS += 5
+            self?.sendRepeatStartCalliOS()
+        })
     }
     
     func sendRepeatStartCalliOS() {
@@ -347,13 +343,13 @@ extension JitsiCallManager {
     }
     
     func endRepeatStartCall() {
-        repeatTimer?.invalidate()
-        repeatTimer = nil
+        repeatTimer.invalidate()
+       // repeatTimer = nil
     }
     
     func endRepeatStartCalliOS(){
-        repeatTimeriOS?.invalidate()
-        repeatTimeriOS = nil
+        repeatTimeriOS.invalidate()
+       // repeatTimeriOS = nil
     }
     
     func sendOffer() {
@@ -519,10 +515,10 @@ extension JitsiCallManager {
     func resetAllResourceForNewCall() {
         activeCall = nil
         link = nil
-        repeatTimer = nil
-        repeatTimeriOS = nil
-        startConTimer?.invalidate()
-        startConTimer = nil
+        repeatTimer.invalidate()
+        repeatTimeriOS.invalidate()
+        startConTimer.invalidate()
+        //startConTimer = nil
         timeSinceStartCon = 0
         timeElapsedSinceCallStart = 0
         timeElapsedSinceCallStartiOS = 0
@@ -555,7 +551,7 @@ extension JitsiCallManager {
 extension JitsiCallManager {
     
     func createLink(for call: Call)-> String {
-        let url = "https://conference.hippochat.io/" //JitsiConstants.inviteLink
+        let url = JitsiConstants.inviteLink
         let randomStr = randomString(length: 11) + "iOS"
         var link = url + randomStr
         if call.type == .audio {
