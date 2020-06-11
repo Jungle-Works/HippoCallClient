@@ -89,6 +89,7 @@ extension JitsiCallManager {
 //                    CallStartAndReceivedView.shared = nil
 //                    return
 //                }
+                CallStartAndReceivedView.shared.isCallRecieved = true
                 CallStartAndReceivedView.shared.receivedCallSetup()
                 CallStartAndReceivedView.shared.delegate = self
                 print("ADD VIEW ON WINDOW***************")
@@ -177,6 +178,9 @@ extension JitsiCallManager {
                 break// nerver come on socket alway come from push
                 case .READY_TO_CONNECT_CONFERENCE :
                     self?.endRepeatStartCall()
+                    if CallStartAndReceivedView.shared != nil && CallStartAndReceivedView.shared.isCallRecieved ?? false{
+                      return
+                    }
                     if (CallStartAndReceivedView.shared != nil){
                         CallStartAndReceivedView.shared.callStateText = "Ringing......"
                     }
@@ -222,6 +226,9 @@ extension JitsiCallManager {
                     self?.otherUserBusyOnOtherCall()
                 case .READY_TO_CONNECT_CONFERENCE_IOS:
                     self?.endRepeatStartCalliOS()
+                    if CallStartAndReceivedView.shared != nil && CallStartAndReceivedView.shared.isCallRecieved ?? false{
+                        return
+                    }
                     if (CallStartAndReceivedView.shared != nil) {
                         CallStartAndReceivedView.shared.callStateText = "Ringing......"
                     }

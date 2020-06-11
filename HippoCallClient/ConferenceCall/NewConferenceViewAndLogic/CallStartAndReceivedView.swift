@@ -29,6 +29,7 @@ class CallStartAndReceivedView: UIView {
     
     static var shared: CallStartAndReceivedView!
     var userInfo = [String : Any]()
+    var isCallRecieved : Bool?
     
     var callStateText = "Calling......" {
         didSet{
