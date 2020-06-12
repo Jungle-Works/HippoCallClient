@@ -47,7 +47,7 @@ public class HippoCallClient {
     /// - Parameters:
     ///   - call: Call object that contain information about call
     ///   - completion: Callback that provide status whether the call is made or not
-    public func startCall(call: Call, completion: @escaping (Bool) -> Void) {
+    public func startCall(call: Call, completion: @escaping (Bool, NSError?) -> Void) {
         CallClient.shared.startNew(call: call, completion: completion)
     }
     

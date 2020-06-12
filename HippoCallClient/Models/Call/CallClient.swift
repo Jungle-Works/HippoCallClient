@@ -121,6 +121,41 @@ class CallClient {
         }
         
     }
+    func startNew(call: Call, completion: @escaping (Bool, NSError?) -> Void) {
+        
+        guard !isUserBusy(), call.signalingClient.checkIfReadyForCommunication(), credentials != nil else {
+            print("Not Ready for Call. Try Again")
+            return
+        }
+        
+        activeCall = call
+        
+        loadCallPresenterView()
+        
+        //Check if callPresenter is given nil from service user
+        guard callPresenter != nil else {
+            return
+        }
+        registerActiveCallsSignallingClient()
+        registerCallHungupInCallPresenter()
+        registerCallPresenterAccessories()
+        
+        activeCall?.status = .outgoingCall
+        
+        let request = PresentCallRequest(peer: call.peer, callType: call.type, callUUID: call.uID)
+        callPresenter?.startNewOutgoingCall(request: request) { [weak self] (success) in
+            guard success, let weakSelf = self else {
+                self?.callDisconnected()
+                return
+            }
+            
+            let signal = CallSignal(rtcSignal: [:], signalType: .startCall, callUID: call.uID, sender: call.currentUser, senderDeviceID: weakSelf.currentDeviceID, callType: call.type)
+            self?.startTimerToExpireNotConnectedCallIn(signal: signal)
+            self?.startSendingStartCallUntilItExpires(signal: signal, call: call)
+        }
+    }
+    
+    
     func startNew(call: Call, completion: @escaping (Bool) -> Void) {
         
         guard !isUserBusy(), call.signalingClient.checkIfReadyForCommunication(), credentials != nil else {
@@ -154,6 +189,9 @@ class CallClient {
             self?.startSendingStartCallUntilItExpires(signal: signal, call: call)
         }
     }
+    
+    
+    
     private func startSendingStartCallUntilItExpires(signal: CallSignal, call: Call) {
         guard let call = activeCall, call.uID == signal.callUID, call.status != .inCall else {
             return
