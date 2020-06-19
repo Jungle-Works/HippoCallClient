@@ -19,7 +19,9 @@ public class Call {
     let type: CallType
     var isStartCallSend: Bool = false
     var inviteLink: String = ""
-    
+    var lastStateSend: CallSignal.SignalType?
+    var forceReadyToConnectSent: Bool = false
+
     public init(peer: CallPeer, signalingClient: SignalingClient, uID: String, currentUser: CallPeer, type: CallType, link: String) {
         self.peer = peer
         self.signalingClient = signalingClient
