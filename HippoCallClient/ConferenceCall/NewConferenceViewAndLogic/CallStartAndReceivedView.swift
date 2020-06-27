@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+
 //import Kingfisher
 
 protocol CallStartAndReceivedViewDelegate: class {
@@ -31,7 +32,7 @@ class CallStartAndReceivedView: UIView {
     var userInfo = [String : Any]()
     var isCallRecieved : Bool?
     
-    var callStateText = "Calling......" {
+    var callStateText =  HippoCallClientStrings.calling.capitalizingFirstLetter() {
         didSet{
             callStateMessageLabel.text = callStateText
         }
@@ -121,13 +122,13 @@ extension CallStartAndReceivedView {
     func dailCallSetup() {
         setup()
         receivedCallOptionView.isHidden = true
-        callStateMessageLabel.text = "Calling......"
+        callStateMessageLabel.text = HippoCallClientStrings.calling.capitalizingFirstLetter()
     }
     
     func receivedCallSetup() {
         setup()
         dailCallCancelButton.isHidden = true
-        callStateMessageLabel.text = "is calling you......"
+        callStateMessageLabel.text = HippoCallClientStrings.callingYou.capitalizingFirstLetter()
     }
     
     func playDailCallSound() {

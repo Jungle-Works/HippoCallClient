@@ -182,7 +182,7 @@ extension JitsiCallManager {
                       return
                     }
                     if (CallStartAndReceivedView.shared != nil){
-                        CallStartAndReceivedView.shared.callStateText = "Ringing......"
+                        CallStartAndReceivedView.shared.callStateText = HippoCallClientStrings.ringing
                     }
                     self?.sendOffer()
                 case .ANSWER_CONFERENCE:
@@ -230,7 +230,7 @@ extension JitsiCallManager {
                         return
                     }
                     if (CallStartAndReceivedView.shared != nil) {
-                        CallStartAndReceivedView.shared.callStateText = "Ringing......"
+                        CallStartAndReceivedView.shared.callStateText = HippoCallClientStrings.ringing
                     }
                     self?.sendOffer()
                     break
@@ -445,7 +445,7 @@ extension JitsiCallManager {
     func otherUserBusyOnOtherCall() {
         endRepeatStartCalliOS()
         endRepeatStartCall()
-        resetAndShowBusy(with: "User busy with another call")
+        resetAndShowBusy(with: HippoCallClientStrings.busyOnOtherCall)
     }
 }
 
@@ -482,7 +482,7 @@ extension JitsiCallManager {
     }
     
     func receivedRejectCallFromOtherUser() {
-        resetAndShowBusy(with: "Call Declined")
+        resetAndShowBusy(with: HippoCallClientStrings.callDeclined)
     }
     
     func removeDialAndReceivedView() {

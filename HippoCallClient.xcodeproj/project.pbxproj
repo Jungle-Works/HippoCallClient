@@ -33,6 +33,7 @@
 		6B041B6A24695E4D00A96DBD /* KingfisherOptionsInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B041B5224695E4D00A96DBD /* KingfisherOptionsInfo.swift */; };
 		6B041B6B24695E4D00A96DBD /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6B041B5324695E4D00A96DBD /* Info.plist */; };
 		6B041B6C24695E4D00A96DBD /* ImagePrefetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B041B5424695E4D00A96DBD /* ImagePrefetcher.swift */; };
+		6BCD891524A33F2000FD0A22 /* HippoCallClientStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BCD891424A33F2000FD0A22 /* HippoCallClientStrings.swift */; };
 		C980E2DA23588D6F004433FF /* HippoCallClient.h in Headers */ = {isa = PBXBuildFile; fileRef = C980E2D823588D6F004433FF /* HippoCallClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C980E2F323588D9E004433FF /* HippoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C980E2DF23588D9D004433FF /* HippoHelper.swift */; };
 		C980E2F423588D9E004433FF /* CustomData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C980E2E123588D9D004433FF /* CustomData.swift */; };
@@ -100,6 +101,7 @@
 		6B041B5224695E4D00A96DBD /* KingfisherOptionsInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KingfisherOptionsInfo.swift; sourceTree = "<group>"; };
 		6B041B5324695E4D00A96DBD /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6B041B5424695E4D00A96DBD /* ImagePrefetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePrefetcher.swift; sourceTree = "<group>"; };
+		6BCD891424A33F2000FD0A22 /* HippoCallClientStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HippoCallClientStrings.swift; sourceTree = "<group>"; };
 		C980E2D623588D6E004433FF /* HippoCallClient.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = HippoCallClient.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C980E2D823588D6F004433FF /* HippoCallClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HippoCallClient.h; sourceTree = "<group>"; };
 		C980E2D923588D6F004433FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -258,6 +260,7 @@
 			children = (
 				C980E2F123588D9D004433FF /* HippoCallClientDelegate.swift */,
 				C980E2F223588D9D004433FF /* HippoCallClient.swift */,
+				6BCD891424A33F2000FD0A22 /* HippoCallClientStrings.swift */,
 			);
 			path = Wrappers;
 			sourceTree = "<group>";
@@ -485,6 +488,7 @@
 				CD1EFB472444D235008C093B /* JitsiConstants.swift in Sources */,
 				C980E2FE23588D9E004433FF /* RTCIceCandidate+JSON.swift in Sources */,
 				C980E2FA23588D9E004433FF /* SignalingClient.swift in Sources */,
+				6BCD891524A33F2000FD0A22 /* HippoCallClientStrings.swift in Sources */,
 				CD1EFB682444D235008C093B /* PullUpControllerNew.swift in Sources */,
 				C980E2F823588D9E004433FF /* CallPresenter.swift in Sources */,
 				C980E2F423588D9E004433FF /* CustomData.swift in Sources */,
