@@ -22,4 +22,13 @@ class FuguImage {
     class var userImagePlaceholder:UIImage? {
         UIImage(named: "user_image_placeholder", in: self.bundle, compatibleWith: nil)
     }
+    
+    class var callAccept :UIImage? {
+        UIImage(named: "connectCall", in: self.bundle, compatibleWith: nil)
+    }
+    
+    class var callReject :UIImage? {
+        UIImage(named: "disconnectCall", in: self.bundle, compatibleWith: nil)
+    }
+
 }

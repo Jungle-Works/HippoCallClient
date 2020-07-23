@@ -22,14 +22,21 @@ class JitsiCallManager {
     var repeatTimer = Timer()
     var repeatTimeriOS = Timer()
     var startConTimer = Timer()
+    var repeatGroupCallTimer : Timer?
+    var repeatShowingPopupTimer : Timer?
     var timeSinceStartCon = 0
     var maxRepeatTime: Int = 60
     var timeElapsedSinceCallStart: Int = 0
     var timeElapsedSinceCallStartiOS: Int = 0
+    var timeElapsedSinceGroupCallStart : Int = 0
+    var timeElapsedSincePopupShown : Int = 0
     var receivedCallData: [String : Any]?
     var isCallJoined: Bool = false
-    private init() {}
+    var muidDic : [String : Bool]?
+    var transactionID : String?
     
+    private init() {}
+      
     func startCall(with call: Call, completion: VersionMismatchCallBack? = nil) {
         timeElapsedSinceCallStart = 0
         activeCall = call
@@ -68,6 +75,180 @@ class JitsiCallManager {
             userDidCanceledDialCall()
         }
     }
+}
+
+extension JitsiCallManager{
+    
+    //MARK:- GROUP Call Methods
+    ///*Start group call from agent
+    
+    func startGroupCall(with call: Call, with groupCallData : CallClientGroupCallData){
+        timeElapsedSinceGroupCallStart = 0
+        activeCall = call
+        link = createGroupCallLink(with: groupCallData, for: call)
+        showJitsiViewForGroupCall(groupCallData)
+    }
+    
+    
+    func startRecievedGroupCall(newCall: Call, signal: JitsiCallSignal){
+        if activeCall != nil{
+            updateActiveCallInfoIfRequired(newCall)// activeCall?.uID != newCall.uID user busy on another call
+            return
+        }
+        if muidDic?.keys.first == newCall.uID, muidDic?[newCall.uID] == true{
+            return
+        }
+        transactionID = signal.transationID
+        activeCall = newCall
+        link = activeCall?.inviteLink ?? ""
+        addSignalReceiver()
+        openPopupForGroupCall()
+    }
+    
+    func updateActiveCallInfoIfRequired(_ newCall : Call){
+        if activeCall.uID == newCall.uID{
+            if self.activeCall.currentUser.name == "User"{
+                 activeCall = newCall
+            }
+        }
+    }
+    
+    
+    func openPopupForGroupCall(){
+        if let keyWindow = UIApplication.shared.keyWindow {
+            if muidDic?.keys.first == activeCall?.uID, muidDic?[activeCall?.uID ?? ""] == true{
+               return
+            }
+            if RecievedGroupCallView.shared == nil {
+                RecievedGroupCallView.shared = RecievedGroupCallView.loadView()
+                
+                guard  !keyWindow.subviews.contains(RecievedGroupCallView.shared) else {
+                    RecievedGroupCallView.shared = nil
+                    return
+                }
+                
+                RecievedGroupCallView.shared.userInfo = userDataforDailCall()
+                RecievedGroupCallView.shared.setUp()
+                RecievedGroupCallView.shared.delegate = self
+                print("ADD VIEW ON WINDOW***************")
+                keyWindow.addSubview(RecievedGroupCallView.shared)
+                RecievedGroupCallView.shared.playReceivedCallSound()
+                
+                //Add timer
+                if repeatShowingPopupTimer == nil {
+                    let timer = Timer(timeInterval: 2.0,
+                                      target: self,
+                                      selector: #selector(updateRepeatShowingPopupTimer),
+                                      userInfo: nil,
+                                      repeats: true)
+                    RunLoop.current.add(timer, forMode: .common)
+                    timer.tolerance = 0.1
+                    self.repeatShowingPopupTimer = timer
+                }
+            }
+        }
+    }
+    
+    //MARK:- Methods to start group call
+    /// start publishing *START_GROUP_CALL* from/ agentsdk on user channel and active channel once the agent joins the link
+    private func sendStartGroupCall(completion: VersionMismatchCallBack? = nil){
+        if activeCall == nil{
+            return
+        }
+        
+        let signal = JitsiCallSignal(signalType: .START_GROUP_CALL, callUID: activeCall!.uID, sender: activeCall!.currentUser, senderDeviceID: activeCall?.uID ?? "", callType: activeCall!.type , link: link, isFSilent: false,transationID: transactionID)
+        let dict = signal.getJsonToSendToFaye()
+        sendData(dict: dict) { (mismatch) in
+            if completion != nil{
+                completion!(mismatch)
+            }
+        }
+        if repeatGroupCallTimer == nil {
+            let timer = Timer(timeInterval: 2.0,
+                              target: self,
+                              selector: #selector(updateTimerAndSendStartGroupCall),
+                              userInfo: nil,
+                              repeats: true)
+            RunLoop.current.add(timer, forMode: .common)
+            timer.tolerance = 0.1
+            self.repeatGroupCallTimer = timer
+        }
+    }
+    
+    @objc private func updateTimerAndSendStartGroupCall(){
+        self.timeElapsedSinceGroupCallStart += 2
+        self.repeatStartGroupCall()
+    }
+    @objc private func updateRepeatShowingPopupTimer(){
+        self.timeElapsedSincePopupShown += 2
+        if !(maxRepeatTime > timeElapsedSincePopupShown){
+           endrepeatShowingPopup()
+           activeCall?.signalingClient.sendSessionStatus(status: "MISSED_GROUP_CALL")
+            if JitsiConfrenceCallView.shared == nil{
+                resetAllResourceForNewCall()
+            }
+        }
+    }
+    
+    private func endrepeatShowingPopup(){
+        repeatShowingPopupTimer?.invalidate()
+        repeatShowingPopupTimer = nil
+        timeElapsedSincePopupShown = 0
+        removeRecievedGroupCallPopup()
+    }
+    
+    
+    private func endRepeatStartGroupCall(){
+        repeatGroupCallTimer?.invalidate()
+        repeatGroupCallTimer = nil
+        timeElapsedSinceGroupCallStart = 0
+    }
+    
+    private func repeatStartGroupCall(){
+        if maxRepeatTime > timeElapsedSinceGroupCallStart, activeCall != nil { // send repeat call
+            let signal = JitsiCallSignal(signalType: .START_GROUP_CALL, callUID: activeCall!.uID, sender: activeCall!.currentUser, senderDeviceID: activeCall?.uID ?? "", callType: activeCall!.type , link: link, isFSilent: true)
+            let dict = signal.getJsonToSendToFaye()
+            sendData(dict: dict)
+        } else {
+            self.endRepeatStartGroupCall()
+        }
+    }
+    
+    private func removeRecievedGroupCallPopup(){
+        if RecievedGroupCallView.shared != nil {
+            RecievedGroupCallView.shared.remove()
+        }
+    }
+    
+    private func rejectGroupCall(){
+        if activeCall == nil {
+            return
+        }
+        let signal = JitsiCallSignal(signalType: .REJECT_GROUP_CALL, callUID: activeCall!.uID, sender: activeCall!.currentUser, senderDeviceID: activeCall?.uID ?? "", callType: activeCall!.type , link: link, isFSilent: true,transationID: transactionID)
+        muidDic = [String : Bool]()
+        muidDic?[activeCall.uID] = true
+        let dict = signal.getJsonToSendToFaye()
+        sendData(dict: dict)
+        removeRecievedGroupCallPopup()
+        activeCall?.signalingClient.sendSessionStatus(status: "REJECT_GROUP_CALL")
+    }
+    
+    private func groupCallRejectedFromUser(){
+        resetAllResourceForNewCall()
+        removeRecievedGroupCallPopup()
+    }
+    
+    private func acceptGroupCall(){
+        if activeCall == nil {
+            return
+        }
+        let signal = JitsiCallSignal(signalType: .JOIN_GROUP_CALL, callUID: activeCall!.uID, sender: activeCall!.currentUser, senderDeviceID: activeCall?.uID ?? "", callType: activeCall!.type , link: link, isFSilent: true,transationID: transactionID)
+        let dict = signal.getJsonToSendToFaye()
+        sendData(dict: dict)
+        self.showJitsiView()
+        activeCall?.signalingClient.sendSessionStatus(status: "JOIN_GROUP_CALL")
+    }
+    
 }
 
 
@@ -162,14 +343,6 @@ extension JitsiCallManager {
                     return
                 }
                 
-//                guard signal?.sender.peerId == self?.activeCall?.currentUser.peerId else {
-//                    return
-//                }
-                
-//                guard let senderId = userId , activeCall.currentUser.peerId != senderId  else {
-//                    return
-//                }
-                
                 switch signalType {
                 case .START_CONFERENCE_IOS:
                     self?.sendReadyToConnect()
@@ -186,11 +359,6 @@ extension JitsiCallManager {
                     }
                     self?.sendOffer()
                 case .ANSWER_CONFERENCE:
-//                    guard let activeSignal = self?.activeCall else {
-//                        self?.removeDialAndReceivedView()
-//                        return
-//                    }
-                    
                     guard signal?.sender.peerId != self?.activeCall?.currentUser.peerId  else {
                         if signal?.senderDeviceID != CallClient.shared.currentDeviceID /*|| signal?.senderDeviceID == "" && deviceType == 3 )*/ {
                              self?.removeDialAndReceivedView()
@@ -233,6 +401,31 @@ extension JitsiCallManager {
                         CallStartAndReceivedView.shared.callStateText = HippoCallClientStrings.ringing
                     }
                     self?.sendOffer()
+                    break
+                case .START_GROUP_CALL:
+                    break
+                case .REJECT_GROUP_CALL:
+                    //if user_id is same and device_id is different remove popup
+                    ///This condition is to remove popup from other devices if call is  */REJECTED/*  from same user id
+                    if  signal?.sender.peerId == self?.activeCall?.currentUser.peerId && signal?.senderDeviceID != CallClient.shared.currentDeviceID{
+                        self?.removeRecievedGroupCallPopup()
+                        self?.resetAllResourceForNewCall()
+                    }
+                    break
+                case .JOIN_GROUP_CALL:
+                    //if user_id is same and device_id is different remove popup
+                    ///This condition is to remove popup from other devices if call is */ACCEPTED/*  from same user id
+                    if  signal?.sender.peerId == self?.activeCall?.currentUser.peerId && signal?.senderDeviceID != CallClient.shared.currentDeviceID{
+                        self?.removeRecievedGroupCallPopup()
+                        self?.resetAllResourceForNewCall()
+                    }
+                    break
+                case .END_GROUP_CALL:
+                    ///end Call session on listening */END_GROUP_CALL/* from agent
+                    if signal?.sender.peerId != self?.activeCall.currentUser.peerId{
+                       self?.removeRecievedGroupCallPopup()
+                       self?.resetAllResourceForNewCall()
+                    }
                     break
                 }
             }
@@ -344,6 +537,7 @@ extension JitsiCallManager {
             let dict = signal.getJsonToSendToFaye()
             sendData(dict: dict)
         }else { // remove
+            self.endRepeatStartCall()
             //Logger.shared.printVar(for: "timer over")
 //            userDidCanceledDialCall()
         }
@@ -398,8 +592,10 @@ extension JitsiCallManager {
         }
         let signal = JitsiCallSignal(signalType: .REJECT_CONFERENCE, callUID: activeCall!.uID, sender: activeCall!.currentUser, senderDeviceID: activeCall?.uID ?? "", callType: activeCall!.type , link: link, isFSilent: true)
         let dict = signal.getJsonToSendToFaye()
-        sendData(dict: dict)
-        callRejectByCurrentUser()
+        sendData(dict: dict){(mark) in
+            self.callRejectByCurrentUser()
+        }
+        removeDialAndReceivedView()
     }
     
     
@@ -492,6 +688,23 @@ extension JitsiCallManager {
         
     }
     
+    func showJitsiViewForGroupCall(_ groupCallData : CallClientGroupCallData){
+        if let keyWindow = UIApplication.shared.keyWindow {
+            if JitsiConfrenceCallView.shared == nil && activeCall != nil {
+                let imageURL = URL(string: activeCall.currentUser.image)
+                guard let inviteLink =  URL(string: JitsiConstants.inviteLink), let roomId = groupCallData.roomUniqueId else{
+                    return
+                }
+                let model = JitsiMeetDataModel(userName: activeCall.currentUser.name, userEmail: "", userImage: imageURL, audioOnly: activeCall.type == .audio ? true : false, serverURl: inviteLink, roomID: roomId)
+                JitsiConfrenceCallView.shared = JitsiConfrenceCallView.loadView(with: keyWindow.frame)
+                JitsiConfrenceCallView.shared.setupJitsi(for: model)
+                JitsiConfrenceCallView.shared.delegate = self
+                keyWindow.addSubview(JitsiConfrenceCallView.shared)
+                self.sendStartGroupCall()
+            }
+        }
+    }
+    
     func showJitsiView() {
         if let keyWindow = UIApplication.shared.keyWindow {
             if JitsiConfrenceCallView.shared == nil && activeCall != nil {
@@ -503,6 +716,7 @@ extension JitsiCallManager {
                 keyWindow.addSubview(JitsiConfrenceCallView.shared)
             }
         }
+        endrepeatShowingPopup()
         removeDialAndReceivedView()
     }
     
@@ -525,7 +739,13 @@ extension JitsiCallManager {
         repeatTimer.invalidate()
         repeatTimeriOS.invalidate()
         startConTimer.invalidate()
+        repeatGroupCallTimer?.invalidate()
+        repeatShowingPopupTimer?.invalidate()
+        repeatShowingPopupTimer = nil
+        repeatGroupCallTimer = nil
         //startConTimer = nil
+        timeElapsedSincePopupShown = 0
+        timeElapsedSinceGroupCallStart = 0
         timeSinceStartCon = 0
         timeElapsedSinceCallStart = 0
         timeElapsedSinceCallStartiOS = 0
@@ -566,6 +786,16 @@ extension JitsiCallManager {
         }
         return link
     }
+    
+    func createGroupCallLink(with groupCallData: CallClientGroupCallData,for call: Call)-> String {
+        let url = JitsiConstants.inviteLink
+        var link = url + (groupCallData.roomUniqueId ?? "")
+        if call.type == .audio{
+            link += "#config.startWithVideoMuted=true"
+        }
+        return link
+    }
+    
     
     func randomString(length: Int = 10) -> String {
         let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -638,7 +868,14 @@ extension JitsiCallManager : JitsiConfrenceCallViewDelegate  {
     
     
 }
-
+extension JitsiCallManager : RecievedGroupCallDelegate{
+    func groupCallAnswered(){
+        acceptGroupCall()
+    }
+    func groupCallCancelled(){
+        rejectGroupCall()
+    }
+}
 
 
 

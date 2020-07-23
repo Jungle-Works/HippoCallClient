@@ -20,15 +20,30 @@ public class Call {
     var inviteLink: String = ""
     var isStartCallSend: Bool = false
     var isCallByMe: Bool = false
-    public init(peer: CallPeer, signalingClient: SignalingClient, uID: String, currentUser: CallPeer, type: CallType, link: String) {
+    var isGroupCall : Bool?
+    
+    public init(peer: CallPeer, signalingClient: SignalingClient, uID: String, currentUser: CallPeer, type: CallType, link: String, isGroupCall : Bool = false) {
         self.peer = peer
         self.signalingClient = signalingClient
         self.uID = uID
         self.currentUser = currentUser
         self.type = type
         self.inviteLink = link
+        self.isGroupCall = isGroupCall
+        
     }
 }
+
+public class CallClientGroupCallData{
+   var roomTitle : String?
+   var roomUniqueId : String?
+   
+    public init(roomTitle : String, roomUniqueId : String){
+        self.roomTitle = roomTitle
+        self.roomUniqueId = roomUniqueId
+    }
+}
+
 
 public extension Call {
     enum State {

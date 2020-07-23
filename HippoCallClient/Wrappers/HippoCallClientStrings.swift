@@ -14,5 +14,5 @@ public class HippoCallClientStrings{
     public static var ringing = "Ringing..."
     public static var callDeclined = "Call Declined"
     public static var busyOnOtherCall = "Busy on another call..."
- 
+    static var conferenceCallInvited = "has invited you to join %@ conference"
 }

@@ -13,7 +13,7 @@ public class HippoUser {
     var userId: Int?
     
     public init?(json: [String: Any]) {
-        fullName = json["full_name"] as? String ?? ""
+        fullName = json["full_name"] as? String ?? json["label"] as? String ?? ""
         imageThunbnailUrl = json["thumbnail_url"] as? String ?? json["user_image"] as? String ?? json["image_url"] as? String ?? json["user_thumbnail_image"] as? String ?? ""
         userId = json["user_id"] as? Int ?? -222
         
@@ -36,12 +36,21 @@ public class HippoUser {
 
 extension HippoUser: CallPeer {
     public var name: String {
-        return fullName
+        get {
+            return fullName
+        }
+        set {
+        }
     }
     
     public var image: String {
-        return imageThunbnailUrl
+        get {
+            return imageThunbnailUrl
+        }
+        set {
+        }
     }
+
     
     public var peerId: String {
         return (userId ?? -1).description

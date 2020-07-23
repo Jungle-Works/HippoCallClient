@@ -23,8 +23,9 @@ struct JitsiCallSignal {
     var hungUpType: HungupType?
     var isFSilent: Bool = true
     var shouldRefreshCall : Bool = false
+    var transationID : String?
     
-    init(signalType: JitsiSignalType, callUID: String, sender: CallPeer, senderDeviceID: String, callType: Call.CallType, link: String, isFSilent: Bool) {
+    init(signalType: JitsiSignalType, callUID: String, sender: CallPeer, senderDeviceID: String, callType: Call.CallType, link: String, isFSilent: Bool,transationID : String? = nil) {
         self.signalType = signalType
         self.callUID = callUID
         self.sender = sender
@@ -32,11 +33,12 @@ struct JitsiCallSignal {
         self.callType = callType
         self.isFSilent = isFSilent
         self.conferenceLink = link
+        self.transationID = transationID
     }
 }
 
 extension JitsiCallSignal {
-    enum JitsiSignalType: String {
+    public enum JitsiSignalType: String {
         case START_CONFERENCE_IOS = "START_CONFERENCE_IOS"
         case START_CONFERENCE = "START_CONFERENCE"
         case READY_TO_CONNECT_CONFERENCE = "READY_TO_CONNECT_CONFERENCE"
@@ -46,6 +48,10 @@ extension JitsiCallSignal {
         case OFFER_CONFERENCE = "OFFER_CONFERENCE"
         case ANSWER_CONFERENCE = "ANSWER_CONFERENCE"
         case REJECT_CONFERENCE = "REJECT_CONFERENCE"
+        case START_GROUP_CALL = "START_GROUP_CALL"
+        case REJECT_GROUP_CALL = "REJECT_GROUP_CALL"
+        case JOIN_GROUP_CALL = "JOIN_GROUP_CALL"
+        case END_GROUP_CALL = "END_GROUP_CALL"
     
     }
     
@@ -104,7 +110,10 @@ extension JitsiCallSignal {
         }
         
 //        Logger.shared.printVar(for: json["refresh_call"] as? Bool)
-     
+        if let transactionID = json["transaction_id"] as? String{
+            signalObj.transationID = transactionID
+        }
+        
         return signalObj
     }
 }
@@ -139,7 +148,7 @@ extension JitsiCallSignal {
         
         fayeDict["is_silent"] = isFSilent
         fayeDict["invite_link"] = conferenceLink
-       
+        fayeDict["transaction_id"] = transationID
         
         return fayeDict
     }

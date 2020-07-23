@@ -37,6 +37,11 @@ public class HippoCallClient {
     public func voipNotificationRecieved(dictionary: [AnyHashable: Any], peer: CallPeer, signalingClient: SignalingClient, currentUser: CallPeer) {
         CallClient.shared.voipNotificationReceived(dictionary: dictionary, peer: peer, signalingClient: signalingClient, currentUser: currentUser)
     }
+    
+    public func voipNotificationRecievedForGroupCall(dictionary: [AnyHashable: Any], peer: CallPeer, signalingClient: SignalingClient, currentUser: CallPeer) {
+        CallClient.shared.voipNotificationRecievedForGroupCall(dictionary: dictionary, peer: peer, signalingClient: signalingClient, currentUser: currentUser)
+    }
+    
     /// This is function is called to hangup current ongoing call if any
     public func hangupCall() {
         CallClient.shared.hangupCall()
@@ -55,12 +60,15 @@ public class HippoCallClient {
         }
     }
     
+    public func startGroupCall(call: Call, groupCallData: CallClientGroupCallData){
+        JitsiCallManager.shared.startGroupCall(with: call, with: groupCallData)
+    }
+  
     public func startCall(call:Call, completion: @escaping (Bool, NSError?) -> Void) {
         
         JitsiCallManager.shared.startCall(with: call) { (versionMismatch) in
             
-            if versionMismatch != nil, versionMismatch {
-                
+            if versionMismatch {
                 let info = [NSLocalizedDescriptionKey:"Calling faild due to verison mismatch."];
                 let versionMismatchError = NSError(domain: "error.hippo", code: 415, userInfo: info)
                 completion(false,versionMismatchError)
