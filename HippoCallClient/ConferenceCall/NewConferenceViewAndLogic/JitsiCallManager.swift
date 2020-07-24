@@ -19,9 +19,9 @@ class JitsiCallManager {
     }
     static let shared = JitsiCallManager()
     var link: String!
-    var repeatTimer = Timer()
-    var repeatTimeriOS = Timer()
-    var startConTimer = Timer()
+    var repeatTimer : Timer?
+    var repeatTimeriOS : Timer?
+    var startConTimer : Timer?
     var repeatGroupCallTimer : Timer?
     var repeatShowingPopupTimer : Timer?
     var timeSinceStartCon = 0
@@ -51,18 +51,14 @@ class JitsiCallManager {
     
     func startReceivedCall(newCall: Call, signal: JitsiCallSignal) {
         
-        if CallClient.shared.isUserBusy() { //, activeCall?.uID != newCall.uID user busy on another call
-            sendBusy(with: activeCall, and: signal)
+        if activeCall != nil && newCall.uID != activeCall?.uID{ //, activeCall?.uID != newCall.uID user busy on another call
+            sendBusy(with: newCall, and: signal)
             return
         }
         
-//        if activeCall == nil {
-            activeCall = newCall
-            link = activeCall?.inviteLink ?? ""
-            addSignalReceiver()
-//        }
-        
-//        startPublishingLocalNotificationForIncomingCallWith(signal: signal)
+        activeCall = newCall
+        link = activeCall?.inviteLink ?? ""
+        addSignalReceiver()
         sendReadyToConnect()
     }
     
@@ -85,6 +81,7 @@ extension JitsiCallManager{
     func startGroupCall(with call: Call, with groupCallData : CallClientGroupCallData){
         timeElapsedSinceGroupCallStart = 0
         activeCall = call
+        transactionID = groupCallData.transactionId
         link = createGroupCallLink(with: groupCallData, for: call)
         showJitsiViewForGroupCall(groupCallData)
     }
@@ -92,8 +89,8 @@ extension JitsiCallManager{
     
     func startRecievedGroupCall(newCall: Call, signal: JitsiCallSignal){
         if activeCall != nil{
-            updateActiveCallInfoIfRequired(newCall)// activeCall?.uID != newCall.uID user busy on another call
-            return
+            updateActiveCallInfoIfRequired(newCall)
+            return // activeCall?.uID != newCall.uID user busy on another call
         }
         if muidDic?.keys.first == newCall.uID, muidDic?[newCall.uID] == true{
             return
@@ -183,7 +180,7 @@ extension JitsiCallManager{
         self.timeElapsedSincePopupShown += 2
         if !(maxRepeatTime > timeElapsedSincePopupShown){
            endrepeatShowingPopup()
-           activeCall?.signalingClient.sendSessionStatus(status: "MISSED_GROUP_CALL")
+            activeCall?.signalingClient.sendSessionStatus(status: "MISSED_GROUP_CALL", transactionId : transactionID ?? "")
             if JitsiConfrenceCallView.shared == nil{
                 resetAllResourceForNewCall()
             }
@@ -220,6 +217,23 @@ extension JitsiCallManager{
         }
     }
     
+   func leaveConferenceOnForceKill(){
+       userDidTerminatedConference()
+    }
+    
+    private func removeJitsiPopup(){
+        JitsiConfrenceCallView.shared.leaveConfrence { [weak self](mark) in
+            if mark {
+                if JitsiConfrenceCallView.shared  == nil { return }
+                JitsiConfrenceCallView.shared.removeFromSuperview()
+                JitsiConfrenceCallView.shared.delegate = nil
+                JitsiConfrenceCallView.shared = nil
+                self?.resetAllResourceForNewCall()
+            }
+        }
+        self.activeCall.signalingClient.sendSessionStatus(status: "END_GROUP_CALL",transactionId: transactionID ?? "")
+    }
+    
     private func rejectGroupCall(){
         if activeCall == nil {
             return
@@ -228,9 +242,11 @@ extension JitsiCallManager{
         muidDic = [String : Bool]()
         muidDic?[activeCall.uID] = true
         let dict = signal.getJsonToSendToFaye()
-        sendData(dict: dict)
+        sendData(dict: dict){(mark) in
+           self.groupCallRejectedFromUser()
+        }
         removeRecievedGroupCallPopup()
-        activeCall?.signalingClient.sendSessionStatus(status: "REJECT_GROUP_CALL")
+        activeCall?.signalingClient.sendSessionStatus(status: "REJECT_GROUP_CALL",transactionId: transactionID ?? "")
     }
     
     private func groupCallRejectedFromUser(){
@@ -246,7 +262,7 @@ extension JitsiCallManager{
         let dict = signal.getJsonToSendToFaye()
         sendData(dict: dict)
         self.showJitsiView()
-        activeCall?.signalingClient.sendSessionStatus(status: "JOIN_GROUP_CALL")
+        activeCall?.signalingClient.sendSessionStatus(status: "JOIN_GROUP_CALL", transactionId: transactionID ?? "")
     }
     
 }
@@ -345,15 +361,19 @@ extension JitsiCallManager {
                 
                 switch signalType {
                 case .START_CONFERENCE_IOS:
-                    self?.sendReadyToConnect()
+                  //  self?.sendReadyToConnect()
                 break// nerver come on socket alway come from push
                 case .START_CONFERENCE:
                 break// nerver come on socket alway come from push
                 case .READY_TO_CONNECT_CONFERENCE :
                     self?.endRepeatStartCall()
                     if CallStartAndReceivedView.shared != nil && CallStartAndReceivedView.shared.isCallRecieved ?? false{
-                      return
+                        return
                     }
+                    if JitsiConfrenceCallView.shared != nil{
+                        return
+                    }
+                    
                     if (CallStartAndReceivedView.shared != nil){
                         CallStartAndReceivedView.shared.callStateText = HippoCallClientStrings.ringing
                     }
@@ -361,7 +381,7 @@ extension JitsiCallManager {
                 case .ANSWER_CONFERENCE:
                     guard signal?.sender.peerId != self?.activeCall?.currentUser.peerId  else {
                         if signal?.senderDeviceID != CallClient.shared.currentDeviceID /*|| signal?.senderDeviceID == "" && deviceType == 3 )*/ {
-                             self?.removeDialAndReceivedView()
+                            self?.removeDialAndReceivedView()
                         } else {
                             self?.endRepeatStartCalliOS()
                             self?.endRepeatStartCall()
@@ -382,6 +402,9 @@ extension JitsiCallManager {
                     guard signal?.sender.peerId != self?.activeCall?.currentUser.peerId  else {
                         return
                     }
+                    if JitsiConfrenceCallView.shared != nil{
+                        return
+                    }
                     if CallStartAndReceivedView.shared == nil {
                         self?.showReceivedCallView()
                     }
@@ -389,7 +412,9 @@ extension JitsiCallManager {
                 case .REJECT_CONFERENCE:
                     self?.receivedRejectCallFromOtherUser()
                 case .HUNGUP_CONFERENCE:
-                    self?.otherUserCallHungup()
+                    if self?.activeCall?.uID == signal?.callUID{
+                        self?.otherUserCallHungup()
+                    }
                 case .USER_BUSY_CONFERENCE:
                     self?.otherUserBusyOnOtherCall()
                 case .READY_TO_CONNECT_CONFERENCE_IOS:
@@ -422,9 +447,16 @@ extension JitsiCallManager {
                     break
                 case .END_GROUP_CALL:
                     ///end Call session on listening */END_GROUP_CALL/* from agent
-                    if signal?.sender.peerId != self?.activeCall.currentUser.peerId{
-                       self?.removeRecievedGroupCallPopup()
-                       self?.resetAllResourceForNewCall()
+                    if signal?.sender.peerId != self?.activeCall?.currentUser.peerId{
+                        self?.removeRecievedGroupCallPopup()
+                        self?.removeJitsiPopup()
+                    }
+                    break
+                    
+                case .CALL_HUNG_UP:
+                    if  signal?.sender.peerId == self?.activeCall?.currentUser.peerId && signal?.callUID == self?.activeCall.uID && signal?.senderDeviceID != CallClient.shared.currentDeviceID{
+                        self?.removeDialAndReceivedView()
+                        self?.resetAllResourceForNewCall()
                     }
                     break
                 }
@@ -434,7 +466,16 @@ extension JitsiCallManager {
     
     func startTimerForConference(createCall: Bool){
         if (activeCall != nil){
-            startConTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateStartConTimer(_:)), userInfo: nil, repeats: true)
+            if startConTimer == nil {
+                let timer = Timer(timeInterval: 2.0,
+                                  target: self,
+                                  selector: #selector(updateStartConTimer),
+                                  userInfo: nil,
+                                  repeats: true)
+                RunLoop.current.add(timer, forMode: .common)
+                timer.tolerance = 0.1
+                self.startConTimer = timer
+            }
         } else {
             removeStartConTimer(for: false, createCall: false)
         }
@@ -446,9 +487,10 @@ extension JitsiCallManager {
             removeStartConTimer(for: false, createCall: createCall)
         }
     }
+    
     func removeStartConTimer(for answer: Bool, createCall: Bool){
-        startConTimer.invalidate()
-        //startConTimer = nil
+        startConTimer?.invalidate()
+        startConTimer = nil
         timeSinceStartCon = 0
         if createCall {
             userDidCanceledDialCall()
@@ -474,7 +516,12 @@ extension JitsiCallManager {
                         self?.removeStartConTimer(for: false, createCall: true)
                         self?.resetAllResourceForNewCall()
                         completion?(true)
+                    }else if (error?.code == 421){
+                        self?.endRepeatStartGroupCall()
+                        completion?(true)
                     }
+                }else{
+                    completion?(false)
                 }
             }
         })
@@ -492,12 +539,23 @@ extension JitsiCallManager {
             }
         }
         
-        repeatTimer =  Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: { [weak self]_ in
-            //Logger.shared.printVar(for: "timer")
-            self?.timeElapsedSinceCallStart += 5
-            self?.sendRepeatStartCall()
-        })
+        if repeatTimer == nil {
+            let timer = Timer(timeInterval: 5.0,
+                              target: self,
+                              selector: #selector(updateTimerForSendStartCall),
+                              userInfo: nil,
+                              repeats: true)
+            RunLoop.current.add(timer, forMode: .common)
+            timer.tolerance = 0.1
+            self.repeatTimer = timer
+        }
     }
+    
+    @objc func updateTimerForSendStartCall(){
+        self.timeElapsedSinceCallStart += 5
+        self.sendRepeatStartCall()
+    }
+    
     
     func sendStartCallFirstTimeForiOS(completion: VersionMismatchCallBack? = nil) {
         if activeCall == nil{
@@ -511,11 +569,21 @@ extension JitsiCallManager {
             }
         }
         
-        repeatTimeriOS =  Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: { [weak self]_ in
-            //Logger.shared.printVar(for: "timer")
-            self?.timeElapsedSinceCallStartiOS += 5
-            self?.sendRepeatStartCalliOS()
-        })
+        if repeatTimeriOS == nil {
+            let timer = Timer(timeInterval: 5.0,
+                              target: self,
+                              selector: #selector(updateTimerForSendStartIosCall),
+                              userInfo: nil,
+                              repeats: true)
+            RunLoop.current.add(timer, forMode: .common)
+            timer.tolerance = 0.1
+            self.repeatTimeriOS = timer
+        }
+    }
+    
+    @objc func updateTimerForSendStartIosCall(){
+        self.timeElapsedSinceCallStartiOS += 5
+        self.sendRepeatStartCalliOS()
     }
     
     func sendRepeatStartCalliOS() {
@@ -525,9 +593,6 @@ extension JitsiCallManager {
             sendData(dict: dict)
         } else {
             self.endRepeatStartCalliOS()
-            // remove
-            //Logger.shared.printVar(for: "timer over")
-//            userDidCanceledDialCall()
         }
     }
     
@@ -544,13 +609,13 @@ extension JitsiCallManager {
     }
     
     func endRepeatStartCall() {
-        repeatTimer.invalidate()
-       // repeatTimer = nil
+        repeatTimer?.invalidate()
+        repeatTimer = nil
     }
     
     func endRepeatStartCalliOS(){
-        repeatTimeriOS.invalidate()
-       // repeatTimeriOS = nil
+        repeatTimeriOS?.invalidate()
+        repeatTimeriOS = nil
     }
     
     func sendOffer() {
@@ -602,7 +667,9 @@ extension JitsiCallManager {
     func sendBusy(with otherCall: Call, and signal: JitsiCallSignal) {
         let signal = JitsiCallSignal(signalType: .USER_BUSY_CONFERENCE, callUID: otherCall.uID, sender: otherCall.currentUser, senderDeviceID: otherCall.uID , callType: otherCall.type , link: signal.conferenceLink ?? "", isFSilent: true)
         let dict = signal.getJsonToSendToFaye()
-        otherCall.signalingClient.sendJitsiObject(json: dict) { (mark, error) in}
+        otherCall.signalingClient.connectClient(completion: { (success) in
+            otherCall.signalingClient.sendJitsiObject(json: dict) { (mark, error) in}
+        })
     }
     
     func otherUserCallHungup() {
@@ -701,6 +768,7 @@ extension JitsiCallManager {
                 JitsiConfrenceCallView.shared.delegate = self
                 keyWindow.addSubview(JitsiConfrenceCallView.shared)
                 self.sendStartGroupCall()
+                self.activeCall?.signalingClient.sendSessionStatus(status: "START_GROUP_CALL", transactionId : transactionID ?? "")
             }
         }
     }
@@ -736,14 +804,16 @@ extension JitsiCallManager {
     func resetAllResourceForNewCall() {
         activeCall = nil
         link = nil
-        repeatTimer.invalidate()
-        repeatTimeriOS.invalidate()
-        startConTimer.invalidate()
+        repeatTimer?.invalidate()
+        repeatTimeriOS?.invalidate()
+        startConTimer?.invalidate()
+        repeatTimer = nil
+        repeatTimeriOS = nil
+        startConTimer = nil
         repeatGroupCallTimer?.invalidate()
         repeatShowingPopupTimer?.invalidate()
         repeatShowingPopupTimer = nil
         repeatGroupCallTimer = nil
-        //startConTimer = nil
         timeElapsedSincePopupShown = 0
         timeElapsedSinceGroupCallStart = 0
         timeSinceStartCon = 0
@@ -859,7 +929,16 @@ extension JitsiCallManager : JitsiConfrenceCallViewDelegate  {
     }
     
     func userDidTerminatedConference() {
-        sendCallHungup()
+        if (activeCall?.isGroupCall ?? false) == false{
+            sendCallHungup()
+        }else{
+            if JitsiConfrenceCallView.shared != nil {
+                JitsiConfrenceCallView.shared.removeFromSuperview()
+                JitsiConfrenceCallView.shared.delegate = nil
+                JitsiConfrenceCallView.shared = nil
+            }
+            resetAllResourceForNewCall()
+        }
     }
     
     func userDidEnterPictureInPicture() {

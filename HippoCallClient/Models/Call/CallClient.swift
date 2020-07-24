@@ -43,7 +43,7 @@ class CallClient {
         guard let signal = JitsiCallSignal.getFrom(json: jsonDict) else {
             return
         }
-        let call = Call(peer: peer, signalingClient: signalingClient, uID: signal.callUID, currentUser: currentUser, type: signal.callType, link: signal.conferenceLink ?? "")
+        let call = Call(peer: peer, signalingClient: signalingClient, uID: signal.callUID, currentUser: currentUser, type: signal.callType, link: signal.conferenceLink ?? "", isGroupCall: true)
         call.isCallByMe = peer.peerId == currentUser.peerId ? true : false
         self.handleCallEvent(for: jsonDict, call: call, jitsiSignal: signal )
     }

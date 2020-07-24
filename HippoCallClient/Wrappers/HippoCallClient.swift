@@ -47,6 +47,11 @@ public class HippoCallClient {
         CallClient.shared.hangupCall()
     }
     
+    public func terminateSessionIfAny(){
+        JitsiCallManager.shared.leaveConferenceOnForceKill()
+    }
+    
+    
     /// This function is used to start call
     ///
     /// - Parameters:

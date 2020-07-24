@@ -52,6 +52,7 @@ extension JitsiCallSignal {
         case REJECT_GROUP_CALL = "REJECT_GROUP_CALL"
         case JOIN_GROUP_CALL = "JOIN_GROUP_CALL"
         case END_GROUP_CALL = "END_GROUP_CALL"
+        case CALL_HUNG_UP = "CALL_HUNG_UP"
     
     }
     

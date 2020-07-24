@@ -10,7 +10,7 @@ import Foundation
 
 public protocol SignalingClient: class {
    var signalReceivedFromPeer: (([String: Any]) -> Void)? { get set }
-   func sendSessionStatus(status : String)
+    func sendSessionStatus(status : String,transactionId : String)
    func connectClient(completion: @escaping (Bool) -> Void)
    func checkIfReadyForCommunication() -> Bool
    func sendSignalToPeer(signal: CallSignal, completion: @escaping (Bool, NSError?) -> Void)

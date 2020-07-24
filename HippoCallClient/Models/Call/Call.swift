@@ -35,12 +35,15 @@ public class Call {
 }
 
 public class CallClientGroupCallData{
-   var roomTitle : String?
-   var roomUniqueId : String?
+    var roomTitle : String?
+    var roomUniqueId : String?
+    var transactionId : String?
+    
    
-    public init(roomTitle : String, roomUniqueId : String){
+    public init(roomTitle : String, roomUniqueId : String, transactionId : String){
         self.roomTitle = roomTitle
         self.roomUniqueId = roomUniqueId
+        self.transactionId = transactionId
     }
 }
 
