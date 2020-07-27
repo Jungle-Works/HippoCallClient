@@ -41,7 +41,7 @@ class JitsiConfrenceCallView: UIView {
             ptionsBuilder.userInfo = userInfo
             ptionsBuilder.setFeatureFlag("chat.enabled", withValue: false)
             ptionsBuilder.setFeatureFlag("call-integration.enabled", withValue: false)
-            ptionsBuilder.setFeatureFlag("pip.enabled", withBoolean: true)
+           // ptionsBuilder.setFeatureFlag("pip.enabled", withBoolean: true)
         }
         
         jitsiView.join(conferenceOptions)
