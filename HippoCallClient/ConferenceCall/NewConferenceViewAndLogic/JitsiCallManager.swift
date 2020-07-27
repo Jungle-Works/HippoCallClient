@@ -217,8 +217,24 @@ extension JitsiCallManager{
         }
     }
     
-   func leaveConferenceOnForceKill(){
-       userDidTerminatedConference()
+    func leaveConferenceOnForceKill(){
+        if activeCall == nil{
+            return
+        }
+        if isCallJoined{
+            userDidTerminatedConference()
+        }else{
+            if (activeCall?.isGroupCall ?? false) == false{
+                 sendCallRejected()
+            }else{
+                if JitsiConfrenceCallView.shared != nil {
+                    JitsiConfrenceCallView.shared.removeFromSuperview()
+                    JitsiConfrenceCallView.shared.delegate = nil
+                    JitsiConfrenceCallView.shared = nil
+                }
+                resetAllResourceForNewCall()
+            }
+        }
     }
     
     private func removeJitsiPopup(){
