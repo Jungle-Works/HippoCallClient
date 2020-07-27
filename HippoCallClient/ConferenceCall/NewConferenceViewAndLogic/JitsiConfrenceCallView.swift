@@ -22,6 +22,7 @@ class JitsiConfrenceCallView: UIView {
     static var shared: JitsiConfrenceCallView!
     weak var delegate: JitsiConfrenceCallViewDelegate?
     var player: AVAudioPlayer?
+    fileprivate var pipViewCoordinator: PiPViewCoordinator?
     
     class  func loadView(with frame: CGRect)-> JitsiConfrenceCallView? {
         let view = Bundle.init(identifier: "org.cocoapods.HippoCallClient")?.loadNibNamed("JitsiConfrenceCallView", owner: nil, options: nil)?.first as? JitsiConfrenceCallView
@@ -40,14 +41,21 @@ class JitsiConfrenceCallView: UIView {
             ptionsBuilder.userInfo = userInfo
             ptionsBuilder.setFeatureFlag("chat.enabled", withValue: false)
             ptionsBuilder.setFeatureFlag("call-integration.enabled", withValue: false)
+            ptionsBuilder.setFeatureFlag("pip.enabled", withBoolean: true)
         }
         
         jitsiView.join(conferenceOptions)
-//        if (JitsiCallManager.shared.link != nil){
-//            self.updateConferenceCall(withLink: JitsiCallManager.shared.link)
-//        }
         jitsiView.delegate = self
+        setupPiP()
     }
+    
+    func setupPiP() {
+        pipViewCoordinator = PiPViewCoordinator(withView: self)
+        pipViewCoordinator?.delegate = self
+        pipViewCoordinator?.configureAsStickyView()
+        jitsiView.alpha = 1
+    }
+    
     
     func leaveConfrence(completion: @escaping(Bool)-> Void){
         playSound(soundName: "disconnect_call", numberOfLoops: Int.max)
@@ -91,12 +99,22 @@ extension JitsiConfrenceCallView : JitsiMeetViewDelegate {
     
     func conferenceTerminated(_ data: [AnyHashable : Any]!) {
         delegate?.userDidTerminatedConference()
+        pipViewCoordinator?.exitPictureInPicture()
 //        Logger.shared.printVar(for: data)
     }
     
     func enterPicture(inPicture data: [AnyHashable : Any]!) {
         delegate?.userDidEnterPictureInPicture()
-//        Logger.shared.printVar(for: data)
+        DispatchQueue.main.async {
+            self.pipViewCoordinator?.enterPictureInPicture()
+        }
+    }
+}
+
+extension JitsiConfrenceCallView : PiPViewCoordinatorDelegate{
+    
+    func exitPictureInPicture() {
+        
     }
 }
 

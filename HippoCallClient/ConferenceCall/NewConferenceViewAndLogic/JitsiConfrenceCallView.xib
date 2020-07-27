@@ -15,16 +15,16 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qwj-Vg-S03" customClass="JitsiMeetView">
-                    <rect key="frame" x="1" y="45" width="412" height="816"/>
+                    <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                 </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="Qwj-Vg-S03" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="1" id="AKB-ac-VjD"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="Qwj-Vg-S03" secondAttribute="bottom" constant="1" id="Kh0-Jl-hSi"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Qwj-Vg-S03" secondAttribute="trailing" constant="1" id="MYM-lU-UTt"/>
-                <constraint firstItem="Qwj-Vg-S03" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="1" id="e0f-PY-MCA"/>
+                <constraint firstItem="Qwj-Vg-S03" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="AKB-ac-VjD"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="Qwj-Vg-S03" secondAttribute="bottom" id="Kh0-Jl-hSi"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Qwj-Vg-S03" secondAttribute="trailing" id="MYM-lU-UTt"/>
+                <constraint firstItem="Qwj-Vg-S03" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="e0f-PY-MCA"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>

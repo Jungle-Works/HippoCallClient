@@ -367,13 +367,16 @@ extension JitsiCallManager {
                 break// nerver come on socket alway come from push
                 case .READY_TO_CONNECT_CONFERENCE :
                     self?.endRepeatStartCall()
-                    if CallStartAndReceivedView.shared != nil && CallStartAndReceivedView.shared.isCallRecieved ?? false{
+                    if CallStartAndReceivedView.shared == nil || JitsiConfrenceCallView.shared != nil{
                         return
                     }
-                    if JitsiConfrenceCallView.shared != nil{
+                    if self?.activeCall.currentUser.peerId == signal?.sender.peerId{
                         return
                     }
                     
+                    if self?.link != signal?.conferenceLink{
+                        return
+                    }
                     if (CallStartAndReceivedView.shared != nil){
                         CallStartAndReceivedView.shared.callStateText = HippoCallClientStrings.ringing
                     }
@@ -419,10 +422,17 @@ extension JitsiCallManager {
                     self?.otherUserBusyOnOtherCall()
                 case .READY_TO_CONNECT_CONFERENCE_IOS:
                     self?.endRepeatStartCalliOS()
-                    if CallStartAndReceivedView.shared != nil && CallStartAndReceivedView.shared.isCallRecieved ?? false{
+                    if CallStartAndReceivedView.shared == nil || JitsiConfrenceCallView.shared != nil{
                         return
                     }
-                    if (CallStartAndReceivedView.shared != nil) {
+                    if self?.activeCall.currentUser.peerId == signal?.sender.peerId{
+                        return
+                    }
+                    
+                    if self?.link != signal?.conferenceLink{
+                        return
+                    }
+                    if (CallStartAndReceivedView.shared != nil){
                         CallStartAndReceivedView.shared.callStateText = HippoCallClientStrings.ringing
                     }
                     self?.sendOffer()
@@ -939,6 +949,7 @@ extension JitsiCallManager : JitsiConfrenceCallViewDelegate  {
             }
             resetAllResourceForNewCall()
         }
+        isCallJoined = false
     }
     
     func userDidEnterPictureInPicture() {
