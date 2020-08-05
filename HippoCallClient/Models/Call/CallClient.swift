@@ -176,13 +176,6 @@ class CallClient {
             if ((signalType == .HUNGUP_CONFERENCE || signalType == .REJECT_CONFERENCE) && call.isCallByMe ){
                JitsiCallManager.shared.otherUserCallHungup()
                return
-            }else if signalType == .START_CONFERENCE {
-                if let devicePayload = jsonDict["device_payload"] as? [String:Any], let deviceId = devicePayload["device_id"] as? String ,CallClient.shared.currentDeviceID != deviceId, activeCall?.currentUser.peerId != jitsiSignal.sender.peerId{
-                    JitsiCallManager.shared.startReceivedCall(newCall: call, signal: jitsiSignal)
-                } else if let deviceId = jsonDict["device_id"] as? String ,CallClient.shared.currentDeviceID != deviceId, activeCall?.currentUser.peerId != jitsiSignal.sender.peerId {
-                    JitsiCallManager.shared.startReceivedCall(newCall: call, signal: jitsiSignal)
-                }
-                return
             }else if signalType == .START_CONFERENCE_IOS {
                 if let devicePayload = jsonDict["device_payload"] as? [String:Any], let deviceId = devicePayload["device_id"] as? String ,CallClient.shared.currentDeviceID != deviceId, activeCall?.currentUser.peerId != jitsiSignal.sender.peerId{
                     JitsiCallManager.shared.startReceivedCall(newCall: call, signal: jitsiSignal)

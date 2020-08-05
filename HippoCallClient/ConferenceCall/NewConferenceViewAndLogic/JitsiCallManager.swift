@@ -56,6 +56,10 @@ class JitsiCallManager {
             return
         }
         
+        if RecievedGroupCallView.shared != nil || JitsiConfrenceCallView.shared != nil || CallStartAndReceivedView.shared != nil{
+            return
+        }
+        
         activeCall = newCall
         link = activeCall?.inviteLink ?? ""
         addSignalReceiver()
@@ -81,6 +85,7 @@ extension JitsiCallManager{
     func startGroupCall(with call: Call, with groupCallData : CallClientGroupCallData){
         timeElapsedSinceGroupCallStart = 0
         activeCall = call
+        addSignalReceiver()
         transactionID = groupCallData.transactionId
         link = createGroupCallLink(with: groupCallData, for: call)
         showJitsiViewForGroupCall(groupCallData)
@@ -275,6 +280,8 @@ extension JitsiCallManager{
             return
         }
         let signal = JitsiCallSignal(signalType: .JOIN_GROUP_CALL, callUID: activeCall!.uID, sender: activeCall!.currentUser, senderDeviceID: activeCall?.uID ?? "", callType: activeCall!.type , link: link, isFSilent: true,transationID: transactionID)
+        muidDic = [String : Bool]()
+        muidDic?[activeCall.uID] = true
         let dict = signal.getJsonToSendToFaye()
         sendData(dict: dict)
         self.showJitsiView()
@@ -473,7 +480,7 @@ extension JitsiCallManager {
                     break
                 case .END_GROUP_CALL:
                     ///end Call session on listening */END_GROUP_CALL/* from agent
-                    if signal?.sender.peerId != self?.activeCall?.currentUser.peerId{
+                    if signal?.transationID == self?.transactionID{
                         self?.removeRecievedGroupCallPopup()
                         self?.removeJitsiPopup()
                     }

@@ -74,7 +74,7 @@ public class HippoCallClient {
         JitsiCallManager.shared.startCall(with: call) { (versionMismatch) in
             
             if versionMismatch {
-                let info = [NSLocalizedDescriptionKey:"Calling faild due to verison mismatch."];
+                let info = [NSLocalizedDescriptionKey:"Calling failed due to verison mismatch."];
                 let versionMismatchError = NSError(domain: "error.hippo", code: 415, userInfo: info)
                 completion(false,versionMismatchError)
             }
