@@ -993,11 +993,15 @@ extension JitsiCallManager : RecievedGroupCallDelegate{
 
 extension JitsiCallManager{
     func hideJitsiView(){
-        JitsiConfrenceCallView.shared.hideJitsiView()
+        if JitsiConfrenceCallView.shared != nil{
+            JitsiConfrenceCallView.shared.hideJitsiView()
+        }
     }
     
     func unHideJitsiView(){
-        JitsiConfrenceCallView.shared.showJitsiView()
+        if JitsiConfrenceCallView.shared != nil{
+            JitsiConfrenceCallView.shared.showJitsiView()
+        }
     }
 }
 
