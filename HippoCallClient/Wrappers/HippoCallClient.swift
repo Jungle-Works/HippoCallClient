@@ -120,4 +120,11 @@ public class HippoCallClient {
         CallClient.shared.setCredentials(rawCredentials: rawCredentials)
     }
     
+    public func hideViewInPip(){
+        JitsiCallManager.shared.hideJitsiView()
+    }
+    
+    public func unHideViewInPip(){
+        JitsiCallManager.shared.unHideJitsiView()
+    }
 }

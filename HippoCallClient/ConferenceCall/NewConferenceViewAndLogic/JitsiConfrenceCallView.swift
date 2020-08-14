@@ -27,6 +27,7 @@ class JitsiConfrenceCallView: UIView {
     class  func loadView(with frame: CGRect)-> JitsiConfrenceCallView? {
         let view = Bundle.init(identifier: "org.cocoapods.HippoCallClient")?.loadNibNamed("JitsiConfrenceCallView", owner: nil, options: nil)?.first as? JitsiConfrenceCallView
         view?.frame = frame
+        view?.clipsToBounds = true
         return view
     }
     
@@ -41,7 +42,7 @@ class JitsiConfrenceCallView: UIView {
             ptionsBuilder.userInfo = userInfo
             ptionsBuilder.setFeatureFlag("chat.enabled", withValue: false)
             ptionsBuilder.setFeatureFlag("call-integration.enabled", withValue: false)
-           // ptionsBuilder.setFeatureFlag("pip.enabled", withBoolean: true)
+            ptionsBuilder.setFeatureFlag("pip.enabled", withBoolean: true)
         }
         
         jitsiView.join(conferenceOptions)
@@ -53,7 +54,6 @@ class JitsiConfrenceCallView: UIView {
         pipViewCoordinator = PiPViewCoordinator(withView: self)
         pipViewCoordinator?.delegate = self
         pipViewCoordinator?.configureAsStickyView()
-        jitsiView.alpha = 1
     }
     
     
@@ -66,29 +66,13 @@ class JitsiConfrenceCallView: UIView {
         }
     }
     
-//    func updateConferenceCall(withLink: String) {
-//        var params = [String: Any]()
-//        params["user_id_in_call"] = Workspace.current.user?.fuguUserId
-//        params["calling_link"] = withLink
-//        print("INVITE_LINK", withLink)
-//        HTTPClient.makeConcurrentConnectionWith(method: .POST, para: params, extendedUrl: EndPoints.updateConferenceCall, isAccessTokenRequired: false, isAppVersionRequired: false, isDeviceDetailRequired: false) { (response, error, _, statusCode) in
-//
-//            guard let responseObject = response as? [String: Any] else {
-//                return
-//            }
-//
-//            print(responseObject)
-//            let message = (responseObject["message"] as? String)
-//            switch statusCode ?? 0 {
-//            case STATUS_CODE_SUCCESS:
-//                print("STATUS_CODE_SUCCESS", message)
-//                break
-//            default:
-//                print("STATUS_CODE_NOT_SUCCESS", statusCode)
-//                break
-//            }
-//        }
-//    }
+    func hideJitsiView(){
+        self.isHidden = true
+    }
+    
+    func showJitsiView(){
+       self.isHidden = false
+    }
 }
 
 extension JitsiConfrenceCallView : JitsiMeetViewDelegate {

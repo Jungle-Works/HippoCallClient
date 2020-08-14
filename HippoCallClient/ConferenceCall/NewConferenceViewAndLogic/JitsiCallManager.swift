@@ -991,6 +991,16 @@ extension JitsiCallManager : RecievedGroupCallDelegate{
 }
 
 
+extension JitsiCallManager{
+    func hideJitsiView(){
+        JitsiConfrenceCallView.shared.hideJitsiView()
+    }
+    
+    func unHideJitsiView(){
+        JitsiConfrenceCallView.shared.showJitsiView()
+    }
+}
+
 
 //func changeAudioRouteToSpeaker(_ isSwitching: Bool, completion: @escaping (Bool) -> Void) {
 //
