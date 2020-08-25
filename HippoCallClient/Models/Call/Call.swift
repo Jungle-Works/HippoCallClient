@@ -21,8 +21,9 @@ public class Call {
     var isStartCallSend: Bool = false
     var isCallByMe: Bool = false
     var isGroupCall : Bool?
+    var jitsiUrl : String
     
-    public init(peer: CallPeer, signalingClient: SignalingClient, uID: String, currentUser: CallPeer, type: CallType, link: String, isGroupCall : Bool = false) {
+    public init(peer: CallPeer, signalingClient: SignalingClient, uID: String, currentUser: CallPeer, type: CallType, link: String, isGroupCall : Bool = false, jitsiUrl : String) {
         self.peer = peer
         self.signalingClient = signalingClient
         self.uID = uID
@@ -30,7 +31,7 @@ public class Call {
         self.type = type
         self.inviteLink = link
         self.isGroupCall = isGroupCall
-        
+        self.jitsiUrl = jitsiUrl
     }
 }
 
@@ -38,12 +39,14 @@ public class CallClientGroupCallData{
     var roomTitle : String?
     var roomUniqueId : String?
     var transactionId : String?
+    var userType : String?
     
    
-    public init(roomTitle : String, roomUniqueId : String, transactionId : String){
+    public init(roomTitle : String, roomUniqueId : String, transactionId : String, userType : String){
         self.roomTitle = roomTitle
         self.roomUniqueId = roomUniqueId
         self.transactionId = transactionId
+        self.userType = userType
     }
 }
 

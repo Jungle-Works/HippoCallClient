@@ -92,7 +92,7 @@ class CallStartAndReceivedView: UIView {
         delegate?.userDidCanceled()
     }
     @IBAction func dailCallCanceled(_ sender: Any) {
-        delegate?.userDidCanceledDialCall()
+        //delegate?.userDidCanceledDialCall()
 //        remove()
     }
     

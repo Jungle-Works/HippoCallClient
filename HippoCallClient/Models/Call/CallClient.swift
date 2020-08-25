@@ -43,7 +43,7 @@ class CallClient {
         guard let signal = JitsiCallSignal.getFrom(json: jsonDict) else {
             return
         }
-        let call = Call(peer: peer, signalingClient: signalingClient, uID: signal.callUID, currentUser: currentUser, type: signal.callType, link: signal.conferenceLink ?? "", isGroupCall: true)
+        let call = Call(peer: peer, signalingClient: signalingClient, uID: signal.callUID, currentUser: currentUser, type: signal.callType, link: signal.conferenceLink ?? "", isGroupCall: true, jitsiUrl: signal.jitsiUrl)
         self.handleCallEvent(for: jsonDict, call: call, jitsiSignal: signal )
     }
     
@@ -62,7 +62,7 @@ class CallClient {
             guard let signal = JitsiCallSignal.getFrom(json: jsonDict) else {
                 return
             }
-            let call = Call(peer: peer, signalingClient: signalingClient, uID: signal.callUID, currentUser: currentUser, type: signal.callType, link: signal.conferenceLink ?? "")
+            let call = Call(peer: peer, signalingClient: signalingClient, uID: signal.callUID, currentUser: currentUser, type: signal.callType, link: signal.conferenceLink ?? "",jitsiUrl: signal.jitsiUrl)
             self.handleCallEvent(for: jsonDict, call: call, jitsiSignal: signal )
         }
         
@@ -84,7 +84,7 @@ class CallClient {
 //                    return
 //            }
          
-            let call = Call(peer: peer, signalingClient: signalingClient, uID: signal.callUID, currentUser: currentUser, type: signal.callType, link: "")
+            let call = Call(peer: peer, signalingClient: signalingClient, uID: signal.callUID, currentUser: currentUser, type: signal.callType, link: "", jitsiUrl: "")
             
             if !shouldHandle(signal: signal, call: call) {
                 print("ERROR -> VOIP PUSH FROM CURRENT USER")
@@ -177,9 +177,9 @@ class CallClient {
                JitsiCallManager.shared.otherUserCallHungup()
                return
             }else if signalType == .START_CONFERENCE_IOS {
-                if let devicePayload = jsonDict["device_payload"] as? [String:Any], let deviceId = devicePayload["device_id"] as? String ,CallClient.shared.currentDeviceID != deviceId, activeCall?.currentUser.peerId != jitsiSignal.sender.peerId{
+                if let devicePayload = jsonDict["device_payload"] as? [String:Any], let deviceId = devicePayload["device_id"] as? String ,CallClient.shared.currentDeviceID != deviceId, call.currentUser.peerId != jitsiSignal.sender.peerId{
                     JitsiCallManager.shared.startReceivedCall(newCall: call, signal: jitsiSignal)
-                } else if let deviceId = jsonDict["device_id"] as? String ,CallClient.shared.currentDeviceID != deviceId, activeCall?.currentUser.peerId != jitsiSignal.sender.peerId {
+                } else if let deviceId = jsonDict["device_id"] as? String ,CallClient.shared.currentDeviceID != deviceId, call.currentUser.peerId != jitsiSignal.sender.peerId {
                     JitsiCallManager.shared.startReceivedCall(newCall: call, signal: jitsiSignal)
                 }
                 return

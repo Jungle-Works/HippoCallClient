@@ -24,8 +24,9 @@ struct JitsiCallSignal {
     var isFSilent: Bool = true
     var shouldRefreshCall : Bool = false
     var transationID : String?
+    var jitsiUrl : String
     
-    init(signalType: JitsiSignalType, callUID: String, sender: CallPeer, senderDeviceID: String, callType: Call.CallType, link: String, isFSilent: Bool,transationID : String? = nil) {
+    init(signalType: JitsiSignalType, callUID: String, sender: CallPeer, senderDeviceID: String, callType: Call.CallType, link: String, isFSilent: Bool,transationID : String? = nil, jitsiUrl : String) {
         self.signalType = signalType
         self.callUID = callUID
         self.sender = sender
@@ -34,6 +35,7 @@ struct JitsiCallSignal {
         self.isFSilent = isFSilent
         self.conferenceLink = link
         self.transationID = transationID
+        self.jitsiUrl = jitsiUrl
     }
 }
 
@@ -104,7 +106,9 @@ extension JitsiCallSignal {
         
         let  invite_link = json["invite_link"] as? String ?? ""
         
-        var signalObj = JitsiCallSignal(signalType: signalType, callUID: callUID, sender: user, senderDeviceID: senderDeviceID, callType: callType, link: invite_link, isFSilent: false)
+        let jitsiUrl = json["jitsi_url"] as? String ?? ""
+        
+        var signalObj = JitsiCallSignal(signalType: signalType, callUID: callUID, sender: user, senderDeviceID: senderDeviceID, callType: callType, link: invite_link, isFSilent: false, jitsiUrl: jitsiUrl)
     
         if let rawHungupType = json["hungup_type"] as? String , let type = HungupType(rawValue: rawHungupType){
             signalObj.hungUpType = type
@@ -137,6 +141,7 @@ extension JitsiCallSignal {
         fayeDict["message"] = ""
         
         fayeDict["call_type"] = callType.rawValue
+        fayeDict["jitsi_url"] = jitsiUrl
         
 //        fayeDict["device_payload"] = [
 //            "device_id": DeviceDetails.deviceId,

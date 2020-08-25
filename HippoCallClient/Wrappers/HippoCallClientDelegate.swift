@@ -11,4 +11,5 @@ import Foundation
 
 public protocol HippoCallClientDelegate: class {
     func loadCallPresenterView(request: CallPresenterRequest) -> CallPresenter?
+    func callStarted(isCallStarted : Bool)
 }

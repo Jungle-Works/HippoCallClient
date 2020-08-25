@@ -24,6 +24,9 @@ public class HippoCallClient {
     /// - Parameter delegate: Class that inherted protocol HippoCallClientDelegate
     public func registerHippoCallClient(delegate: HippoCallClientDelegate) {
         self.delgate = delegate
+        JitsiCallManager.shared.isCallStarted = {(status) in
+            delegate.callStarted(isCallStarted: status)
+        }
     }
     
     
@@ -127,4 +130,5 @@ public class HippoCallClient {
     public func unHideViewInPip(){
         JitsiCallManager.shared.unHideJitsiView()
     }
+    
 }
