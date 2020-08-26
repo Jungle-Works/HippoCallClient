@@ -92,7 +92,7 @@ class CallStartAndReceivedView: UIView {
         delegate?.userDidCanceled()
     }
     @IBAction func dailCallCanceled(_ sender: Any) {
-        //delegate?.userDidCanceledDialCall()
+        delegate?.userDidCanceledDialCall()
 //        remove()
     }
     
@@ -122,13 +122,15 @@ extension CallStartAndReceivedView {
     func dailCallSetup() {
         setup()
         receivedCallOptionView.isHidden = true
-        callStateMessageLabel.text = HippoCallClientStrings.calling.capitalizingFirstLetter()
+        dailCallCancelButton.isEnabled = true
+        callStateMessageLabel.text = HippoCallClientStrings.calling
     }
     
     func receivedCallSetup() {
         setup()
         dailCallCancelButton.isHidden = true
-        callStateMessageLabel.text = HippoCallClientStrings.callingYou.capitalizingFirstLetter()
+        dailCallCancelButton.isEnabled = false
+        callStateMessageLabel.text = HippoCallClientStrings.callingYou
     }
     
     func playDailCallSound() {

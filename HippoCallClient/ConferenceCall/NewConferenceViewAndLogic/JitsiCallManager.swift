@@ -33,6 +33,7 @@ class JitsiCallManager {
     var receivedCallData: [String : Any]?
     var isCallJoined: Bool = false
     var muidDic : [String : Bool]?
+    var muidOne2oneDic : [String : Bool]?
     var transactionID : String?
     var jitsiUrl : String?
     var userBusy_Muid : String?
@@ -57,6 +58,10 @@ class JitsiCallManager {
     
     func startReceivedCall(newCall: Call, signal: JitsiCallSignal) {
         
+        if muidOne2oneDic?.keys.first == newCall.uID, muidOne2oneDic?[newCall.uID] == true{
+            return
+        }
+
         if activeCall != nil && newCall.uID != activeCall?.uID{ //, activeCall?.uID != newCall.uID user busy on another call
             sendBusy(with: newCall, and: signal)
             return
@@ -453,6 +458,8 @@ extension JitsiCallManager {
                     }
                     
                 case .REJECT_CONFERENCE:
+                    self?.muidOne2oneDic = [String : Bool]()
+                    self?.muidOne2oneDic?[signal?.callUID ?? ""] = true
                     self?.receivedRejectCallFromOtherUser()
                 case .HUNGUP_CONFERENCE:
                     if self?.activeCall?.uID == signal?.callUID{
@@ -715,8 +722,11 @@ extension JitsiCallManager {
         let signal = JitsiCallSignal(signalType: .REJECT_CONFERENCE, callUID: activeCall!.uID, sender: activeCall!.currentUser, senderDeviceID: activeCall?.uID ?? "", callType: activeCall!.type , link: link, isFSilent: true, jitsiUrl: jitsiUrl ?? "")
         let dict = signal.getJsonToSendToFaye()
         sendData(dict: dict){(mark) in
+            self.muidOne2oneDic = [String : Bool]()
+            self.muidOne2oneDic?[self.activeCall?.uID ?? ""] = true
             self.callRejectByCurrentUser()
         }
+        
         removeDialAndReceivedView()
     }
     
