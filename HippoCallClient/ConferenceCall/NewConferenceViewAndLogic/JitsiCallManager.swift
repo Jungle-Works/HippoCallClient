@@ -741,13 +741,17 @@ extension JitsiCallManager {
     
     func otherUserCallHungup() {
         if isCallJoined {
-            JitsiConfrenceCallView.shared.leaveConfrence { [weak self](mark) in
-                if mark {
-                    if JitsiConfrenceCallView.shared  == nil { return }
-                    JitsiConfrenceCallView.shared.removeFromSuperview()
-                    JitsiConfrenceCallView.shared.delegate = nil
-                    JitsiConfrenceCallView.shared = nil
-                    self?.resetAllResourceForNewCall()
+            if JitsiConfrenceCallView.shared != nil{
+                JitsiConfrenceCallView.shared.leaveConfrence { [weak self](mark) in
+                    DispatchQueue.main.async {
+                        if mark {
+                            if JitsiConfrenceCallView.shared  == nil { return }
+                            JitsiConfrenceCallView.shared.removeFromSuperview()
+                            JitsiConfrenceCallView.shared.delegate = nil
+                            JitsiConfrenceCallView.shared = nil
+                            self?.resetAllResourceForNewCall()
+                        }
+                    }
                 }
             }
         }else {
