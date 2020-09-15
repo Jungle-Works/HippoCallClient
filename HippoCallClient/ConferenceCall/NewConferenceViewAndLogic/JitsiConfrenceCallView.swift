@@ -19,10 +19,19 @@ protocol JitsiConfrenceCallViewDelegate: class {
 
 class JitsiConfrenceCallView: UIView {
     @IBOutlet var jitsiView: JitsiMeetView!
+    @IBOutlet var view_JitsiTopView : UIView!
+    @IBOutlet var label_Loading : UILabel!{
+        didSet{
+            label_Loading.text = HippoCallClientStrings.connectingToMeeting
+        }
+    }
+    
     static var shared: JitsiConfrenceCallView!
     weak var delegate: JitsiConfrenceCallViewDelegate?
     var player: AVAudioPlayer?
     fileprivate var pipViewCoordinator: PiPViewCoordinator?
+    var loadingLabeltext : String?
+    var displayLink : CADisplayLink?
     
     class  func loadView(with frame: CGRect)-> JitsiConfrenceCallView? {
         let view = Bundle.init(identifier: "org.cocoapods.HippoCallClient")?.loadNibNamed("JitsiConfrenceCallView", owner: nil, options: nil)?.first as? JitsiConfrenceCallView
@@ -48,6 +57,7 @@ class JitsiConfrenceCallView: UIView {
         jitsiView.join(conferenceOptions)
         jitsiView.delegate = self
         setupPiP()
+        animateLabelDots(label: label_Loading)
     }
     
     func setupPiP() {
@@ -73,13 +83,37 @@ class JitsiConfrenceCallView: UIView {
     func showJitsiView(){
        self.isHidden = false
     }
+    
+    private func animateLabelDots(label: UILabel) {
+        guard var text = label.text else { return }
+        text = String(text.dropLast(3))
+        loadingLabeltext = text
+        displayLink = CADisplayLink(target: self, selector: #selector(showHideDots))
+        displayLink?.add(to: .main, forMode: .common)
+        displayLink?.preferredFramesPerSecond = 4
+    }
+
+    @objc private func showHideDots() {
+        if !(loadingLabeltext?.contains("...") ?? false) {
+            loadingLabeltext = loadingLabeltext?.appending(".")
+        } else {
+            loadingLabeltext = "Connecting you to your meeting "
+        }
+
+        label_Loading.text = loadingLabeltext
+    }
+    
 }
 
 extension JitsiConfrenceCallView : JitsiMeetViewDelegate {
     func conferenceJoined(_ data: [AnyHashable : Any]!) {
         delegate?.userDidJoinConference()
-//        Logger.shared.printVar(for: data)
+        view_JitsiTopView.isHidden = true
+        displayLink?.invalidate()
+        displayLink = nil
     }
+    
+    
     
     func conferenceTerminated(_ data: [AnyHashable : Any]!) {
         delegate?.userDidTerminatedConference()

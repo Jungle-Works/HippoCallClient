@@ -8,8 +8,11 @@
 
 import Foundation
 import UIKit
+import JitsiMeet
+import AVFoundation
+
 typealias VersionMismatchCallBack = ((_ versionMismatch: Bool) -> Void)
-class JitsiCallManager {
+class JitsiCallManager : NSObject{
     private(set) var activeCall: Call! {
         didSet{
             if activeCall == nil {
@@ -40,7 +43,15 @@ class JitsiCallManager {
     var isCallStarted : ((Bool)->())?
     
     
-    private init() {}
+    private override init() {
+        super.init()
+        
+        if !(JMCallKitProxy.isProviderConfigured()){
+            JMCallKitProxy.configureProvider(localizedName: "Jitsi Calling", ringtoneSound: nil, iconTemplateImageData: nil)
+        }
+        JMCallKitProxy.addListener(self)
+
+    }
       
     func startCall(with call: Call, completion: VersionMismatchCallBack? = nil) {
         timeElapsedSinceCallStart = 0
@@ -312,26 +323,51 @@ extension JitsiCallManager{
 extension JitsiCallManager {
     
     func showReceivedCallView() {
-        if let keyWindow = UIApplication.shared.keyWindow {
-            if CallStartAndReceivedView.shared == nil {
-                CallStartAndReceivedView.shared = CallStartAndReceivedView.loadView()
-                
-                guard  !keyWindow.subviews.contains(CallStartAndReceivedView.shared) else {
-                    CallStartAndReceivedView.shared = nil
-                    return
+        // register incoming call with call kit
+        guard let uuid = UUID(uuidString: activeCall?.uID ?? "") else {
+            return
+        }
+        if JMCallKitProxy.hasActiveCallForUUID(activeCall?.uID ?? ""){
+            return
+        }
+        
+        let session = AVAudioSession.sharedInstance()
+        do{
+            try session.setCategory(.playAndRecord)
+            try session.setMode(.voiceChat)
+            try session.setActive(true) //
+            try session.overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
+        }
+        catch {
+            print ("\(#file) - \(#function) error: \(error.localizedDescription)")
+        }
+        
+        JMCallKitProxy.reportNewIncomingCall(UUID: uuid, handle: activeCall.peer.name, displayName: activeCall.peer.name, hasVideo: activeCall.type == .audio ? false : true) { (error) in
+            DispatchQueue.main.async {
+                if let keyWindow = UIApplication.shared.keyWindow {
+                    if CallStartAndReceivedView.shared == nil {
+                        CallStartAndReceivedView.shared = CallStartAndReceivedView.loadView()
+                        //hide the view by default, so that i donot need to change the checks for user busy
+                        CallStartAndReceivedView.shared.isHidden = true
+                        guard  !keyWindow.subviews.contains(CallStartAndReceivedView.shared) else {
+                            CallStartAndReceivedView.shared = nil
+                            return
+                        }
+
+                        CallStartAndReceivedView.shared.userInfo = self.userDataforDailCall()
+                        //                guard CallStartAndReceivedView.shared.userInfo.keys.count > 0 else {
+                        //                    CallStartAndReceivedView.shared = nil
+                        //                    return
+                        //                }
+                        CallStartAndReceivedView.shared.isCallRecieved = true
+                        CallStartAndReceivedView.shared.receivedCallSetup()
+                        CallStartAndReceivedView.shared.delegate = self
+                        print("ADD VIEW ON WINDOW***************")
+                        keyWindow.addSubview(CallStartAndReceivedView.shared)
+                        //CallStartAndReceivedView.shared.playReceivedCallSound()
+                    }
                 }
                 
-                CallStartAndReceivedView.shared.userInfo = userDataforDailCall()
-//                guard CallStartAndReceivedView.shared.userInfo.keys.count > 0 else {
-//                    CallStartAndReceivedView.shared = nil
-//                    return
-//                }
-                CallStartAndReceivedView.shared.isCallRecieved = true
-                CallStartAndReceivedView.shared.receivedCallSetup()
-                CallStartAndReceivedView.shared.delegate = self
-                print("ADD VIEW ON WINDOW***************")
-                keyWindow.addSubview(CallStartAndReceivedView.shared)
-                CallStartAndReceivedView.shared.playReceivedCallSound()
             }
         }
     }
@@ -344,6 +380,7 @@ extension JitsiCallManager {
                 CallStartAndReceivedView.shared.dailCallSetup()
                 CallStartAndReceivedView.shared.delegate = self
                 keyWindow.addSubview(CallStartAndReceivedView.shared)
+                keyWindow.makeKeyAndVisible()
                 CallStartAndReceivedView.shared.playDailCallSound()
                 startTimerForConference(createCall: true)
                 sendStartCallFirstTime(){ (mismatch) in
