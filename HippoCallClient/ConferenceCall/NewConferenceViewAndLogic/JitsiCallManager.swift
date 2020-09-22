@@ -8,8 +8,9 @@
 
 import Foundation
 import UIKit
-import JitsiMeet
+import CallKit
 import AVFoundation
+import JitsiMeet
 
 typealias VersionMismatchCallBack = ((_ versionMismatch: Bool) -> Void)
 class JitsiCallManager : NSObject{
@@ -41,13 +42,15 @@ class JitsiCallManager : NSObject{
     var jitsiUrl : String?
     var userBusy_Muid : String?
     var isCallStarted : ((Bool)->())?
+    var isOfferRecieved : Bool?
+    var timeElapsedSinceWaitingForOffer = 0
     
     
     private override init() {
         super.init()
         
         if !(JMCallKitProxy.isProviderConfigured()){
-            JMCallKitProxy.configureProvider(localizedName: "Jitsi Calling", ringtoneSound: nil, iconTemplateImageData: nil)
+            JMCallKitProxy.configureProvider(localizedName: "", ringtoneSound: nil, iconTemplateImageData: nil)
         }
         JMCallKitProxy.addListener(self)
 
@@ -85,6 +88,7 @@ class JitsiCallManager : NSObject{
         activeCall = newCall
         link = activeCall?.inviteLink ?? ""
         jitsiUrl = activeCall?.jitsiUrl ?? ""
+        reportIncomingCallOnCallKit()
         addSignalReceiver()
         sendReadyToConnect()
     }
@@ -129,6 +133,7 @@ extension JitsiCallManager{
         activeCall = newCall
         link = activeCall?.inviteLink ?? ""
         jitsiUrl = activeCall?.jitsiUrl ?? ""
+        reportIncomingCallOnCallKit()
         addSignalReceiver()
         openPopupForGroupCall()
     }
@@ -140,6 +145,21 @@ extension JitsiCallManager{
             }
         }
     }
+    
+    func reportIncomingCallOnCallKit(){
+        enableAudioSession()
+        
+        guard let uuid = UUID(uuidString: activeCall?.uID ?? "") else {
+            return
+        }
+        if JMCallKitProxy.hasActiveCallForUUID(activeCall?.uID ?? ""){
+            return
+        }
+        JMCallKitProxy.reportNewIncomingCall(UUID: uuid, handle: activeCall.peer.name, displayName: activeCall.peer.name, hasVideo: activeCall.type == .audio ? false : true) { (error) in
+            
+        }
+    }
+    
     
     
     func openPopupForGroupCall(){
@@ -210,7 +230,10 @@ extension JitsiCallManager{
     @objc private func updateRepeatShowingPopupTimer(){
         self.timeElapsedSincePopupShown += 2
         if !(maxRepeatTime > timeElapsedSincePopupShown){
-           endrepeatShowingPopup()
+            endrepeatShowingPopup()
+            self.reportEndCallToCallKit(self.activeCall?.uID ?? "", .answeredElsewhere)
+            muidDic = [String : Bool]()
+            muidDic?[activeCall.uID] = true
             activeCall?.signalingClient.sendSessionStatus(status: "MISSED_GROUP_CALL", transactionId : transactionID ?? "")
             if JitsiConfrenceCallView.shared == nil{
                 resetAllResourceForNewCall()
@@ -323,51 +346,27 @@ extension JitsiCallManager{
 extension JitsiCallManager {
     
     func showReceivedCallView() {
-        // register incoming call with call kit
-        guard let uuid = UUID(uuidString: activeCall?.uID ?? "") else {
-            return
-        }
-        if JMCallKitProxy.hasActiveCallForUUID(activeCall?.uID ?? ""){
-            return
-        }
-        
-        let session = AVAudioSession.sharedInstance()
-        do{
-            try session.setCategory(.playAndRecord)
-            try session.setMode(.voiceChat)
-            try session.setActive(true) //
-            try session.overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
-        }
-        catch {
-            print ("\(#file) - \(#function) error: \(error.localizedDescription)")
-        }
-        
-        JMCallKitProxy.reportNewIncomingCall(UUID: uuid, handle: activeCall.peer.name, displayName: activeCall.peer.name, hasVideo: activeCall.type == .audio ? false : true) { (error) in
-            DispatchQueue.main.async {
-                if let keyWindow = UIApplication.shared.keyWindow {
-                    if CallStartAndReceivedView.shared == nil {
-                        CallStartAndReceivedView.shared = CallStartAndReceivedView.loadView()
-                        //hide the view by default, so that i donot need to change the checks for user busy
-                        CallStartAndReceivedView.shared.isHidden = true
-                        guard  !keyWindow.subviews.contains(CallStartAndReceivedView.shared) else {
-                            CallStartAndReceivedView.shared = nil
-                            return
-                        }
-
-                        CallStartAndReceivedView.shared.userInfo = self.userDataforDailCall()
-                        //                guard CallStartAndReceivedView.shared.userInfo.keys.count > 0 else {
-                        //                    CallStartAndReceivedView.shared = nil
-                        //                    return
-                        //                }
-                        CallStartAndReceivedView.shared.isCallRecieved = true
-                        CallStartAndReceivedView.shared.receivedCallSetup()
-                        CallStartAndReceivedView.shared.delegate = self
-                        print("ADD VIEW ON WINDOW***************")
-                        keyWindow.addSubview(CallStartAndReceivedView.shared)
-                        //CallStartAndReceivedView.shared.playReceivedCallSound()
-                    }
+        if let keyWindow = UIApplication.shared.keyWindow {
+            if CallStartAndReceivedView.shared == nil {
+                CallStartAndReceivedView.shared = CallStartAndReceivedView.loadView()
+                //hide the view by default, so that i donot need to change the checks for user busy
+                CallStartAndReceivedView.shared.isHidden = true
+                guard  !keyWindow.subviews.contains(CallStartAndReceivedView.shared) else {
+                    CallStartAndReceivedView.shared = nil
+                    return
                 }
                 
+                CallStartAndReceivedView.shared.userInfo = self.userDataforDailCall()
+                //                guard CallStartAndReceivedView.shared.userInfo.keys.count > 0 else {
+                //                    CallStartAndReceivedView.shared = nil
+                //                    return
+                //                }
+                CallStartAndReceivedView.shared.isCallRecieved = true
+                CallStartAndReceivedView.shared.receivedCallSetup()
+                CallStartAndReceivedView.shared.delegate = self
+                print("ADD VIEW ON WINDOW***************")
+                keyWindow.addSubview(CallStartAndReceivedView.shared)
+                //CallStartAndReceivedView.shared.playReceivedCallSound()
             }
         }
     }
@@ -409,6 +408,29 @@ extension JitsiCallManager {
         dict["user_thumbnail_image"] = activeCall.peer.image
         return dict
     }
+    
+    func checkIfOfferIsSent(completion: @escaping (Bool) -> Void){
+        if self.isOfferRecieved == true{
+            completion(true)
+            if self.activeCall?.isGroupCall ?? false{
+                self.groupCallAnswered()
+            }else{
+                self.userDidAnswered()
+            }
+        }else{
+            timeElapsedSinceWaitingForOffer += 1
+            if timeElapsedSinceWaitingForOffer > 20 && self.isOfferRecieved == false{
+               completion(false)
+                self.removeDialAndReceivedView()
+                self.resetAllResourceForNewCall()
+               return
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                self.checkIfOfferIsSent(completion: completion)
+            }
+        }
+    }
+    
 }
 
 
@@ -492,14 +514,17 @@ extension JitsiCallManager {
                     
                     if CallStartAndReceivedView.shared == nil {
                         self?.showReceivedCallView()
+                        self?.isOfferRecieved = true
                     }
                     
                 case .REJECT_CONFERENCE:
+                    self?.reportEndCallToCallKit(self?.activeCall?.uID ?? "", .declinedElsewhere)
                     self?.muidOne2oneDic = [String : Bool]()
                     self?.muidOne2oneDic?[signal?.callUID ?? ""] = true
                     self?.receivedRejectCallFromOtherUser()
                 case .HUNGUP_CONFERENCE:
                     if self?.activeCall?.uID == signal?.callUID{
+                        self?.reportEndCallToCallKit(self?.activeCall?.uID ?? "", .answeredElsewhere)
                         self?.otherUserCallHungup()
                     }
                 case .USER_BUSY_CONFERENCE:
@@ -530,6 +555,7 @@ extension JitsiCallManager {
                     //if user_id is same and device_id is different remove popup
                     ///This condition is to remove popup from other devices if call is  */REJECTED/*  from same user id
                     if  signal?.sender.peerId == self?.activeCall?.currentUser.peerId && signal?.senderDeviceID != CallClient.shared.currentDeviceID{
+                        self?.reportEndCallToCallKit(self?.activeCall?.uID ?? "", .answeredElsewhere)
                         self?.removeRecievedGroupCallPopup()
                         self?.resetAllResourceForNewCall()
                         self?.muidDic = [String : Bool]()
@@ -540,6 +566,7 @@ extension JitsiCallManager {
                     //if user_id is same and device_id is different remove popup
                     ///This condition is to remove popup from other devices if call is */ACCEPTED/*  from same user id
                     if  signal?.sender.peerId == self?.activeCall?.currentUser.peerId && signal?.senderDeviceID != CallClient.shared.currentDeviceID{
+                        self?.reportEndCallToCallKit(self?.activeCall?.uID ?? "", .answeredElsewhere)
                         self?.removeRecievedGroupCallPopup()
                         self?.resetAllResourceForNewCall()
                         self?.muidDic = [String : Bool]()
@@ -549,6 +576,7 @@ extension JitsiCallManager {
                 case .END_GROUP_CALL:
                     ///end Call session on listening */END_GROUP_CALL/* from agent
                     if signal?.transationID == self?.transactionID{
+                        self?.reportEndCallToCallKit(self?.activeCall?.uID ?? "", .answeredElsewhere)
                         self?.removeRecievedGroupCallPopup()
                         self?.removeJitsiPopup()
                     }
@@ -556,6 +584,7 @@ extension JitsiCallManager {
                     
                 case .CALL_HUNG_UP:
                     if  signal?.sender.peerId == self?.activeCall?.currentUser.peerId && signal?.callUID == self?.activeCall.uID && signal?.senderDeviceID != CallClient.shared.currentDeviceID{
+                        self?.reportEndCallToCallKit(self?.activeCall?.uID ?? "", .answeredElsewhere)
                         self?.removeDialAndReceivedView()
                         self?.resetAllResourceForNewCall()
                     }
@@ -889,16 +918,19 @@ extension JitsiCallManager {
     }
     
     func showJitsiView() {
-        if let keyWindow = UIApplication.shared.keyWindow {
-            if JitsiConfrenceCallView.shared == nil && activeCall != nil {
-                //signal?.senderDeviceID != CallClient.shared.currentDeviceID
-                let model = userDataForOutgoingCall()
-                JitsiConfrenceCallView.shared = JitsiConfrenceCallView.loadView(with: keyWindow.frame)
-                JitsiConfrenceCallView.shared.setupJitsi(for: model)
-                JitsiConfrenceCallView.shared.delegate = self
-                keyWindow.addSubview(JitsiConfrenceCallView.shared)
+        DispatchQueue.main.async {
+            if let keyWindow = UIApplication.shared.keyWindow {
+                if JitsiConfrenceCallView.shared == nil && self.activeCall != nil {
+                    //signal?.senderDeviceID != CallClient.shared.currentDeviceID
+                    let model = self.userDataForOutgoingCall()
+                    JitsiConfrenceCallView.shared = JitsiConfrenceCallView.loadView(with: keyWindow.frame)
+                    JitsiConfrenceCallView.shared.setupJitsi(for: model)
+                    JitsiConfrenceCallView.shared.delegate = self
+                    keyWindow.addSubview(JitsiConfrenceCallView.shared)
+                }
             }
         }
+    
         endrepeatShowingPopup()
         removeDialAndReceivedView()
     }
@@ -936,6 +968,9 @@ extension JitsiCallManager {
         timeElapsedSinceCallStartiOS = 0
         receivedCallData = nil
         isCallJoined = false
+        timeElapsedSinceWaitingForOffer = 0
+        isOfferRecieved = nil
+        
     }
     
     func showBusyView(with message: String) {
@@ -1001,7 +1036,7 @@ extension JitsiCallManager {
     func getURLOrRoomId(for link: String) -> (url: URL , roomId: String) {
         let roomId = (link as NSString).lastPathComponent
         //Logger.shared.printVar(for: roomId)
-        let roomIdRemovedLink = link.replacingOccurrences(of: roomId, with: "")
+        _ = link.replacingOccurrences(of: roomId, with: "")
         //Logger.shared.printVar(for: roomIdRemovedLink)
         let remainLink = link.replacingOccurrences(of: "/\(roomId)", with: "")
         //Logger.shared.printVar(for: remainLink)
@@ -1042,6 +1077,9 @@ extension JitsiCallManager : JitsiConfrenceCallViewDelegate  {
     func userDidJoinConference() {
         isCallJoined = true
         isCallStarted?(true)
+        if UIApplication.shared.applicationState == .active{
+            reportEndCallToCallKit(activeCall?.uID ?? "", .remoteEnded)
+        }
     }
     
     func userWillLeaveConference() {
@@ -1049,6 +1087,7 @@ extension JitsiCallManager : JitsiConfrenceCallViewDelegate  {
     }
     
     func userDidTerminatedConference() {
+        self.reportEndCallToCallKit(self.activeCall?.uID ?? "", .remoteEnded)
         if (activeCall?.isGroupCall ?? false) == false{
             sendCallHungup()
         }else{

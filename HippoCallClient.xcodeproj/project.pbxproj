@@ -34,7 +34,6 @@
 		6B041B6B24695E4D00A96DBD /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6B041B5324695E4D00A96DBD /* Info.plist */; };
 		6B041B6C24695E4D00A96DBD /* ImagePrefetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B041B5424695E4D00A96DBD /* ImagePrefetcher.swift */; };
 		6B146083250B88DB006BD989 /* JitsiCallManager+CallKitExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B146082250B88DB006BD989 /* JitsiCallManager+CallKitExtension.swift */; };
-		6B349FF92510B1970081DCF5 /* callkit in Resources */ = {isa = PBXBuildFile; fileRef = 6B349FF82510B1970081DCF5 /* callkit */; };
 		6B55AB2E24C588A200DB61B2 /* RecievedGroupCallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B55AB2D24C588A200DB61B2 /* RecievedGroupCallView.swift */; };
 		6B55AB3024C5890200DB61B2 /* RecievedGroupCallView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B55AB2F24C5890200DB61B2 /* RecievedGroupCallView.xib */; };
 		6BCD891524A33F2000FD0A22 /* HippoCallClientStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BCD891424A33F2000FD0A22 /* HippoCallClientStrings.swift */; };
@@ -106,7 +105,6 @@
 		6B041B5324695E4D00A96DBD /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6B041B5424695E4D00A96DBD /* ImagePrefetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePrefetcher.swift; sourceTree = "<group>"; };
 		6B146082250B88DB006BD989 /* JitsiCallManager+CallKitExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JitsiCallManager+CallKitExtension.swift"; sourceTree = "<group>"; };
-		6B349FF82510B1970081DCF5 /* callkit */ = {isa = PBXFileReference; lastKnownFileType = folder; path = callkit; sourceTree = "<group>"; };
 		6B55AB2D24C588A200DB61B2 /* RecievedGroupCallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecievedGroupCallView.swift; sourceTree = "<group>"; };
 		6B55AB2F24C5890200DB61B2 /* RecievedGroupCallView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecievedGroupCallView.xib; sourceTree = "<group>"; };
 		6BCD891424A33F2000FD0A22 /* HippoCallClientStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HippoCallClientStrings.swift; sourceTree = "<group>"; };
@@ -217,7 +215,6 @@
 		C980E2D723588D6F004433FF /* HippoCallClient */ = {
 			isa = PBXGroup;
 			children = (
-				6B349FF82510B1970081DCF5 /* callkit */,
 				CD1EFB1D2444D235008C093B /* ConferenceCall */,
 				C980E2DE23588D9D004433FF /* Helpers */,
 				C980E2E023588D9D004433FF /* Models */,
@@ -419,6 +416,7 @@
 				TargetAttributes = {
 					C980E2D523588D6E004433FF = {
 						CreatedOnToolsVersion = 11.0;
+						LastSwiftMigration = 1170;
 					};
 				};
 			};
@@ -448,7 +446,6 @@
 				CD1EFB6C2444D3C1008C093B /* JitsiConfrenceCallView.xib in Resources */,
 				CD1EFB522444D235008C093B /* OFL.txt in Resources */,
 				CD1EFB4F2444D235008C093B /* TitilliumWeb-Bold.ttf in Resources */,
-				6B349FF92510B1970081DCF5 /* callkit in Resources */,
 				6B55AB3024C5890200DB61B2 /* RecievedGroupCallView.xib in Resources */,
 				CD1EFB4E2444D235008C093B /* CallStartAndReceivedView.xib in Resources */,
 				CD1EFB5E2444D235008C093B /* Conference.storyboard in Resources */,
@@ -554,6 +551,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 11D4BC719893B3ECDD82325B /* Pods-HippoCallClient.debug.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = NO;
 				CODE_SIGN_STYLE = Manual;
@@ -583,6 +581,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -594,6 +593,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1DA5E276E2D083536A2B1628 /* Pods-HippoCallClient.release.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = NO;
 				CODE_SIGN_STYLE = Manual;

@@ -7,36 +7,53 @@
 //
 
 import JitsiMeet
-
-import CallKit
 import WebRTC
+import CallKit
 
 extension JitsiCallManager : JMCallKitListener{
    
-    func performAnswerCall(UUID: UUID) {
-        self.userDidAnswered()
+    func performAnswerCall(UUID: UUID, perform action: CXAnswerCallAction) {
+        enableAudioSession()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.checkIfOfferIsSent { (status) in
+                if status{
+                    action.fulfill()
+                }else{
+                    action.fail()
+                }
+            }
+        }
     }
     
+//
     func performStartCall(UUID: UUID, isVideo: Bool) {
         isCallJoined = true
     }
     
     func performEndCall(UUID: UUID) {
-        if self.isCallJoined{
-            // send call hungup if call is joined
-          self.userDidTerminatedConference()
+        if activeCall?.isGroupCall ?? false{
+            if self.isCallJoined{
+                self.userDidTerminatedConference()
+            }else{
+                groupCallCancelled()
+            }
         }else{
-            //send reject conference for call rejection
-          self.sendCallRejected()
+            if self.isCallJoined{
+                // send call hungup if call is joined
+                self.userDidTerminatedConference()
+            }else{
+                //send reject conference for call rejection
+                self.sendCallRejected()
+            }
         }
     }
     
     func providerDidActivateAudioSession(session: AVAudioSession){
-         RTCAudioSession.sharedInstance().audioSessionDidActivate(session)
+       // RTCAudioSession.sharedInstance().audioSessionDidActivate(session)
     }
     
     func providerDidDeactivateAudioSession(session: AVAudioSession){
-        RTCAudioSession.sharedInstance().audioSessionDidDeactivate(session)
+       // RTCAudioSession.sharedInstance().audioSessionDidDeactivate(session)
     }
     
     func providerTimedOutPerformingAction(action: CXAction){
@@ -44,7 +61,10 @@ extension JitsiCallManager : JMCallKitListener{
     }
     
     func performSetMutedCall(UUID: UUID, isMuted: Bool){
-        
+//        let transaction = CXTransaction(action: CXSetMutedCallAction(call: UUID, muted: isMuted))
+//        JMCallKitProxy.request(transaction) { (Error) in
+//            
+//        }
     }
     
     func providerDidReset() {
@@ -55,11 +75,24 @@ extension JitsiCallManager{
     
     //end call from callkit
     
-    func reportEndCallToCallKit(_ uid : String){
+    func reportEndCallToCallKit(_ uid : String, _ reason : CXCallEndedReason){
         guard let uuid = UUID(uuidString: uid) else {
             return
         }
-        JMCallKitProxy.reportCall(with: uuid, endedAt: nil, reason: .declinedElsewhere)
+        JMCallKitProxy.reportCall(with: uuid, endedAt: nil, reason: reason)
     }
     
+    
+    func enableAudioSession(){
+       // WebRTCClient.configureAudioSession()
+//      let session = AVAudioSession.sharedInstance()
+//        do{
+//            try session.setCategory(.playAndRecord)
+//            try session.setMode(.voiceChat)
+//            try session.setActive(true)
+//            try session.overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
+//        }catch {
+//            print ("\(#file) - \(#function) error: \(error.localizedDescription)")
+//        }
+    }
 }
