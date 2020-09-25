@@ -34,6 +34,10 @@
 		6B041B6B24695E4D00A96DBD /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6B041B5324695E4D00A96DBD /* Info.plist */; };
 		6B041B6C24695E4D00A96DBD /* ImagePrefetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B041B5424695E4D00A96DBD /* ImagePrefetcher.swift */; };
 		6B146083250B88DB006BD989 /* JitsiCallManager+CallKitExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B146082250B88DB006BD989 /* JitsiCallManager+CallKitExtension.swift */; };
+		6B36FFE8251E0FF300002B90 /* JMCallKitListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B36FFE4251E0FF300002B90 /* JMCallKitListener.swift */; };
+		6B36FFE9251E0FF300002B90 /* CallKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B36FFE5251E0FF300002B90 /* CallKit.m */; };
+		6B36FFEA251E0FF300002B90 /* JMCallKitEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B36FFE6251E0FF300002B90 /* JMCallKitEmitter.swift */; };
+		6B36FFEB251E0FF300002B90 /* JMCallKitProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B36FFE7251E0FF300002B90 /* JMCallKitProxy.swift */; };
 		6B55AB2E24C588A200DB61B2 /* RecievedGroupCallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B55AB2D24C588A200DB61B2 /* RecievedGroupCallView.swift */; };
 		6B55AB3024C5890200DB61B2 /* RecievedGroupCallView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B55AB2F24C5890200DB61B2 /* RecievedGroupCallView.xib */; };
 		6BCD891524A33F2000FD0A22 /* HippoCallClientStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BCD891424A33F2000FD0A22 /* HippoCallClientStrings.swift */; };
@@ -105,6 +109,10 @@
 		6B041B5324695E4D00A96DBD /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6B041B5424695E4D00A96DBD /* ImagePrefetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePrefetcher.swift; sourceTree = "<group>"; };
 		6B146082250B88DB006BD989 /* JitsiCallManager+CallKitExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JitsiCallManager+CallKitExtension.swift"; sourceTree = "<group>"; };
+		6B36FFE4251E0FF300002B90 /* JMCallKitListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JMCallKitListener.swift; sourceTree = "<group>"; };
+		6B36FFE5251E0FF300002B90 /* CallKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallKit.m; sourceTree = "<group>"; };
+		6B36FFE6251E0FF300002B90 /* JMCallKitEmitter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JMCallKitEmitter.swift; sourceTree = "<group>"; };
+		6B36FFE7251E0FF300002B90 /* JMCallKitProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JMCallKitProxy.swift; sourceTree = "<group>"; };
 		6B55AB2D24C588A200DB61B2 /* RecievedGroupCallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecievedGroupCallView.swift; sourceTree = "<group>"; };
 		6B55AB2F24C5890200DB61B2 /* RecievedGroupCallView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecievedGroupCallView.xib; sourceTree = "<group>"; };
 		6BCD891424A33F2000FD0A22 /* HippoCallClientStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HippoCallClientStrings.swift; sourceTree = "<group>"; };
@@ -203,9 +211,21 @@
 			path = Kingfisher;
 			sourceTree = "<group>";
 		};
+		6B36FFE3251E0FF300002B90 /* callkit */ = {
+			isa = PBXGroup;
+			children = (
+				6B36FFE4251E0FF300002B90 /* JMCallKitListener.swift */,
+				6B36FFE5251E0FF300002B90 /* CallKit.m */,
+				6B36FFE6251E0FF300002B90 /* JMCallKitEmitter.swift */,
+				6B36FFE7251E0FF300002B90 /* JMCallKitProxy.swift */,
+			);
+			path = callkit;
+			sourceTree = "<group>";
+		};
 		6B55AB2C24C5885900DB61B2 /* GroupCallView */ = {
 			isa = PBXGroup;
 			children = (
+				6B36FFE3251E0FF300002B90 /* callkit */,
 				6B55AB2D24C588A200DB61B2 /* RecievedGroupCallView.swift */,
 				6B55AB2F24C5890200DB61B2 /* RecievedGroupCallView.xib */,
 			);
@@ -489,6 +509,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6B36FFEA251E0FF300002B90 /* JMCallKitEmitter.swift in Sources */,
 				C980E2FF23588D9E004433FF /* RTCSessionDescription+JSON.swift in Sources */,
 				C980E30123588D9E004433FF /* HippoCallClientDelegate.swift in Sources */,
 				C980E2F523588D9E004433FF /* HippoUser.swift in Sources */,
@@ -500,8 +521,10 @@
 				6B041B6924695E4D00A96DBD /* Placeholder.swift in Sources */,
 				CD1EFB552444D235008C093B /* FuguFont.swift in Sources */,
 				6B041B5D24695E4D00A96DBD /* UIButton+Kingfisher.swift in Sources */,
+				6B36FFE8251E0FF300002B90 /* JMCallKitListener.swift in Sources */,
 				6B041B5F24695E4D00A96DBD /* ImageDownloader.swift in Sources */,
 				C980E2F923588D9E004433FF /* CallClient.swift in Sources */,
+				6B36FFE9251E0FF300002B90 /* CallKit.m in Sources */,
 				6B041B5924695E4D00A96DBD /* ImageView+Kingfisher.swift in Sources */,
 				6B041B5824695E4D00A96DBD /* RequestModifier.swift in Sources */,
 				6B041B6524695E4D00A96DBD /* AnimatedImageView.swift in Sources */,
@@ -538,6 +561,7 @@
 				C980E2F623588D9E004433FF /* CallClientCredential.swift in Sources */,
 				CD1EFB4B2444D235008C093B /* CallStartAndReceivedView.swift in Sources */,
 				6B041B5524695E4D00A96DBD /* ImageCache.swift in Sources */,
+				6B36FFEB251E0FF300002B90 /* JMCallKitProxy.swift in Sources */,
 				6B041B5A24695E4D00A96DBD /* Image.swift in Sources */,
 				6B041B5E24695E4D00A96DBD /* Resource.swift in Sources */,
 				CD1EFB492444D235008C093B /* JitsiCallManager.swift in Sources */,
@@ -570,7 +594,7 @@
 				);
 				INFOPLIST_FILE = HippoCallClient/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -612,7 +636,7 @@
 				);
 				INFOPLIST_FILE = HippoCallClient/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

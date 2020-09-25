@@ -88,7 +88,7 @@ class JitsiCallManager : NSObject{
         activeCall = newCall
         link = activeCall?.inviteLink ?? ""
         jitsiUrl = activeCall?.jitsiUrl ?? ""
-        reportIncomingCallOnCallKit()
+        //reportIncomingCallOnCallKit()
         addSignalReceiver()
         sendReadyToConnect()
     }
@@ -133,7 +133,7 @@ extension JitsiCallManager{
         activeCall = newCall
         link = activeCall?.inviteLink ?? ""
         jitsiUrl = activeCall?.jitsiUrl ?? ""
-        reportIncomingCallOnCallKit()
+       // reportIncomingCallOnCallKit()
         addSignalReceiver()
         openPopupForGroupCall()
     }
@@ -169,7 +169,7 @@ extension JitsiCallManager{
             }
             if RecievedGroupCallView.shared == nil {
                 RecievedGroupCallView.shared = RecievedGroupCallView.loadView()
-                
+                RecievedGroupCallView.shared.isHidden = true
                 guard  !keyWindow.subviews.contains(RecievedGroupCallView.shared) else {
                     RecievedGroupCallView.shared = nil
                     return
@@ -180,7 +180,7 @@ extension JitsiCallManager{
                 RecievedGroupCallView.shared.delegate = self
                 print("ADD VIEW ON WINDOW***************")
                 keyWindow.addSubview(RecievedGroupCallView.shared)
-                RecievedGroupCallView.shared.playReceivedCallSound()
+                //RecievedGroupCallView.shared.playReceivedCallSound()
                 
                 //Add timer
                 if repeatShowingPopupTimer == nil {
@@ -193,6 +193,7 @@ extension JitsiCallManager{
                     timer.tolerance = 0.1
                     self.repeatShowingPopupTimer = timer
                 }
+                isOfferRecieved = true
             }
         }
     }
@@ -509,6 +510,7 @@ extension JitsiCallManager {
                     }
                     
                     if self?.userBusy_Muid == signal?.callUID{
+                        self?.reportEndCallToCallKit(signal?.callUID ?? "", .failed)
                         return
                     }
                     
@@ -521,10 +523,14 @@ extension JitsiCallManager {
                     self?.reportEndCallToCallKit(self?.activeCall?.uID ?? "", .declinedElsewhere)
                     self?.muidOne2oneDic = [String : Bool]()
                     self?.muidOne2oneDic?[signal?.callUID ?? ""] = true
+                    JMCallKitProxy.muidOne2oneDic = self?.muidOne2oneDic ?? [String : Bool]()
                     self?.receivedRejectCallFromOtherUser()
                 case .HUNGUP_CONFERENCE:
+                    self?.muidOne2oneDic = [String : Bool]()
+                    self?.muidOne2oneDic?[signal?.callUID ?? ""] = true
+                    JMCallKitProxy.muidOne2oneDic = self?.muidOne2oneDic ?? [String : Bool]()
+                    self?.reportEndCallToCallKit(signal?.callUID ?? "", .answeredElsewhere)
                     if self?.activeCall?.uID == signal?.callUID{
-                        self?.reportEndCallToCallKit(self?.activeCall?.uID ?? "", .answeredElsewhere)
                         self?.otherUserCallHungup()
                     }
                 case .USER_BUSY_CONFERENCE:
@@ -790,6 +796,7 @@ extension JitsiCallManager {
         sendData(dict: dict){(mark) in
             self.muidOne2oneDic = [String : Bool]()
             self.muidOne2oneDic?[self.activeCall?.uID ?? ""] = true
+            JMCallKitProxy.muidOne2oneDic = self.muidOne2oneDic ?? [String : Bool]()
             self.callRejectByCurrentUser()
         }
         
