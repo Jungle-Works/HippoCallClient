@@ -47,6 +47,7 @@ public class PiPViewCoordinator {
     @objc get
     @objc set
   }
+  @objc public static var muidOne2oneDic: [Swift.String : Swift.Bool]
   @objc public static func configureProvider(localizedName: Swift.String, ringtoneSound: Swift.String?, iconTemplateImageData: Foundation.Data?)
   @objc public static func isProviderConfigured() -> Swift.Bool
   @objc public static func addListener(_ listener: JitsiMeet.JMCallKitListener)

@@ -234,6 +234,9 @@ SWIFT_CLASS("_TtC9JitsiMeet14JMCallKitProxy")
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class) BOOL enabled;)
 + (BOOL)enabled SWIFT_WARN_UNUSED_RESULT;
 + (void)setEnabled:(BOOL)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSDictionary<NSString *, NSNumber *> * _Nonnull muidOne2oneDic;)
++ (NSDictionary<NSString *, NSNumber *> * _Nonnull)muidOne2oneDic SWIFT_WARN_UNUSED_RESULT;
++ (void)setMuidOne2oneDic:(NSDictionary<NSString *, NSNumber *> * _Nonnull)value;
 + (void)configureProviderWithLocalizedName:(NSString * _Nonnull)localizedName ringtoneSound:(NSString * _Nullable)ringtoneSound iconTemplateImageData:(NSData * _Nullable)iconTemplateImageData;
 + (BOOL)isProviderConfigured SWIFT_WARN_UNUSED_RESULT;
 + (void)addListener:(id <JMCallKitListener> _Nonnull)listener;
