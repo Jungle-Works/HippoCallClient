@@ -13,7 +13,6 @@ import CallKit
 extension JitsiCallManager : JMCallKitListener{
    
     func performAnswerCall(UUID: UUID, perform action: CXAnswerCallAction) {
-        enableAudioSession()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             self.checkIfOfferIsSent { (status) in
                 if status{
@@ -25,10 +24,6 @@ extension JitsiCallManager : JMCallKitListener{
         }
     }
     
-//
-    func performStartCall(UUID: UUID, isVideo: Bool) {
-        isCallJoined = true
-    }
     
     func performEndCall(UUID: UUID) {
         if activeCall?.isGroupCall ?? false{
@@ -83,16 +78,5 @@ extension JitsiCallManager{
     }
     
     
-    func enableAudioSession(){
-       // WebRTCClient.configureAudioSession()
-//      let session = AVAudioSession.sharedInstance()
-//        do{
-//            try session.setCategory(.playAndRecord)
-//            try session.setMode(.voiceChat)
-//            try session.setActive(true)
-//            try session.overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
-//        }catch {
-//            print ("\(#file) - \(#function) error: \(error.localizedDescription)")
-//        }
-    }
+ 
 }

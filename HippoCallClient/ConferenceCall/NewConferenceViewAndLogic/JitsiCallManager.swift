@@ -88,7 +88,6 @@ class JitsiCallManager : NSObject{
         activeCall = newCall
         link = activeCall?.inviteLink ?? ""
         jitsiUrl = activeCall?.jitsiUrl ?? ""
-        //reportIncomingCallOnCallKit()
         addSignalReceiver()
         sendReadyToConnect()
     }
@@ -145,21 +144,6 @@ extension JitsiCallManager{
             }
         }
     }
-    
-    func reportIncomingCallOnCallKit(){
-        enableAudioSession()
-        
-        guard let uuid = UUID(uuidString: activeCall?.uID ?? "") else {
-            return
-        }
-        if JMCallKitProxy.hasActiveCallForUUID(activeCall?.uID ?? ""){
-            return
-        }
-        JMCallKitProxy.reportNewIncomingCall(UUID: uuid, handle: activeCall.peer.name, displayName: activeCall.peer.name, hasVideo: activeCall.type == .audio ? false : true) { (error) in
-            
-        }
-    }
-    
     
     
     func openPopupForGroupCall(){
@@ -482,14 +466,14 @@ extension JitsiCallManager {
                     self?.sendOffer()
                 case .ANSWER_CONFERENCE:
                     guard signal?.sender.peerId != self?.activeCall?.currentUser.peerId  else {
-                        if signal?.senderDeviceID != CallClient.shared.currentDeviceID /*|| signal?.senderDeviceID == "" && deviceType == 3 )*/ {
-                            self?.removeDialAndReceivedView()
-                        } else {
-                            self?.endRepeatStartCalliOS()
-                            self?.endRepeatStartCall()
-                            self?.receivedAnswerFromOtherUser()
-                            self?.removeStartConTimer(for: true, createCall: false)
-                        }
+                        ///if answer_conference recieved from same user (peerid) from another device
+                        self?.endRepeatStartCalliOS()
+                        self?.endRepeatStartCall()
+                        self?.removeDialAndReceivedView()
+                        self?.resetAllResourceForNewCall()
+                        self?.muidOne2oneDic = [String : Bool]()
+                        self?.muidOne2oneDic?[signal?.callUID ?? ""] = true
+                        JMCallKitProxy.muidOne2oneDic = self?.muidOne2oneDic ?? [String : Bool]()
                         return
                     }
                     
@@ -784,6 +768,9 @@ extension JitsiCallManager {
         let signal = JitsiCallSignal(signalType: .ANSWER_CONFERENCE, callUID: activeCall!.uID, sender: activeCall!.currentUser, senderDeviceID: activeCall?.uID ?? "", callType: activeCall!.type , link: link, isFSilent: true, jitsiUrl: jitsiUrl ?? "")
         let dict = signal.getJsonToSendToFaye()
         sendData(dict: dict)
+        self.muidOne2oneDic = [String : Bool]()
+        self.muidOne2oneDic?[signal.callUID ?? ""] = true
+        JMCallKitProxy.muidOne2oneDic = self.muidOne2oneDic ?? [String : Bool]()
         self.removeStartConTimer(for: true, createCall: false)
     }
     

@@ -50,7 +50,7 @@ class JitsiConfrenceCallView: UIView {
             ptionsBuilder.room = data.roomID
             ptionsBuilder.userInfo = userInfo
             ptionsBuilder.setFeatureFlag("chat.enabled", withValue: false)
-            ptionsBuilder.setFeatureFlag("call-integration.enabled", withValue: false)
+            ptionsBuilder.setFeatureFlag("call-integration.enabled", withValue: true)
             ptionsBuilder.setFeatureFlag("pip.enabled", withBoolean: true)
             ptionsBuilder.setFeatureFlag("invite.enabled", withValue: false)
         }
@@ -141,28 +141,28 @@ extension JitsiConfrenceCallView : PiPViewCoordinatorDelegate{
 //Sound logic
 extension JitsiConfrenceCallView {
     func playSound(soundName: String, numberOfLoops: Int) {
-        guard let url = Bundle.main.url(forResource: soundName, withExtension: "mp3") else { return }
-        
-        do {
-            try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: [.allowBluetooth, .allowAirPlay, .allowBluetoothA2DP, .mixWithOthers,.defaultToSpeaker])
-            try AVAudioSession.sharedInstance().setActive(true, options: .notifyOthersOnDeactivation)
-            
-            player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.mp3.rawValue)
-            
-            guard let player = player else { return }
-            player.numberOfLoops = numberOfLoops
-            player.play()
-            
-        } catch let error {
-            print(error.localizedDescription)
-        }
+//        guard let url = Bundle.main.url(forResource: soundName, withExtension: "mp3") else { return }
+//
+//        do {
+//            try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: [.allowBluetooth, .allowAirPlay, .allowBluetoothA2DP, .mixWithOthers,.defaultToSpeaker])
+//            try AVAudioSession.sharedInstance().setActive(true, options: .notifyOthersOnDeactivation)
+//
+//            player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.mp3.rawValue)
+//
+//            guard let player = player else { return }
+//            player.numberOfLoops = numberOfLoops
+//            player.play()
+//
+//        } catch let error {
+//            print(error.localizedDescription)
+//        }
     }
     
     func stopPlayingSound() {
 //        Logger.shared.printVar(for: player)
-        player?.pause()
-        player?.stop()
-        player = nil
+//        player?.pause()
+//        player?.stop()
+//        player = nil
 //        Logger.shared.printVar(for: player)
     }
 }
