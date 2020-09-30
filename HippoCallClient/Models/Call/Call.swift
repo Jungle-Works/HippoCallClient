@@ -40,13 +40,15 @@ public class CallClientGroupCallData{
     var roomUniqueId : String?
     var transactionId : String?
     var userType : String?
+    var isMuted : Bool?
     
    
-    public init(roomTitle : String, roomUniqueId : String, transactionId : String, userType : String){
+    public init(roomTitle : String, roomUniqueId : String, transactionId : String, userType : String, isMuted : Bool){
         self.roomTitle = roomTitle
         self.roomUniqueId = roomUniqueId
         self.transactionId = transactionId
         self.userType = userType
+        self.isMuted = isMuted
     }
 }
 

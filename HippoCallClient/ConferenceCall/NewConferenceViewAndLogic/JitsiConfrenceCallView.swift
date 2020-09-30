@@ -48,6 +48,7 @@ class JitsiConfrenceCallView: UIView {
             ptionsBuilder.audioOnly = data.audioOnly
             ptionsBuilder.serverURL = data.serverURL
             ptionsBuilder.room = data.roomID
+            ptionsBuilder.audioMuted = data.isMuted
             ptionsBuilder.userInfo = userInfo
             ptionsBuilder.setFeatureFlag("chat.enabled", withValue: false)
             ptionsBuilder.setFeatureFlag("call-integration.enabled", withValue: true)
@@ -57,7 +58,6 @@ class JitsiConfrenceCallView: UIView {
         
         jitsiView.join(conferenceOptions)
         jitsiView.delegate = self
-        setupPiP()
         animateLabelDots(label: label_Loading)
     }
     
@@ -123,6 +123,7 @@ extension JitsiConfrenceCallView : JitsiMeetViewDelegate {
     }
     
     func enterPicture(inPicture data: [AnyHashable : Any]!) {
+        setupPiP()
         delegate?.userDidEnterPictureInPicture()
         DispatchQueue.main.async {
             self.pipViewCoordinator?.enterPictureInPicture()
@@ -133,7 +134,7 @@ extension JitsiConfrenceCallView : JitsiMeetViewDelegate {
 extension JitsiConfrenceCallView : PiPViewCoordinatorDelegate{
     
     func exitPictureInPicture() {
-        
+        pipViewCoordinator = nil
     }
 }
 
@@ -171,16 +172,18 @@ class JitsiMeetDataModel {
     let userName:  String?
     let userEmail: String?
     let userImage: URL?
-    let audioOnly: Bool
+    var audioOnly: Bool
     let serverURL: URL
     let roomID: String
+    var isMuted : Bool
     
-    init(userName: String?, userEmail: String?, userImage: URL?, audioOnly: Bool, serverURl: URL, roomID: String) {
+    init(userName: String?, userEmail: String?, userImage: URL?, audioOnly: Bool, serverURl: URL, roomID: String, isMuted : Bool) {
         self.userName = userName
         self.userEmail = userEmail
         self.userImage =  userImage
         self.audioOnly = audioOnly
         self.serverURL = serverURl
         self.roomID = roomID
+        self.isMuted = isMuted
     }
 }

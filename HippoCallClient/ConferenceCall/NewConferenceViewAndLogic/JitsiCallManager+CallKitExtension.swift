@@ -11,7 +11,7 @@ import WebRTC
 import CallKit
 
 extension JitsiCallManager : JMCallKitListener{
-   
+    
     func performAnswerCall(UUID: UUID, perform action: CXAnswerCallAction) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             self.checkIfOfferIsSent { (status) in
@@ -43,31 +43,6 @@ extension JitsiCallManager : JMCallKitListener{
         }
     }
     
-    func providerDidActivateAudioSession(session: AVAudioSession){
-       // RTCAudioSession.sharedInstance().audioSessionDidActivate(session)
-    }
-    
-    func providerDidDeactivateAudioSession(session: AVAudioSession){
-       // RTCAudioSession.sharedInstance().audioSessionDidDeactivate(session)
-    }
-    
-    func providerTimedOutPerformingAction(action: CXAction){
-        
-    }
-    
-    func performSetMutedCall(UUID: UUID, isMuted: Bool){
-//        let transaction = CXTransaction(action: CXSetMutedCallAction(call: UUID, muted: isMuted))
-//        JMCallKitProxy.request(transaction) { (Error) in
-//            
-//        }
-    }
-    
-    func providerDidReset() {
-        
-    }
-}
-extension JitsiCallManager{
-    
     //end call from callkit
     
     func reportEndCallToCallKit(_ uid : String, _ reason : CXCallEndedReason){
@@ -76,7 +51,4 @@ extension JitsiCallManager{
         }
         JMCallKitProxy.reportCall(with: uuid, endedAt: nil, reason: reason)
     }
-    
-    
- 
 }

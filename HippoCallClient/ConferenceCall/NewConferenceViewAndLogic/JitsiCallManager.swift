@@ -769,7 +769,7 @@ extension JitsiCallManager {
         let dict = signal.getJsonToSendToFaye()
         sendData(dict: dict)
         self.muidOne2oneDic = [String : Bool]()
-        self.muidOne2oneDic?[signal.callUID ?? ""] = true
+        self.muidOne2oneDic?[signal.callUID] = true
         JMCallKitProxy.muidOne2oneDic = self.muidOne2oneDic ?? [String : Bool]()
         self.removeStartConTimer(for: true, createCall: false)
     }
@@ -896,7 +896,7 @@ extension JitsiCallManager {
                 guard let roomId = groupCallData.roomUniqueId else{
                     return
                 }
-                let model = JitsiMeetDataModel(userName: activeCall.currentUser.name, userEmail: "", userImage: imageURL, audioOnly: activeCall.type == .audio ? true : false, serverURl: inviteLink, roomID: roomId)
+                let model = JitsiMeetDataModel(userName: activeCall.currentUser.name, userEmail: "", userImage: imageURL, audioOnly: activeCall.type == .audio ? true : false, serverURl: inviteLink, roomID: roomId, isMuted: groupCallData.isMuted ?? false)
                 JitsiConfrenceCallView.shared = JitsiConfrenceCallView.loadView(with: keyWindow.frame)
                 JitsiConfrenceCallView.shared.setupJitsi(for: model)
                 JitsiConfrenceCallView.shared.delegate = self
@@ -917,6 +917,12 @@ extension JitsiCallManager {
                 if JitsiConfrenceCallView.shared == nil && self.activeCall != nil {
                     //signal?.senderDeviceID != CallClient.shared.currentDeviceID
                     let model = self.userDataForOutgoingCall()
+                    if self.link.contains("startWithVideoMuted"){
+                        model.audioOnly = true
+                    }
+                    if self.link.contains("startWithAudioMuted"){
+                        model.isMuted = true
+                    }
                     JitsiConfrenceCallView.shared = JitsiConfrenceCallView.loadView(with: keyWindow.frame)
                     JitsiConfrenceCallView.shared.setupJitsi(for: model)
                     JitsiConfrenceCallView.shared.delegate = self
@@ -938,7 +944,7 @@ extension JitsiCallManager {
         let data = getURLOrRoomId(for: tempLink)
         //Logger.shared.printVar(for: data.url.absoluteString)
         print("tempLink is", tempLink, data.url)
-        let userModel = JitsiMeetDataModel(userName: userName, userEmail: email, userImage: imageURL, audioOnly: audioOnly, serverURl: data.url, roomID: data.roomId)
+        let userModel = JitsiMeetDataModel(userName: userName, userEmail: email, userImage: imageURL, audioOnly: audioOnly, serverURl: data.url, roomID: data.roomId, isMuted: false)
         return userModel
     }
     
@@ -1007,10 +1013,18 @@ extension JitsiCallManager {
         let url = JitsiConstants.inviteLink
         var link = url + (groupCallData.roomUniqueId ?? "")
         var jitsiLink = call.jitsiUrl != "" ? (call.jitsiUrl + "/" + (groupCallData.roomUniqueId ?? "")) : ""
-        if call.type == .audio{
-            link += "#config.startWithVideoMuted=true"
-            jitsiLink += call.jitsiUrl != "" ? "#config.startWithVideoMuted=true" : ""
+        var config = ""
+        if groupCallData.isMuted ?? false && call.type == .audio{
+            config = "#config.startWithAudioMuted=true" + "&config.startWithVideoMuted=true"
+        }else if groupCallData.isMuted ?? false{
+            config = "#config.startWithAudioMuted=true"
+        }else if call.type == .audio{
+            config = "#config.startWithVideoMuted=true"
         }
+        
+        link += config
+        jitsiLink += call.jitsiUrl != "" ? config : ""
+        
         return (link,jitsiLink)
     }
     
