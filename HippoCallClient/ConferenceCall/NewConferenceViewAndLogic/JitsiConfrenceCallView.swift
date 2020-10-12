@@ -22,7 +22,7 @@ class JitsiConfrenceCallView: UIView {
     @IBOutlet var view_JitsiTopView : UIView!
     @IBOutlet var label_Loading : UILabel!{
         didSet{
-            label_Loading.text = HippoCallClientStrings.connectingToMeeting
+            label_Loading.text = HippoCallClientStrings.connectingToMeeting + " ..."
         }
     }
     
@@ -98,7 +98,7 @@ class JitsiConfrenceCallView: UIView {
         if !(loadingLabeltext?.contains("...") ?? false) {
             loadingLabeltext = loadingLabeltext?.appending(".")
         } else {
-            loadingLabeltext = "Connecting you to your meeting "
+            loadingLabeltext = HippoCallClientStrings.connectingToMeeting
         }
 
         label_Loading.text = loadingLabeltext
