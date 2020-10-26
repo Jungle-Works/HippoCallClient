@@ -13,13 +13,11 @@ import CallKit
 extension JitsiCallManager : JMCallKitListener{
     
     func performAnswerCall(UUID: UUID, perform action: CXAnswerCallAction) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.checkIfOfferIsSent { (status) in
-                if status{
-                    action.fulfill()
-                }else{
-                    action.fail()
-                }
+        self.checkIfOfferIsSent { (status) in
+            if status{
+                action.fulfill()
+            }else{
+                action.fail()
             }
         }
     }

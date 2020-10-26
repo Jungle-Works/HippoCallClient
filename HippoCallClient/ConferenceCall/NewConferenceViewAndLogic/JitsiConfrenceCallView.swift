@@ -33,7 +33,7 @@ class JitsiConfrenceCallView: UIView {
     var loadingLabeltext : String?
     var displayLink : CADisplayLink?
     
-    class  func loadView(with frame: CGRect)-> JitsiConfrenceCallView? {
+    class func loadView(with frame: CGRect)-> JitsiConfrenceCallView? {
         let view = Bundle.init(identifier: "org.cocoapods.HippoCallClient")?.loadNibNamed("JitsiConfrenceCallView", owner: nil, options: nil)?.first as? JitsiConfrenceCallView
         view?.frame = frame
         view?.clipsToBounds = true
@@ -45,6 +45,7 @@ class JitsiConfrenceCallView: UIView {
         let userInfo =  JitsiMeetUserInfo(displayName: data.userName, andEmail: data.userEmail, andAvatar: data.userImage)
         print("server url is", data.serverURL)
         let conferenceOptions =  JitsiMeetConferenceOptions.fromBuilder { (ptionsBuilder) in
+            ptionsBuilder.subject = " "
             ptionsBuilder.audioOnly = data.audioOnly
             ptionsBuilder.serverURL = data.serverURL
             ptionsBuilder.room = data.roomID

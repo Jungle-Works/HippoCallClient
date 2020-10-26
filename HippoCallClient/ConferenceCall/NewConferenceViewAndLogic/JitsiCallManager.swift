@@ -396,6 +396,7 @@ extension JitsiCallManager {
     
     func checkIfOfferIsSent(completion: @escaping (Bool) -> Void){
         if self.isOfferRecieved == true{
+            removeConnectingView()
             completion(true)
             if self.activeCall?.isGroupCall ?? false{
                 self.groupCallAnswered()
@@ -404,10 +405,17 @@ extension JitsiCallManager {
             }
         }else{
             timeElapsedSinceWaitingForOffer += 1
-            if timeElapsedSinceWaitingForOffer > 20 && self.isOfferRecieved == false{
-               completion(false)
+            if let keyWindow = UIApplication.shared.keyWindow {
+                if EstablishingConnectionView.shared == nil{
+                    EstablishingConnectionView.shared = EstablishingConnectionView.loadView(with: keyWindow.frame)
+                    keyWindow.addSubview(EstablishingConnectionView.shared)
+                }
+            }
+            if timeElapsedSinceWaitingForOffer > 20 && (self.isOfferRecieved ?? false) == false{
+                completion(false)
                 self.removeDialAndReceivedView()
                 self.resetAllResourceForNewCall()
+                self.removeConnectingView()
                return
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
@@ -416,7 +424,13 @@ extension JitsiCallManager {
         }
     }
     
+    func removeConnectingView(){
+        if EstablishingConnectionView.shared != nil{
+            EstablishingConnectionView.shared.removeFromSuperview()
+        }
+    }
 }
+
 
 
 //MARK: - Socket Signal
