@@ -16,4 +16,5 @@ public class HippoCallClientStrings{
     public static var busyOnOtherCall = "Busy on another call..."
     static var conferenceCallInvited = "has invited you to join %@ conference"
     public static var connectingToMeeting = "Connecting you to your meeting"
+    public static var establishingConnection = "Please wait while we are establishing the connection.."
 }

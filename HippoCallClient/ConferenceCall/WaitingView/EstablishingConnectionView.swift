@@ -13,7 +13,7 @@ class EstablishingConnectionView : UIView {
     
     @IBOutlet var label_Connecting : UILabel!{
         didSet{
-            label_Connecting.text = "Please wait while we are establishing the connection.."
+            label_Connecting.text = HippoCallClientStrings.establishingConnection
         }
     }
     
