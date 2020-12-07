@@ -532,10 +532,8 @@ extension JitsiCallManager {
                         self?.otherUserCallHungup()
                     }
                 case .USER_BUSY_CONFERENCE:
-                    if signal?.sender.peerId == self?.activeCall?.currentUser.peerId{
-                        self?.userBusy_Muid = signal?.callUID
-                        self?.otherUserBusyOnOtherCall()
-                    }
+                    self?.userBusy_Muid = signal?.callUID
+                    self?.otherUserBusyOnOtherCall()
                 case .READY_TO_CONNECT_CONFERENCE_IOS:
                     //self?.endRepeatStartCalliOS()
                     if CallStartAndReceivedView.shared == nil || JitsiConfrenceCallView.shared != nil{
