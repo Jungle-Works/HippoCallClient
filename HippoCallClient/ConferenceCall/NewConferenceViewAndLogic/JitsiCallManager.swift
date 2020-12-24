@@ -409,6 +409,8 @@ extension JitsiCallManager {
                 if EstablishingConnectionView.shared == nil{
                     EstablishingConnectionView.shared = EstablishingConnectionView.loadView(with: keyWindow.frame)
                     keyWindow.addSubview(EstablishingConnectionView.shared)
+                }else if keyWindow.subviews.contains(EstablishingConnectionView.shared) == false{
+                    keyWindow.addSubview(EstablishingConnectionView.shared)
                 }
             }
             if timeElapsedSinceWaitingForOffer > 20 && (self.isOfferRecieved ?? false) == false{
@@ -418,13 +420,14 @@ extension JitsiCallManager {
                 self.removeConnectingView()
                return
             }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                 self.checkIfOfferIsSent(completion: completion)
             }
         }
     }
     
     func removeConnectingView(){
+        timeElapsedSinceWaitingForOffer = 0
         if EstablishingConnectionView.shared != nil{
             EstablishingConnectionView.shared.removeFromSuperview()
         }
