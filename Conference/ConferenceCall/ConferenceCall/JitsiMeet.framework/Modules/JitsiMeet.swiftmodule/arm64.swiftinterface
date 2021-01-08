@@ -1,6 +1,7 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 5.1.3 effective-4.2 (swiftlang-1100.0.282.1 clang-1100.0.33.15)
-// swift-module-flags: -target arm64-apple-ios10.0 -enable-objc-interop -enable-library-evolution -swift-version 4.2 -enforce-exclusivity=checked -O -module-name JitsiMeet
+// swift-compiler-version: Apple Swift version 5.2.4 (swiftlang-1103.0.32.9 clang-1103.0.32.53)
+// swift-module-flags: -target arm64-apple-ios11.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name JitsiMeet
+import AVFoundation
 import AVKit
 import CallKit
 import Foundation
@@ -41,11 +42,12 @@ public class PiPViewCoordinator {
   open func configureExitPiPButton(target: Any, action: ObjectiveC.Selector) -> UIKit.UIButton
   @objc deinit
 }
-@objc final public class JMCallKitProxy : ObjectiveC.NSObject {
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc final public class JMCallKitProxy : ObjectiveC.NSObject {
   @objc public static var enabled: Swift.Bool {
     @objc get
     @objc set
   }
+  @objc public static var muidOne2oneDic: [Swift.String : Swift.Bool]
   @objc public static func configureProvider(localizedName: Swift.String, ringtoneSound: Swift.String?, iconTemplateImageData: Foundation.Data?)
   @objc public static func isProviderConfigured() -> Swift.Bool
   @objc public static func addListener(_ listener: JitsiMeet.JMCallKitListener)
@@ -61,7 +63,7 @@ public class PiPViewCoordinator {
 }
 @objc public protocol JMCallKitListener : ObjectiveC.NSObjectProtocol {
   @objc optional func providerDidReset()
-  @objc optional func performAnswerCall(UUID: Foundation.UUID)
+  @objc optional func performAnswerCall(UUID: Foundation.UUID, perform action: CallKit.CXAnswerCallAction)
   @objc optional func performEndCall(UUID: Foundation.UUID)
   @objc optional func performSetMutedCall(UUID: Foundation.UUID, isMuted: Swift.Bool)
   @objc optional func performStartCall(UUID: Foundation.UUID, isVideo: Swift.Bool)
