@@ -57,21 +57,23 @@ class CallStartAndReceivedView: UIView {
     
     
     func setup() {
+        let bundle = Bundle.init(identifier: "org.cocoapods.HippoCallClient")
+        
         nameLabel.font = FuguFont.titilliumWebSemiBold(with: 19)
         nameLabel.textColor = UIColor.iLightBlack
         callStateMessageLabel.font = FuguFont.titilliumWebRegular(with: 17)
         callStateMessageLabel.textColor = UIColor.iLightBlack
         ansButton.layer.cornerRadius = ansButton.frame.height / 2
         ansButton.layer.masksToBounds = true
-         ansButton.setImage(UIImage(named: "connectCall"), for: .normal)
+        ansButton.setImage( UIImage(named: "connectCall", in: bundle, compatibleWith: nil), for: .normal)
         cancelButton.layer.cornerRadius = cancelButton.frame.height / 2
         cancelButton.layer.masksToBounds = true
-        cancelButton.setImage(UIImage(named: "disconnectCall"), for: .normal)
-
+        cancelButton.setImage(UIImage(named: "disconnectCall", in: bundle, compatibleWith: nil), for: .normal)
+       
         userImageView.layer.cornerRadius = userImageView.frame.height / 2
         dailCallCancelButton.layer.cornerRadius = dailCallCancelButton.frame.height / 2
         dailCallCancelButton.layer.masksToBounds = true
-        dailCallCancelButton.setImage(UIImage(named: "disconnectCall"), for: .normal)
+        dailCallCancelButton.setImage(UIImage(named: "disconnectCall", in: bundle, compatibleWith: nil), for: .normal)
 
         userImageView.layer.borderWidth = 0.5
         userImageView.layer.borderColor = UIColor.lightGray.cgColor
