@@ -63,6 +63,7 @@ class JitsiCallManager : NSObject{
         link = links.0
         jitsiUrl = links.1
         addSignalReceiver()
+        removeConnectingView()
         showDailCallView { (mismatch) in
             if completion != nil{
                 completion!(mismatch)
@@ -393,6 +394,18 @@ extension JitsiCallManager {
         dict["user_thumbnail_image"] = activeCall.peer.image
         return dict
     }
+    
+    func showConnectingView(){
+        if let keyWindow = UIApplication.shared.keyWindow {
+            if EstablishingConnectionView.shared == nil{
+                EstablishingConnectionView.shared = EstablishingConnectionView.loadView(with: keyWindow.frame)
+                keyWindow.addSubview(EstablishingConnectionView.shared)
+            }else if keyWindow.subviews.contains(EstablishingConnectionView.shared) == false{
+                keyWindow.addSubview(EstablishingConnectionView.shared)
+            }
+        }
+    }
+    
     
     func checkIfOfferIsSent(completion: @escaping (Bool) -> Void){
         if self.isOfferRecieved == true{
@@ -1100,7 +1113,7 @@ extension JitsiCallManager : JitsiConfrenceCallViewDelegate  {
     func userDidJoinConference() {
         isCallJoined = true
         isCallStarted?(true)
-        if UIApplication.shared.applicationState == .active{
+        if UIApplication.shared.isProtectedDataAvailable{
             reportEndCallToCallKit(activeCall?.uID ?? "", .remoteEnded)
         }
     }
@@ -1133,6 +1146,16 @@ extension JitsiCallManager : JitsiConfrenceCallViewDelegate  {
         
     }
     
+    func keyWindowChanged(){
+        if activeCall != nil && JitsiConfrenceCallView.shared != nil{
+            JitsiConfrenceCallView.shared.removeFromSuperview()
+            DispatchQueue.main.async {
+                if let keyWindow = UIApplication.shared.keyWindow {
+                    keyWindow.addSubview(JitsiConfrenceCallView.shared)
+                }
+            }
+        }
+    }
     
 }
 extension JitsiCallManager : RecievedGroupCallDelegate{

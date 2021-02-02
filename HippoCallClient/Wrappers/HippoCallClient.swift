@@ -54,6 +54,9 @@ public class HippoCallClient {
         JitsiCallManager.shared.leaveConferenceOnForceKill()
     }
     
+    public func keyWindowChangedFromParent(){
+        JitsiCallManager.shared.keyWindowChanged()
+    }
     
     /// This function is used to start call
     ///
@@ -100,7 +103,7 @@ public class HippoCallClient {
     ///   - call: Request param
     ///   - uuid: Call UUID
     public func startConnecting(call: PresentCallRequest, uuid: String) {
-        CallClient.shared.startConnecting(call: call, uuid: uuid)
+        JitsiCallManager.shared.showConnectingView()
     }
     
     /// This function is requried to be full filled as it will set credentials for turn and stun server.
