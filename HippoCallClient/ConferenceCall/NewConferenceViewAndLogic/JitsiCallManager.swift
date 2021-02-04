@@ -578,6 +578,7 @@ extension JitsiCallManager {
                         self?.resetAllResourceForNewCall()
                         self?.muidDic = [String : Bool]()
                         self?.muidDic?[signal?.callUID ?? ""] = true
+                        self?.removeConnectingView()
                     }
                     break
                 case .JOIN_GROUP_CALL:
@@ -597,6 +598,7 @@ extension JitsiCallManager {
                         self?.reportEndCallToCallKit(self?.activeCall?.uID ?? "", .answeredElsewhere)
                         self?.removeRecievedGroupCallPopup()
                         self?.removeJitsiPopup()
+                        self?.removeConnectingView()
                     }
                     break
                     
@@ -605,6 +607,7 @@ extension JitsiCallManager {
                         self?.reportEndCallToCallKit(self?.activeCall?.uID ?? "", .answeredElsewhere)
                         self?.removeDialAndReceivedView()
                         self?.resetAllResourceForNewCall()
+                        self?.removeConnectingView()
                     }
                     break
                 }
@@ -828,21 +831,20 @@ extension JitsiCallManager {
     }
     
     func otherUserCallHungup() {
-        if isCallJoined {
-            if JitsiConfrenceCallView.shared != nil{
-                JitsiConfrenceCallView.shared.leaveConfrence { [weak self](mark) in
-                    DispatchQueue.main.async {
-                        if mark {
-                            if JitsiConfrenceCallView.shared  == nil { return }
-                            JitsiConfrenceCallView.shared.removeFromSuperview()
-                            JitsiConfrenceCallView.shared.delegate = nil
-                            JitsiConfrenceCallView.shared = nil
-                            self?.resetAllResourceForNewCall()
-                        }
+        if JitsiConfrenceCallView.shared != nil{
+            JitsiConfrenceCallView.shared.leaveConfrence { [weak self](mark) in
+                DispatchQueue.main.async {
+                    if mark {
+                        if JitsiConfrenceCallView.shared  == nil { return }
+                        JitsiConfrenceCallView.shared.removeFromSuperview()
+                        JitsiConfrenceCallView.shared.delegate = nil
+                        JitsiConfrenceCallView.shared = nil
+                        self?.resetAllResourceForNewCall()
                     }
                 }
             }
         }else {
+            removeConnectingView()
             removeDialAndReceivedView()
             resetAllResourceForNewCall()
         }
