@@ -131,4 +131,7 @@ public class HippoCallClient {
         JitsiCallManager.shared.unHideJitsiView()
     }
     
+    public func keyWindowChangedFromParent(){
+         
+    }
 }
