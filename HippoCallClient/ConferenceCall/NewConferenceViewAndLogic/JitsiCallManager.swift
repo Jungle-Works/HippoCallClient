@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import CallKit
 import AVFoundation
-import JitsiMeet
+import JitsiMeetSDK
 
 typealias VersionMismatchCallBack = ((_ versionMismatch: Bool) -> Void)
 class JitsiCallManager : NSObject{
@@ -503,7 +503,7 @@ extension JitsiCallManager {
                         self?.resetAllResourceForNewCall()
                         self?.muidOne2oneDic = [String : Bool]()
                         self?.muidOne2oneDic?[signal?.callUID ?? ""] = true
-                        JMCallKitProxy.muidOne2oneDic = self?.muidOne2oneDic ?? [String : Bool]()
+                       // JMCallKitProxy.muidOne2oneDic = self?.muidOne2oneDic ?? [String : Bool]()
                         return
                     }
                     
@@ -537,12 +537,12 @@ extension JitsiCallManager {
                     self?.reportEndCallToCallKit(self?.activeCall?.uID ?? "", .declinedElsewhere)
                     self?.muidOne2oneDic = [String : Bool]()
                     self?.muidOne2oneDic?[signal?.callUID ?? ""] = true
-                    JMCallKitProxy.muidOne2oneDic = self?.muidOne2oneDic ?? [String : Bool]()
+                    //JMCallKitProxy.muidOne2oneDic = self?.muidOne2oneDic ?? [String : Bool]()
                     self?.receivedRejectCallFromOtherUser()
                 case .HUNGUP_CONFERENCE:
                     self?.muidOne2oneDic = [String : Bool]()
                     self?.muidOne2oneDic?[signal?.callUID ?? ""] = true
-                    JMCallKitProxy.muidOne2oneDic = self?.muidOne2oneDic ?? [String : Bool]()
+                    //JMCallKitProxy.muidOne2oneDic = self?.muidOne2oneDic ?? [String : Bool]()
                     self?.reportEndCallToCallKit(signal?.callUID ?? "", .answeredElsewhere)
                     if self?.activeCall?.uID == signal?.callUID{
                         self?.otherUserCallHungup()
@@ -801,7 +801,7 @@ extension JitsiCallManager {
         sendData(dict: dict)
         self.muidOne2oneDic = [String : Bool]()
         self.muidOne2oneDic?[signal.callUID] = true
-        JMCallKitProxy.muidOne2oneDic = self.muidOne2oneDic ?? [String : Bool]()
+        //JMCallKitProxy.muidOne2oneDic = self.muidOne2oneDic ?? [String : Bool]()
         self.removeStartConTimer(for: true, createCall: false)
     }
     
@@ -814,7 +814,7 @@ extension JitsiCallManager {
         sendData(dict: dict){(mark) in
             self.muidOne2oneDic = [String : Bool]()
             self.muidOne2oneDic?[self.activeCall?.uID ?? ""] = true
-            JMCallKitProxy.muidOne2oneDic = self.muidOne2oneDic ?? [String : Bool]()
+            //JMCallKitProxy.muidOne2oneDic = self.muidOne2oneDic ?? [String : Bool]()
             self.callRejectByCurrentUser()
         }
         

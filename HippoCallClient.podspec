@@ -24,7 +24,7 @@ Pod::Spec.new do |s|
     s.exclude_files = 'Classes/Exclude'
     s.static_framework = false
     s.preserve_paths = 'README.md'
-    s.vendored_frameworks =  ['Conference/ConferenceCall/ConferenceCall/JitsiMeet.framework', 'Conference/ConferenceCall/ConferenceCall/WebRTC.framework']
+    s.vendored_frameworks =  ['Conference/ConferenceCall/ConferenceCall/JitsiMeetSDK.framework', 'Conference/ConferenceCall/ConferenceCall/WebRTC.framework']
    # s.dependency 'Kingfisher'
 
 

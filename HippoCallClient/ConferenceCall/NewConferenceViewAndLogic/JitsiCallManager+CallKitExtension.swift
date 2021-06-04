@@ -6,7 +6,7 @@
 //  Copyright © 2020 Vishal. All rights reserved.
 //
 
-import JitsiMeet
+import JitsiMeetSDK
 import WebRTC
 import CallKit
 

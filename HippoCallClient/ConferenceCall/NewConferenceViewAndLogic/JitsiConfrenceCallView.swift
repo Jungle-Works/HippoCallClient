@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import JitsiMeet
+import JitsiMeetSDK
 import AVFoundation
 
 protocol JitsiConfrenceCallViewDelegate: class {
