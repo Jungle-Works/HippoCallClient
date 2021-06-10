@@ -29,6 +29,10 @@ public class HippoCallClient {
         }
     }
     
+    func createShareUrl(from url : String) {
+        delgate?.shareUrlApiCall(url: url)
+    }
+    
     
     /// This function is public and called when ever you recieve a voip Notification
     ///
@@ -75,6 +79,10 @@ public class HippoCallClient {
         JitsiCallManager.shared.startGroupCall(with: call, with: groupCallData)
     }
   
+    public func joinCallLink(customerName: String, customerImage: String, url: String) {
+        JitsiCallManager.shared.joinCallLink(customerName: customerName, customerImage: customerImage, url: url)
+    }
+    
     public func startCall(call:Call, completion: @escaping (Bool, NSError?) -> Void) {
         
         JitsiCallManager.shared.startCall(with: call) { (versionMismatch) in

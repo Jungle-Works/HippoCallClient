@@ -44,7 +44,7 @@ class JitsiCallManager : NSObject{
     var isCallStarted : ((Bool)->())?
     var isOfferRecieved : Bool?
     var timeElapsedSinceWaitingForOffer = 0
-    
+    var isCallJoinedFromLink: Bool = false
     
     private override init() {
         super.init()
@@ -57,6 +57,9 @@ class JitsiCallManager : NSObject{
     }
       
     func startCall(with call: Call, completion: VersionMismatchCallBack? = nil) {
+        if isCallJoinedFromLink {
+            return
+        }
         timeElapsedSinceCallStart = 0
         activeCall = call
         let links = createLink(for: call)
@@ -77,7 +80,7 @@ class JitsiCallManager : NSObject{
             return
         }
 
-        if activeCall != nil && newCall.uID != activeCall?.uID{ //, activeCall?.uID != newCall.uID user busy on another call
+        if activeCall != nil && newCall.uID != activeCall?.uID, isCallJoinedFromLink{ //, activeCall?.uID != newCall.uID user busy on another call
             sendBusy(with: newCall, and: signal)
             return
         }
@@ -92,6 +95,13 @@ class JitsiCallManager : NSObject{
         addSignalReceiver()
         sendReadyToConnect()
     }
+    
+    func joinCallLink(customerName: String, customerImage: String, url: String) {
+        self.link = url
+        self.jitsiUrl = url
+        self.showJitsiViewToJoinLink(customerName: customerName, customerImage: customerImage, url: url)
+    }
+    
     
 //    func handleMultipleDeviceCall(for data: [String: Any]) {
 //        guard let signalTypeRaw = data["video_call_type"] as? String,let  signalType = JitsiCallSignal.JitsiSignalType(rawValue:signalTypeRaw) else {
@@ -110,6 +120,9 @@ extension JitsiCallManager{
     ///*Start group call from agent
     
     func startGroupCall(with call: Call, with groupCallData : CallClientGroupCallData){
+        if isCallJoinedFromLink {
+            return
+        }
         timeElapsedSinceGroupCallStart = 0
         activeCall = call
         addSignalReceiver()
@@ -281,6 +294,7 @@ extension JitsiCallManager{
         JitsiConfrenceCallView.shared.leaveConfrence { [weak self](mark) in
             if mark {
                 if JitsiConfrenceCallView.shared  == nil { return }
+                JitsiConfrenceCallView.shared.removeNotification()
                 JitsiConfrenceCallView.shared.removeFromSuperview()
                 JitsiConfrenceCallView.shared.delegate = nil
                 JitsiConfrenceCallView.shared = nil
@@ -915,6 +929,24 @@ extension JitsiCallManager {
         }
         
     }
+    
+    func showJitsiViewToJoinLink(customerName: String, customerImage: String, url: String) {
+        if let keyWindow = UIApplication.shared.keyWindow {
+            if JitsiConfrenceCallView.shared == nil && activeCall == nil {
+                let tempLink = getLinkAfertRemoveAudio(link: (jitsiUrl ?? "") == "" ? link : jitsiUrl ?? "")
+                let data = getURLOrRoomId(for: tempLink)
+                let inviteLink = data.url
+                let roomId = data.roomId
+                let imageURL = URL(string: customerImage)
+                let model = JitsiMeetDataModel(userName: customerName, userEmail: "", userImage: imageURL, audioOnly: self.link.contains("startWithVideoMuted") ? true : false, serverURl: inviteLink, roomID: roomId, isMuted: false)
+                JitsiConfrenceCallView.shared = JitsiConfrenceCallView.loadView(with: keyWindow.frame)
+                JitsiConfrenceCallView.shared.setupJitsi(for: model)
+                JitsiConfrenceCallView.shared.delegate = self
+                keyWindow.addSubview(JitsiConfrenceCallView.shared)
+            }
+        }
+    }
+    
     
     func showJitsiViewForGroupCall(_ groupCallData : CallClientGroupCallData){
         if let keyWindow = UIApplication.shared.keyWindow {

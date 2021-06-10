@@ -208,8 +208,7 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 # pragma pop_macro("any")
 #endif
 
-
-
+@class CXAnswerCallAction;
 @class AVAudioSession;
 @class CXAction;
 
@@ -217,7 +216,7 @@ SWIFT_PROTOCOL("_TtP12JitsiMeetSDK17JMCallKitListener_")
 @protocol JMCallKitListener <NSObject>
 @optional
 - (void)providerDidReset;
-- (void)performAnswerCallWithUUID:(NSUUID * _Nonnull)UUID;
+- (void)performAnswerCallWithUUID:(NSUUID * _Nonnull)UUID perform:(CXAnswerCallAction * _Nonnull)action;
 - (void)performEndCallWithUUID:(NSUUID * _Nonnull)UUID;
 - (void)performSetMutedCallWithUUID:(NSUUID * _Nonnull)UUID isMuted:(BOOL)isMuted;
 - (void)performStartCallWithUUID:(NSUUID * _Nonnull)UUID isVideo:(BOOL)isVideo;
@@ -237,6 +236,9 @@ SWIFT_CLASS("_TtC12JitsiMeetSDK14JMCallKitProxy")
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class) BOOL enabled;)
 + (BOOL)enabled SWIFT_WARN_UNUSED_RESULT;
 + (void)setEnabled:(BOOL)value;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSDictionary<NSString *, NSNumber *> * _Nonnull muidOne2oneDic;)
++ (NSDictionary<NSString *, NSNumber *> * _Nonnull)muidOne2oneDic SWIFT_WARN_UNUSED_RESULT;
++ (void)setMuidOne2oneDic:(NSDictionary<NSString *, NSNumber *> * _Nonnull)value;
 + (void)configureProviderWithLocalizedName:(NSString * _Nonnull)localizedName ringtoneSound:(NSString * _Nullable)ringtoneSound iconTemplateImageData:(NSData * _Nullable)iconTemplateImageData;
 + (BOOL)isProviderConfigured SWIFT_WARN_UNUSED_RESULT;
 + (void)addListener:(id <JMCallKitListener> _Nonnull)listener;

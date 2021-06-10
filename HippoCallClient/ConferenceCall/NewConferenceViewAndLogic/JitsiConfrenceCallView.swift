@@ -10,6 +10,8 @@ import UIKit
 import JitsiMeetSDK
 import AVFoundation
 
+
+
 protocol JitsiConfrenceCallViewDelegate: class {
     func userDidJoinConference()
     func userWillLeaveConference()
@@ -33,11 +35,15 @@ class JitsiConfrenceCallView: UIView {
     var loadingLabeltext : String?
     var displayLink : CADisplayLink?
     
+    
     class func loadView(with frame: CGRect)-> JitsiConfrenceCallView? {
-        let view = Bundle.init(identifier: "org.cocoapods.HippoCallClient")?.loadNibNamed("JitsiConfrenceCallView", owner: nil, options: nil)?.first as? JitsiConfrenceCallView
-        view?.frame = frame
-        view?.clipsToBounds = true
-        return view
+        if let view = Bundle.init(identifier: "org.cocoapods.HippoCallClient")?.loadNibNamed("JitsiConfrenceCallView", owner: nil, options: nil)?.first as? JitsiConfrenceCallView {
+            view.frame = frame
+            view.clipsToBounds = true
+            NotificationCenter.default.addObserver(view,selector: #selector(handleURL),name: NSNotification.Name(rawValue: "SEND_URL_JITSI"), object: nil)
+            return view
+        }
+        return nil
     }
     
     func setupJitsi(for data: JitsiMeetDataModel) {
@@ -54,7 +60,7 @@ class JitsiConfrenceCallView: UIView {
             ptionsBuilder.setFeatureFlag("chat.enabled", withValue: false)
             ptionsBuilder.setFeatureFlag("call-integration.enabled", withValue: true)
             ptionsBuilder.setFeatureFlag("pip.enabled", withBoolean: true)
-            ptionsBuilder.setFeatureFlag("invite.enabled", withValue: false)
+            //ptionsBuilder.setFeatureFlag("invite.enabled", withValue: false)
         }
         
         jitsiView.join(conferenceOptions)
@@ -105,6 +111,15 @@ class JitsiConfrenceCallView: UIView {
         label_Loading.text = loadingLabeltext
     }
     
+    @objc private func handleURL(notification: Notification) {
+        if let userData = notification.userInfo, let url =  userData["url"] as? String{
+            HippoCallClient.shared.createShareUrl(from: url)
+        }
+    }
+    
+    func removeNotification() {
+        NotificationCenter.default.removeObserver(JitsiConfrenceCallView.shared, name: NSNotification.Name(rawValue: "SEND_URL_JITSI"), object: nil)
+    }
 }
 
 extension JitsiConfrenceCallView : JitsiMeetViewDelegate {
@@ -118,8 +133,10 @@ extension JitsiConfrenceCallView : JitsiMeetViewDelegate {
     
     
     func conferenceTerminated(_ data: [AnyHashable : Any]!) {
+        removeNotification()
         delegate?.userDidTerminatedConference()
         pipViewCoordinator?.exitPictureInPicture()
+        pipViewCoordinator = nil
 //        Logger.shared.printVar(for: data)
     }
     
