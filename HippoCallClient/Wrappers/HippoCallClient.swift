@@ -83,6 +83,10 @@ public class HippoCallClient {
         JitsiCallManager.shared.joinCallLink(customerName: customerName, customerImage: customerImage, url: url)
     }
     
+    public func checkIfUserIsBusy(newCallUID: String) -> Bool {
+        JitsiCallManager.shared.checkIfUserIsBusy(newCallUID: newCallUID)
+    }
+    
     public func startCall(call:Call, completion: @escaping (Bool, NSError?) -> Void) {
         
         JitsiCallManager.shared.startCall(with: call) { (versionMismatch) in

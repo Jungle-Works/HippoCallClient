@@ -74,13 +74,24 @@ class JitsiCallManager : NSObject{
         }
     }
     
+    func checkIfUserIsBusy(newCallUID: String) -> Bool {
+        if (activeCall != nil && newCallUID != activeCall?.uID) { //, activeCall?.uID != newCall.uID user busy on another call
+           return true
+        }else if isCallJoinedFromLink {
+            return true
+        }else {
+            return false
+        }
+    }
+    
+    
     func startReceivedCall(newCall: Call, signal: JitsiCallSignal) {
         
         if muidOne2oneDic?.keys.first == newCall.uID, muidOne2oneDic?[newCall.uID] == true{
             return
         }
 
-        if activeCall != nil && newCall.uID != activeCall?.uID, isCallJoinedFromLink{ //, activeCall?.uID != newCall.uID user busy on another call
+        if checkIfUserIsBusy(newCallUID: newCall.uID) {
             sendBusy(with: newCall, and: signal)
             return
         }
@@ -100,6 +111,7 @@ class JitsiCallManager : NSObject{
         self.link = url
         self.jitsiUrl = url
         self.showJitsiViewToJoinLink(customerName: customerName, customerImage: customerImage, url: url)
+        isCallJoinedFromLink = true
     }
     
     
@@ -1011,6 +1023,7 @@ extension JitsiCallManager {
     }
     
     func resetAllResourceForNewCall() {
+//        isCallJoinedFromLink = false
         activeCall = nil
         link = nil
         repeatTimer?.invalidate()
@@ -1157,6 +1170,7 @@ extension JitsiCallManager : JitsiConfrenceCallViewDelegate  {
     }
     
     func userDidTerminatedConference() {
+        isCallJoinedFromLink = false
         self.reportEndCallToCallKit(self.activeCall?.uID ?? "", .remoteEnded)
         if (activeCall?.isGroupCall ?? false) == false{
             sendCallHungup()
