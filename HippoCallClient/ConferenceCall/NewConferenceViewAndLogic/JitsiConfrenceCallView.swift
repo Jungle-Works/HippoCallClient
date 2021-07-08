@@ -60,7 +60,7 @@ class JitsiConfrenceCallView: UIView {
             ptionsBuilder.setFeatureFlag("chat.enabled", withValue: false)
             ptionsBuilder.setFeatureFlag("call-integration.enabled", withValue: true)
             ptionsBuilder.setFeatureFlag("pip.enabled", withBoolean: true)
-            //ptionsBuilder.setFeatureFlag("invite.enabled", withValue: false)
+            ptionsBuilder.setFeatureFlag("invite.enabled", withValue: data.isInviteEnabled ? true : false)
         }
         
         jitsiView.join(conferenceOptions)
@@ -194,6 +194,7 @@ class JitsiMeetDataModel {
     let serverURL: URL
     let roomID: String
     var isMuted : Bool
+    var isInviteEnabled : Bool = false
     
     init(userName: String?, userEmail: String?, userImage: URL?, audioOnly: Bool, serverURl: URL, roomID: String, isMuted : Bool) {
         self.userName = userName

@@ -35,7 +35,7 @@ class CallClient {
         self.credentials = CallClientCredential(rawCredentials: rawCredentials)
     }
     
-    func voipNotificationRecievedForGroupCall(dictionary: [AnyHashable: Any], peer: CallPeer, signalingClient: SignalingClient, currentUser: CallPeer){
+    func voipNotificationRecievedForGroupCall(dictionary: [AnyHashable: Any], peer: CallPeer, signalingClient: SignalingClient, currentUser: CallPeer,isInviteEnabled: Bool){
         guard let jsonDict = dictionary as? [String: Any] else {
             return
         }
@@ -43,11 +43,11 @@ class CallClient {
         guard let signal = JitsiCallSignal.getFrom(json: jsonDict) else {
             return
         }
-        let call = Call(peer: peer, signalingClient: signalingClient, uID: signal.callUID, currentUser: currentUser, type: signal.callType, link: signal.conferenceLink ?? "", isGroupCall: true, jitsiUrl: signal.jitsiUrl)
-        self.handleCallEvent(for: jsonDict, call: call, jitsiSignal: signal )
+        let call = Call(peer: peer, signalingClient: signalingClient, uID: signal.callUID, currentUser: currentUser, type: signal.callType, link: signal.conferenceLink ?? "", isGroupCall: true, jitsiUrl: signal.jitsiUrl, transactionId: nil)
+        self.handleCallEvent(for: jsonDict, call: call, jitsiSignal: signal, isInviteEnabled: isInviteEnabled )
     }
     
-    func voipNotificationReceived(dictionary: [AnyHashable: Any], peer: CallPeer, signalingClient: SignalingClient, currentUser: CallPeer) {
+    func voipNotificationReceived(dictionary: [AnyHashable: Any], peer: CallPeer, signalingClient: SignalingClient, currentUser: CallPeer,isInviteEnabled: Bool) {
         NSLog("Voip received in call client")
         guard let jsonDict = dictionary as? [String: Any] else {
             return
@@ -62,8 +62,8 @@ class CallClient {
             guard let signal = JitsiCallSignal.getFrom(json: jsonDict) else {
                 return
             }
-            let call = Call(peer: peer, signalingClient: signalingClient, uID: signal.callUID, currentUser: currentUser, type: signal.callType, link: signal.conferenceLink ?? "",jitsiUrl: signal.jitsiUrl)
-            self.handleCallEvent(for: jsonDict, call: call, jitsiSignal: signal )
+            let call = Call(peer: peer, signalingClient: signalingClient, uID: signal.callUID, currentUser: currentUser, type: signal.callType, link: signal.conferenceLink ?? "",jitsiUrl: signal.jitsiUrl, transactionId: nil)
+            self.handleCallEvent(for: jsonDict, call: call, jitsiSignal: signal, isInviteEnabled: isInviteEnabled )
         }
         
         func handleForWebRtc() {
@@ -84,7 +84,7 @@ class CallClient {
 //                    return
 //            }
          
-            let call = Call(peer: peer, signalingClient: signalingClient, uID: signal.callUID, currentUser: currentUser, type: signal.callType, link: "", jitsiUrl: "")
+            let call = Call(peer: peer, signalingClient: signalingClient, uID: signal.callUID, currentUser: currentUser, type: signal.callType, link: "", jitsiUrl: "", transactionId: nil)
             
             if !shouldHandle(signal: signal, call: call) {
                 print("ERROR -> VOIP PUSH FROM CURRENT USER")
@@ -166,7 +166,7 @@ class CallClient {
         */
     }
     
-    func handleCallEvent(for data: [String: Any], call: Call, jitsiSignal: JitsiCallSignal) {
+    func handleCallEvent(for data: [String: Any], call: Call, jitsiSignal: JitsiCallSignal,isInviteEnabled: Bool) {
         
         JitsiCallManager.shared.activeCall?.signalingClient.signalReceivedFromPeer?(data)
 
@@ -178,9 +178,9 @@ class CallClient {
                return
             }else if signalType == .START_CONFERENCE_IOS {
                 if let devicePayload = jsonDict["device_payload"] as? [String:Any], let deviceId = devicePayload["device_id"] as? String ,CallClient.shared.currentDeviceID != deviceId, call.currentUser.peerId != jitsiSignal.sender.peerId{
-                    JitsiCallManager.shared.startReceivedCall(newCall: call, signal: jitsiSignal)
+                    JitsiCallManager.shared.startReceivedCall(newCall: call, signal: jitsiSignal, isInviteEnabled: isInviteEnabled)
                 } else if let deviceId = jsonDict["device_id"] as? String ,CallClient.shared.currentDeviceID != deviceId, call.currentUser.peerId != jitsiSignal.sender.peerId {
-                    JitsiCallManager.shared.startReceivedCall(newCall: call, signal: jitsiSignal)
+                    JitsiCallManager.shared.startReceivedCall(newCall: call, signal: jitsiSignal, isInviteEnabled: isInviteEnabled)
                 }
                 return
             }else if signalType == .START_GROUP_CALL {

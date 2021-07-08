@@ -22,8 +22,9 @@ public class Call {
     var isCallByMe: Bool = false
     var isGroupCall : Bool?
     var jitsiUrl : String
+    var transactionId : String?
     
-    public init(peer: CallPeer, signalingClient: SignalingClient, uID: String, currentUser: CallPeer, type: CallType, link: String, isGroupCall : Bool = false, jitsiUrl : String) {
+    public init(peer: CallPeer, signalingClient: SignalingClient, uID: String, currentUser: CallPeer, type: CallType, link: String, isGroupCall : Bool = false, jitsiUrl : String, transactionId: String?) {
         self.peer = peer
         self.signalingClient = signalingClient
         self.uID = uID
@@ -32,6 +33,7 @@ public class Call {
         self.inviteLink = link
         self.isGroupCall = isGroupCall
         self.jitsiUrl = jitsiUrl
+        self.transactionId = transactionId
     }
 }
 

@@ -45,7 +45,7 @@ class JitsiCallManager : NSObject{
     var isOfferRecieved : Bool?
     var timeElapsedSinceWaitingForOffer = 0
     var isCallJoinedFromLink: Bool = false
-    
+    var isInviteEnabled: Bool = false
     private override init() {
         super.init()
         
@@ -56,10 +56,11 @@ class JitsiCallManager : NSObject{
 
     }
       
-    func startCall(with call: Call, completion: VersionMismatchCallBack? = nil) {
+    func startCall(with call: Call,isInviteEnabled: Bool, completion: VersionMismatchCallBack? = nil) {
         if isCallJoinedFromLink {
             return
         }
+        self.isInviteEnabled = isInviteEnabled
         timeElapsedSinceCallStart = 0
         activeCall = call
         let links = createLink(for: call)
@@ -85,7 +86,7 @@ class JitsiCallManager : NSObject{
     }
     
     
-    func startReceivedCall(newCall: Call, signal: JitsiCallSignal) {
+    func startReceivedCall(newCall: Call, signal: JitsiCallSignal,isInviteEnabled: Bool) {
         
         if muidOne2oneDic?.keys.first == newCall.uID, muidOne2oneDic?[newCall.uID] == true{
             return
@@ -99,7 +100,7 @@ class JitsiCallManager : NSObject{
         if RecievedGroupCallView.shared != nil || JitsiConfrenceCallView.shared != nil || CallStartAndReceivedView.shared != nil{
             return
         }
-        
+        self.isInviteEnabled = isInviteEnabled
         activeCall = newCall
         link = activeCall?.inviteLink ?? ""
         jitsiUrl = activeCall?.jitsiUrl ?? ""
@@ -107,10 +108,10 @@ class JitsiCallManager : NSObject{
         sendReadyToConnect()
     }
     
-    func joinCallLink(customerName: String, customerImage: String, url: String) {
+    func joinCallLink(customerName: String, customerImage: String, url: String, isInviteEnabled: Bool) {
         self.link = url
         self.jitsiUrl = url
-        self.showJitsiViewToJoinLink(customerName: customerName, customerImage: customerImage, url: url)
+        self.showJitsiViewToJoinLink(customerName: customerName, customerImage: customerImage, url: url, isInviteEnabled: isInviteEnabled)
         isCallJoinedFromLink = true
     }
     
@@ -942,7 +943,7 @@ extension JitsiCallManager {
         
     }
     
-    func showJitsiViewToJoinLink(customerName: String, customerImage: String, url: String) {
+    func showJitsiViewToJoinLink(customerName: String, customerImage: String, url: String, isInviteEnabled: Bool) {
         if let keyWindow = UIApplication.shared.keyWindow {
             if JitsiConfrenceCallView.shared == nil && activeCall == nil {
                 let tempLink = getLinkAfertRemoveAudio(link: (jitsiUrl ?? "") == "" ? link : jitsiUrl ?? "")
@@ -950,7 +951,8 @@ extension JitsiCallManager {
                 let inviteLink = data.url
                 let roomId = data.roomId
                 let imageURL = URL(string: customerImage)
-                let model = JitsiMeetDataModel(userName: customerName, userEmail: "", userImage: imageURL, audioOnly: self.link.contains("startWithVideoMuted") ? true : false, serverURl: inviteLink, roomID: roomId, isMuted: false)
+                let model = JitsiMeetDataModel(userName: customerName, userEmail: "", userImage: imageURL, audioOnly: self.link.contains("startWithVideoMuted=false") ? false : true, serverURl: inviteLink, roomID: roomId, isMuted: false)
+                model.isInviteEnabled = isInviteEnabled
                 JitsiConfrenceCallView.shared = JitsiConfrenceCallView.loadView(with: keyWindow.frame)
                 JitsiConfrenceCallView.shared.setupJitsi(for: model)
                 JitsiConfrenceCallView.shared.delegate = self
@@ -971,6 +973,7 @@ extension JitsiCallManager {
                     return
                 }
                 let model = JitsiMeetDataModel(userName: activeCall.currentUser.name, userEmail: "", userImage: imageURL, audioOnly: activeCall.type == .audio ? true : false, serverURl: inviteLink, roomID: roomId, isMuted: groupCallData.isMuted ?? false)
+                model.isInviteEnabled = isInviteEnabled
                 JitsiConfrenceCallView.shared = JitsiConfrenceCallView.loadView(with: keyWindow.frame)
                 JitsiConfrenceCallView.shared.setupJitsi(for: model)
                 JitsiConfrenceCallView.shared.delegate = self
@@ -997,6 +1000,7 @@ extension JitsiCallManager {
                     if self.link.contains("startWithAudioMuted"){
                         model.isMuted = true
                     }
+                    model.isInviteEnabled = self.isInviteEnabled
                     JitsiConfrenceCallView.shared = JitsiConfrenceCallView.loadView(with: keyWindow.frame)
                     JitsiConfrenceCallView.shared.setupJitsi(for: model)
                     JitsiConfrenceCallView.shared.delegate = self
@@ -1024,6 +1028,7 @@ extension JitsiCallManager {
     
     func resetAllResourceForNewCall() {
 //        isCallJoinedFromLink = false
+        isInviteEnabled = false
         activeCall = nil
         link = nil
         repeatTimer?.invalidate()
@@ -1074,7 +1079,7 @@ extension JitsiCallManager {
     
     func createLink(for call: Call)-> (String, String) {
         let url = JitsiConstants.inviteLink
-        let randomStr = randomString(length: 11) + "iOS"
+        let randomStr = call.transactionId == nil ? randomString(length: 11) + "iOS" : (call.transactionId ?? "")
         var link = url + randomStr
         var jitsiLink = call.jitsiUrl != "" ? call.jitsiUrl + "/" + randomStr : ""
         if call.type == .audio {

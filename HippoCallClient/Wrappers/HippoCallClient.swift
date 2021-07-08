@@ -41,12 +41,12 @@ public class HippoCallClient {
     ///   - peer: Information of caller who had called you
     ///   - signalingClient: Class that satisfy SignalingClient Protocol, and this class is used for your signaling
     ///   - currentUser: Information of current user in your app
-    public func voipNotificationRecieved(dictionary: [AnyHashable: Any], peer: CallPeer, signalingClient: SignalingClient, currentUser: CallPeer) {
-        CallClient.shared.voipNotificationReceived(dictionary: dictionary, peer: peer, signalingClient: signalingClient, currentUser: currentUser)
+    public func voipNotificationRecieved(dictionary: [AnyHashable: Any], peer: CallPeer, signalingClient: SignalingClient, currentUser: CallPeer,isInviteEnabled: Bool) {
+        CallClient.shared.voipNotificationReceived(dictionary: dictionary, peer: peer, signalingClient: signalingClient, currentUser: currentUser,isInviteEnabled: isInviteEnabled)
     }
     
-    public func voipNotificationRecievedForGroupCall(dictionary: [AnyHashable: Any], peer: CallPeer, signalingClient: SignalingClient, currentUser: CallPeer) {
-        CallClient.shared.voipNotificationRecievedForGroupCall(dictionary: dictionary, peer: peer, signalingClient: signalingClient, currentUser: currentUser)
+    public func voipNotificationRecievedForGroupCall(dictionary: [AnyHashable: Any], peer: CallPeer, signalingClient: SignalingClient, currentUser: CallPeer,isInviteEnabled: Bool) {
+        CallClient.shared.voipNotificationRecievedForGroupCall(dictionary: dictionary, peer: peer, signalingClient: signalingClient, currentUser: currentUser, isInviteEnabled: isInviteEnabled)
     }
     
     /// This is function is called to hangup current ongoing call if any
@@ -67,8 +67,8 @@ public class HippoCallClient {
     /// - Parameters:
     ///   - call: Call object that contain information about call
     ///   - completion: Callback that provide status whether the call is made or not
-    public func startCall(call: Call, completion: @escaping (Bool) -> Void) {
-        JitsiCallManager.shared.startCall(with: call) { (versionMismatch) in
+    public func startCall(call: Call,isInviteEnabled: Bool, completion: @escaping (Bool) -> Void) {
+        JitsiCallManager.shared.startCall(with: call, isInviteEnabled: isInviteEnabled) { (versionMismatch) in
             if versionMismatch != nil, versionMismatch {
                 CallClient.shared.startNew(call: call, completion: completion)
             }
@@ -79,17 +79,17 @@ public class HippoCallClient {
         JitsiCallManager.shared.startGroupCall(with: call, with: groupCallData)
     }
   
-    public func joinCallLink(customerName: String, customerImage: String, url: String) {
-        JitsiCallManager.shared.joinCallLink(customerName: customerName, customerImage: customerImage, url: url)
+    public func joinCallLink(customerName: String, customerImage: String, url: String, isInviteEnabled: Bool) {
+        JitsiCallManager.shared.joinCallLink(customerName: customerName, customerImage: customerImage, url: url, isInviteEnabled: isInviteEnabled)
     }
     
     public func checkIfUserIsBusy(newCallUID: String) -> Bool {
         JitsiCallManager.shared.checkIfUserIsBusy(newCallUID: newCallUID)
     }
     
-    public func startCall(call:Call, completion: @escaping (Bool, NSError?) -> Void) {
+    public func startCall(call:Call,isInviteEnabled: Bool, completion: @escaping (Bool, NSError?) -> Void) {
         
-        JitsiCallManager.shared.startCall(with: call) { (versionMismatch) in
+        JitsiCallManager.shared.startCall(with: call, isInviteEnabled: isInviteEnabled) { (versionMismatch) in
             
             if versionMismatch {
                 let info = [NSLocalizedDescriptionKey:"Calling failed due to verison mismatch."];
