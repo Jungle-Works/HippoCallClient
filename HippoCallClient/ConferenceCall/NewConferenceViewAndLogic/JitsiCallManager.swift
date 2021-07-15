@@ -951,7 +951,7 @@ extension JitsiCallManager {
                 let inviteLink = data.url
                 let roomId = data.roomId
                 let imageURL = URL(string: customerImage)
-                let model = JitsiMeetDataModel(userName: customerName, userEmail: "", userImage: imageURL, audioOnly: self.link.contains("startWithVideoMuted=false") ? false : true, serverURl: inviteLink, roomID: roomId, isMuted: false)
+                let model = JitsiMeetDataModel(userName: customerName, userEmail: "", userImage: imageURL, audioOnly: self.link.contains("startWithVideoMuted=true") ? true : false, serverURl: inviteLink, roomID: roomId, isMuted: false)
                 model.isInviteEnabled = isInviteEnabled
                 JitsiConfrenceCallView.shared = JitsiConfrenceCallView.loadView(with: keyWindow.frame)
                 JitsiConfrenceCallView.shared.setupJitsi(for: model)
