@@ -34,7 +34,7 @@ public class HippoCallClient {
     ///   - peer: Information of caller who had called you
     ///   - signalingClient: Class that satisfy SignalingClient Protocol, and this class is used for your signaling
     ///   - currentUser: Information of current user in your app
-    public func voipNotificationRecieved(dictionary: [AnyHashable: Any], peer: CallPeer, signalingClient: SignalingClient, currentUser: CallPeer) {
+    public func voipNotificationRecieved(dictionary: [AnyHashable: Any], peer: CallPeer, signalingClient: SignalingClient, currentUser: CallPeer,isInviteEnabled: Bool) {
         CallClient.shared.voipNotificationReceived(dictionary: dictionary, peer: peer, signalingClient: signalingClient, currentUser: currentUser)
     }
     /// This is function is called to hangup current ongoing call if any
@@ -47,7 +47,7 @@ public class HippoCallClient {
     /// - Parameters:
     ///   - call: Call object that contain information about call
     ///   - completion: Callback that provide status whether the call is made or not
-    public func startCall(call: Call, completion: @escaping (Bool, NSError?) -> Void) {
+    public func startCall(call: Call, isInviteEnabled: Bool, completion: @escaping (Bool, NSError?) -> Void) {
         CallClient.shared.startNew(call: call, completion: completion)
     }
     
