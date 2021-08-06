@@ -1079,7 +1079,8 @@ extension JitsiCallManager {
     
     func createLink(for call: Call)-> (String, String) {
         let url = JitsiConstants.inviteLink
-        let randomStr = call.transactionId == nil ? randomString(length: 11) + "iOS" : (call.transactionId ?? "")
+        //let randomStr = call.transactionId == nil ? randomString(length: 11) + "iOS" : (call.transactionId ?? "")
+        let randomStr = call.transactionId == nil || call.transactionId == "" ? randomString(length: 11) + "iOS" : (call.transactionId ?? "")
         var link = url + randomStr
         var jitsiLink = call.jitsiUrl != "" ? call.jitsiUrl + "/" + randomStr : ""
         if call.type == .audio {
