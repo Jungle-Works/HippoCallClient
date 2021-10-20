@@ -71,15 +71,17 @@
 - (void)setFeatureFlag:(NSString *_Nonnull)flag withBoolean:(BOOL)value;
 - (void)setFeatureFlag:(NSString *_Nonnull)flag withValue:(id _Nonnull)value;
 
-/**
- * CallKit call handle, to be used when implementing incoming calls.
- */
-@property (nonatomic, copy, nullable) NSString *callHandle;
+- (void)setConfigOverride:(NSString *_Nonnull)config withBoolean:(BOOL)value;
+- (void)setConfigOverride:(NSString *_Nonnull)config withValue:(id _Nonnull)value;
+- (void)setConfigOverride:(NSString *_Nonnull)config withDictionary:(NSDictionary * _Nonnull)dictionary;
+- (void)setConfigOverride:(NSString *_Nonnull)config withArray:( NSArray * _Nonnull)array;
 
-/**
- * CallKit call UUID, to be used when implementing incoming calls.
- */
-@property (nonatomic, copy, nullable) NSUUID *callUUID;
+- (void)setAudioOnly:(BOOL)audioOnly;
+- (void)setAudioMuted:(BOOL)audioMuted;
+- (void)setVideoMuted:(BOOL)videoMuted;
+- (void)setCallHandle:(NSString *_Nonnull)callHandle;
+- (void)setCallUUID:(NSUUID *_Nonnull)callUUID;
+- (void)setSubject:(NSString *_Nonnull)subject;
 
 @end
 

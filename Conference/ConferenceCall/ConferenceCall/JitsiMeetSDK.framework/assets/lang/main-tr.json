@@ -67,12 +67,13 @@
         "noMessagesMessage": "Toplantıda henüz mesaj yok. Burada bir konuşma başlatın!",
         "nickname": {
             "popover": "Bir takma ad seçin",
-            "title": "Sohbette kullanmak için bir takma ad girin"
+            "title": "Sohbette kullanmak için bir takma ad girin",
+            "titleWithPolls": "Sohbette kullanmak için bir takma ad girin"
         },
-	"privateNotice": "{{recipient}} için özel mesaj",
+	    "privateNotice": "{{recipient}} için özel mesaj",
         "title": "Sohbet",
+        "titleWithPolls": "Sohbet",
         "you": "sen"
-
     },
     "connectingOverlay": {
         "joiningRoom": "Toplantıya bağlanılıyor..."
@@ -699,7 +700,7 @@
             "show": "Sahnede göster",
             "speakerStats": "Konuşmacı istatistiklerini aç/kapat",
             "tileView": "Döşeme görünümünü aç/kapat",
-            "toggleCamera": "Kamerayı aç/kapat",
+            "toggleCamera": "Kamerayı değiştir",
             "videomute": "Sessiz videoyu aç/kapat",
             "videoblur": ""
         },
@@ -731,7 +732,7 @@
         "moreActions": "Daha fazla işlem",
         "moreOptions": "Daha fazla seçenek",
         "mute": "Sessiz / Sesli",
-        "muteEveryone": "Mute everyone",
+        "muteEveryone": "Herkesi sustur",
         "noAudioSignalTitle": "Mikrofonunuzdan hiçbir giriş gelmiyor!",
         "noAudioSignalDesc": "Sistem ayarlarından veya donanımdan sesi kapatmadıysanız, cihazınızı değiştirin.",
         "noAudioSignalDescSuggestion": "Sistem ayarlarından veya donanımdan kasıtlı olarak kapatmadıysanız, önerilen aygıta geçmeyi düşünün.",
@@ -757,7 +758,7 @@
         "stopSharedVideo": "Youtube videosunu durdur",
         "talkWhileMutedPopup": "Bir şey mi dediniz? Mikrofonunuz kapalı.",
         "tileViewToggle": "Döşeme görünümünü aç/kapat",
-        "toggleCamera": "Kamerayı aç/kapat",
+        "toggleCamera": "Kamerayı değiştir",
         "videomute": "Kamera başlat / durdur",
         "startvideoblur": "",
         "stopvideoblur": ""

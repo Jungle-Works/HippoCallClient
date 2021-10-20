@@ -65,10 +65,12 @@
         "noMessagesMessage": "Все още няма съобщения в срещата. Започнете разговор тук!",
         "nickname": {
             "popover": "Избор на име",
-            "title": "Въведете име, за да обменяте съобщения"
+            "title": "Въведете име, за да обменяте съобщения",
+            "titleWithPolls": "Въведете име, за да обменяте съобщения"
         },
         "privateNotice": "Лично съобщение до {{recipient}}",
         "title": "Текстови съобщения",
+        "titleWithPolls": "Текстови съобщения",
         "you": "вие"
     },
     "chromeExtensionBanner": {
@@ -586,6 +588,7 @@
     },
     "speaker": "Говорещ",
     "speakerStats": {
+        "search": "Търсене",
         "hours": "{{count}}ч",
         "minutes": "{{count}}мин",
         "name": "Име",
