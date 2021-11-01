@@ -1,16 +1,33 @@
 PODS:
   - FuguConference (0.0.1)
+  - Starscream (4.0.4)
+  - VideoSDKRTC (1.0.1):
+    - Starscream
 
 DEPENDENCIES:
   - FuguConference (from `Conference/ConferenceCall`)
+  - VideoSDKRTC (from `https://github.com/videosdk-live/videosdk-rtc-ios-sdk.git`)
+
+SPEC REPOS:
+  trunk:
+    - Starscream
 
 EXTERNAL SOURCES:
   FuguConference:
     :path: Conference/ConferenceCall
+  VideoSDKRTC:
+    :git: https://github.com/videosdk-live/videosdk-rtc-ios-sdk.git
+
+CHECKOUT OPTIONS:
+  VideoSDKRTC:
+    :commit: 5d5641fa959ae47090282811b606ade4b3328d5f
+    :git: https://github.com/videosdk-live/videosdk-rtc-ios-sdk.git
 
 SPEC CHECKSUMS:
   FuguConference: 83d5cee2f313d98e71dd6ea4302b68b173f872e1
+  Starscream: 5178aed56b316f13fa3bc55694e583d35dd414d9
+  VideoSDKRTC: c8cf1b76757d90a6098d8d1cec389a89b3ddf012
 
-PODFILE CHECKSUM: 103b2b41666ac3c036231a6eec28f00a04eba6da
+PODFILE CHECKSUM: 8166750e3309f0deac4ed0046be79de3443541d9
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.11.2
