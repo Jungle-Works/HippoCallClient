@@ -858,7 +858,6 @@ class CallClient{
         guard isUserWaitingForOffer() else {
             return
         }
-        activeCall?.lastStateSend = .offer
         loadCallPresenterView()
         
         //Check if callPresenter is given nil from service user
@@ -884,9 +883,6 @@ class CallClient{
                     weakSelf.activeCall?.rtcClient?.sdpReceivedFromSignalling(json: signal.rtcSignal)
                     
                 }
-            if activeCall?.forceReadyToConnectSent ?? false {
-                           self.callAnswered()
-            }
             //            callPresenter?.reportIncomingCallWith(request: request) { [weak self] (success) in
             //                guard success, let weakSelf = self else {
             //                    return
