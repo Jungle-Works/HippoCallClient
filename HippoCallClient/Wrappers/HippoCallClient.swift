@@ -170,11 +170,11 @@ public class HippoCallClient {
            }
            
        } */
-    
-    public func startWebRTCCall(call:Call, completion: @escaping (Bool) -> Void) {
-        
-        CallClient.shared.startNew(call: call, completion: completion)
-    }
+//    
+//    public func startWebRTCCall(call:Call, completion: @escaping (Bool) -> Void) {
+//        
+//        CallClient.shared.startNew(call: call, completion: completion)
+//    }
     
     /// This function is add on just to show Connecting status no actual call is made here
     ///
