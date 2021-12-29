@@ -45,6 +45,8 @@ extension RTCSdpType {
          return "prAnswer"
       case .offer:
          return "offer"
+      case .rollback:
+        return "rollback"
       }
    }
    

@@ -9,8 +9,10 @@
 import Foundation
 
 public protocol CallPeer: CallerInfo {
-   var peerId: String { get }
+    var peerId: String { get }
+    var enUserId: String { get }
 }
+
 public protocol CallerInfo {
     var name: String { get }
     var image: String { get }

@@ -17,18 +17,40 @@ public class Call {
     var status = State.idle
     var timeElapsedSinceCallStart = 0
     let type: CallType
-    var isStartCallSend: Bool = false
     var inviteLink: String = ""
-    var lastStateSend: CallSignal.SignalType?
-    var forceReadyToConnectSent: Bool = false
-
-    public init(peer: CallPeer, signalingClient: SignalingClient, uID: String, currentUser: CallPeer, type: CallType, link: String) {
+    var isStartCallSend: Bool = false
+    var isCallByMe: Bool = false
+    var isGroupCall : Bool?
+    var jitsiUrl : String
+    var transactionId : String?
+    
+    public init(peer: CallPeer, signalingClient: SignalingClient, uID: String, currentUser: CallPeer, type: CallType, link: String, isGroupCall : Bool = false, jitsiUrl : String, transactionId: String?) {
         self.peer = peer
         self.signalingClient = signalingClient
         self.uID = uID
         self.currentUser = currentUser
         self.type = type
         self.inviteLink = link
+        self.isGroupCall = isGroupCall
+        self.jitsiUrl = jitsiUrl
+        self.transactionId = transactionId
+    }
+}
+
+public class CallClientGroupCallData{
+    var roomTitle : String?
+    var roomUniqueId : String?
+    var transactionId : String?
+    var userType : String?
+    var isMuted : Bool?
+    
+   
+    public init(roomTitle : String, roomUniqueId : String, transactionId : String, userType : String, isMuted : Bool){
+        self.roomTitle = roomTitle
+        self.roomUniqueId = roomUniqueId
+        self.transactionId = transactionId
+        self.userType = userType
+        self.isMuted = isMuted
     }
 }
 
