@@ -136,7 +136,6 @@ class CallStartAndReceivedView: UIView {
     
     @IBAction func ansButtonTapped(_ sender: Any) {
         JitsiCallManager.shared.userDidAnswered()
-        JitsiCallManager.shared.callingType = UserDefaults.standard.value(forKey: "callingType") as! Int
         print("click Answer Button")
     }
     

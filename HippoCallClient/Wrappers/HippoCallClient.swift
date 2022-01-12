@@ -10,15 +10,15 @@ import Foundation
 
 
 public class HippoCallClient {
-   public static let shared = HippoCallClient()
-   private(set) var delgate: HippoCallClientDelegate?
-   
+    public static let shared = HippoCallClient()
+    private(set) var delgate: HippoCallClientDelegate?
+    
     
     /// This variable will send ongoing call uuid if any
     public var activeCallUUID: String? {
         return CallClient.shared.activeCall?.uID
     }
-   
+    
     /// set the delegate to communicate with callClient
     ///
     /// - Parameter delegate: Class that inherted protocol HippoCallClientDelegate
@@ -53,7 +53,7 @@ public class HippoCallClient {
         CallClient.shared.appSecretFromHippoCallClient(key : key)
     }
     
-        /// This is function is called to hangup current ongoing call if any
+    /// This is function is called to hangup current ongoing call if any
     public func hangupCall() {
         CallClient.shared.hangupCall()
     }
@@ -65,12 +65,12 @@ public class HippoCallClient {
     public func keyWindowChangedFromParent(){
         JitsiCallManager.shared.keyWindowChanged()
     }
-        /// This function is used to start call
+    /// This function is used to start call
     ///
     /// - Parameters:
     ///   - call: Call object that contain information about call
     ///   - completion: Callback that provide status whether the call is made or not
-
+    
     public func startCall(call: Call,isInviteEnabled: Bool, completion: @escaping (Bool) -> Void) {
         JitsiCallManager.shared.startCall(with: call, isInviteEnabled: isInviteEnabled) { (versionMismatch) in
             if versionMismatch {
@@ -82,7 +82,7 @@ public class HippoCallClient {
     public func startGroupCall(call: Call, groupCallData: CallClientGroupCallData){
         JitsiCallManager.shared.startGroupCall(with: call, with: groupCallData)
     }
-  
+    
     public func joinCallLink(customerName: String, customerImage: String, url: String, isInviteEnabled: Bool,callType:String) {
         JitsiCallManager.shared.joinCallLink(customerName: customerName, customerImage: customerImage, url: url, isInviteEnabled: isInviteEnabled, callType: callType)
     }
@@ -92,43 +92,15 @@ public class HippoCallClient {
     }
     
     public func startCall(call: Call, isInviteEnabled: Bool, completion: @escaping (Bool, NSError?) -> Void) {
-        
-        HippoCallClientUrl.shared.id = Int(call.currentUser.peerId)
-        HippoCallClientUrl.shared.enUserId = call.currentUser.enUserId
-        HippoCallClientUrl.shared.userName = call.peer.name
-        
-        if JitsiCallManager.shared.callingType == 3{                            //VIDEO SDK CALL
-            
-            if !(call.transactionId?.isEmpty ?? true){
-                JitsiCallManager.shared.jitsiUrl = call.transactionId!
+        JitsiCallManager.shared.startCall(with: call, isInviteEnabled: isInviteEnabled) { (versionMismatch) in
+            if versionMismatch {
+                let info = [NSLocalizedDescriptionKey:"Calling failed due to verison mismatch."];
+                let versionMismatchError = NSError(domain: "error.hippo", code: 415, userInfo: info)
+                completion(false,versionMismatchError)
             }
-            
-            CallClient.shared.getVideoSdkLink(with: call.type) { (meetId) in
-                JitsiCallManager.shared.startCall(with: call, isInviteEnabled: isInviteEnabled, meetingId: meetId) { (versionMismatch) in
-                    
-                    if versionMismatch {
-                        let info = [NSLocalizedDescriptionKey:"Calling failed due to verison mismatch."];
-                        let versionMismatchError = NSError(domain: "error.hippo", code: 415, userInfo: info)
-                        completion(false,versionMismatchError)
-                    }
-                    else {
-                        completion(true,nil)
-                    }
-                }
+            else {
+                completion(true,nil)
             }
-        }else{
-//            CallClient.shared.GetTokenRequest(calltype: JitsiCallSignal.VideoSdkCallType.outGoingcall.rawValue) {
-                JitsiCallManager.shared.startCall(with: call, isInviteEnabled: isInviteEnabled) { (versionMismatch) in
-                    if versionMismatch {
-                        let info = [NSLocalizedDescriptionKey:"Calling failed due to verison mismatch."];
-                        let versionMismatchError = NSError(domain: "error.hippo", code: 415, userInfo: info)
-                        completion(false,versionMismatchError)
-                    }
-                    else {
-                        completion(true,nil)
-                    }
-                }
-//            }
         }
     }
     
@@ -147,34 +119,34 @@ public class HippoCallClient {
     ///   - call: Call object that contain information about call
     ///   - completion: Callback that provide status whether the call is made or not
     /*public func startCall(call: Call, completion: @escaping (Bool) -> Void) {
-           JitsiCallManager.shared.startCall(with: call) { (versionMismatch) in
-               if versionMismatch != nil, versionMismatch {
-                   CallClient.shared.startNew(call: call, completion: completion)
-               }
-           }
-       }
-       
-       public func startCall(call:Call, completion: @escaping (Bool, NSError?) -> Void) {
-           
-           JitsiCallManager.shared.startCall(with: call) { (versionMismatch) in
-               
-               if versionMismatch != nil, versionMismatch {
-                   
-                   let info = [NSLocalizedDescriptionKey:"Calling faild due to verison mismatch."];
-                   let versionMismatchError = NSError(domain: "error.hippo", code: 415, userInfo: info)
-                   completion(false,versionMismatchError)
-               }
-               else {
-                   completion(true,nil)
-               }
-           }
-           
-       } */
-//    
-//    public func startWebRTCCall(call:Call, completion: @escaping (Bool) -> Void) {
-//        
-//        CallClient.shared.startNew(call: call, completion: completion)
-//    }
+     JitsiCallManager.shared.startCall(with: call) { (versionMismatch) in
+     if versionMismatch != nil, versionMismatch {
+     CallClient.shared.startNew(call: call, completion: completion)
+     }
+     }
+     }
+     
+     public func startCall(call:Call, completion: @escaping (Bool, NSError?) -> Void) {
+     
+     JitsiCallManager.shared.startCall(with: call) { (versionMismatch) in
+     
+     if versionMismatch != nil, versionMismatch {
+     
+     let info = [NSLocalizedDescriptionKey:"Calling faild due to verison mismatch."];
+     let versionMismatchError = NSError(domain: "error.hippo", code: 415, userInfo: info)
+     completion(false,versionMismatchError)
+     }
+     else {
+     completion(true,nil)
+     }
+     }
+     
+     } */
+    //
+    //    public func startWebRTCCall(call:Call, completion: @escaping (Bool) -> Void) {
+    //
+    //        CallClient.shared.startNew(call: call, completion: completion)
+    //    }
     
     /// This function is add on just to show Connecting status no actual call is made here
     ///

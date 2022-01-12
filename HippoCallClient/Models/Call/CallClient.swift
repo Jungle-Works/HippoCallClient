@@ -44,23 +44,23 @@ class CallClient{
     
     fileprivate var credentials: CallClientCredential!
     fileprivate var credentialRetry = 0
-    var serverVidToken = ""
-    var meetingID = ""
-    var url = ""
-//    var appSecretKey = ""
-    //    let sender: CallPeer =
-//    var enCodingType = [EncodingType]()
-    var enCodeType = EncodingType.json
-//    var accesstoken = ""
-//    var callingType = UserDefaults.standard.value(forKey: "callingType") as? Int
-//    var callTypeAudio = ""
-    var videoCallEnabled: String = "false"
-//    var jsonSignalDictionary : [AnyHashable: Any] = [:]
-//    var newUrl = ""
-    var fullName = ""
-    @objc weak var object: AnyObject?
-    var channelID = ""
-        
+//    var serverVidToken = ""
+//    var meetingID = ""
+//    var url = ""
+//    //    var appSecretKey = ""
+//    //    let sender: CallPeer =
+//    //    var enCodingType = [EncodingType]()
+//    var enCodeType = EncodingType.json
+//    //    var accesstoken = ""
+//    //    var callingType = UserDefaults.standard.value(forKey: "callingType") as? Int
+//    //    var callTypeAudio = ""
+//    var videoCallEnabled: String = "false"
+//    //    var jsonSignalDictionary : [AnyHashable: Any] = [:]
+//    //    var newUrl = ""
+//    var fullName = ""
+//    @objc weak var object: AnyObject?
+//    var channelID = ""
+    
     // MARK: - Methods
     func setCredentials(rawCredentials: [String: Any]) {
         self.credentials = CallClientCredential(rawCredentials: rawCredentials)
@@ -83,7 +83,7 @@ class CallClient{
         guard let jsonDict = dictionary as? [String: Any] else {
             return
         }
-//        jsonSignalDictionary = dictionary
+        //        jsonSignalDictionary = dictionary
         guard credentials != nil else {
             NSLog("Credential Not found")
             return
@@ -140,119 +140,8 @@ class CallClient{
         }
         else {
             handleForWebRtc()
-        }        
-        
-        //        if let notificationType = jsonDict["notification_type"] as? Int, notificationType == 20{
-        //            guard let signal = JitsiCallSignal.getFrom(json: jsonDict) else {
-        //                return
-        //            }
-        //            let call = Call(peer: peer, signalingClient: signalingClient, uID: signal.callUID, currentUser: currentUser, type: signal.callType, link: signal.conferenceLink ?? "")
-        //            self.handleCallEvent(for: jsonDict, call: call, jitsiSignal: signal )
-        //         return
-        //        } else if let messageType = jsonDict["message_type"] as? Int, messageType == 18{
-        //            guard let signal = JitsiCallSignal.getFrom(json: jsonDict) else {
-        //                return
-        //            }
-        //            let call = Call(peer: peer, signalingClient: signalingClient, uID: signal.callUID, currentUser: currentUser, type: signal.callType, link: signal.conferenceLink ?? "")
-        //            self.handleCallEvent(for: jsonDict, call: call, jitsiSignal: signal )
-        //         return
-        //        }
-        
-        /*
-         guard let signal = CallSignal.getFrom(json: jsonDict) else {
-         return
-         }
-         guard credentials != nil else {
-         NSLog("Credential Not found")
-         return
-         }
-         
-         let timeout = TimeInterval(maxTimeInNotConnectedState)
-         
-         func isPushExpired(pushRecievedAt date: Date) -> Bool {
-         let currentDate = Date()
-         return date.addingTimeInterval(timeout).compare(currentDate) == .orderedAscending
-         }
-         
-         guard
-         let dateString = jsonDict["date_time"] as? String,
-         let date = utcDateFormatter.date(from: dateString),
-         (!isPushExpired(pushRecievedAt: date) || signal.signalType != .startCall) else {
-         NSLog("Expired Voip Push received")
-         return
-         }
-         
-         let call = Call(peer: peer, signalingClient: signalingClient, uID: signal.callUID, currentUser: currentUser, type: signal.callType, link: "")
-         
-         if !shouldHandle(signal: signal, call: call) {
-         print("ERROR -> VOIP PUSH FROM CURRENT USER")
-         return
-         }
-         
-         if signal.signalType == .startCall || signal.signalType == .callRejected || signal.signalType == .callHungUp {
-         takeActionOnSignalReceived(signal, forCall: call)
-         }
-         return
-         */
+        }
     }
-    
-//    func handleVideoSDK(callType: Int){
-////        guard let jsonDict = jsonSignalDictionary as? [String: Any] else {
-////            return
-////        }
-//
-////        if callType == 1{
-////            meetingID = jsonDict["jitsi_url"] as! String
-////            fullName = jsonDict["last_sent_by_full_name"] as! String
-////
-////            if let call_type = jsonDict["call_type"] as? String {
-////                videoCallEnabled = call_type == Call.CallType.audio.rawValue ? "false" : "true"
-////            }else{
-////                videoCallEnabled = "false"
-////            }
-////        }else if callType == 3{                 //Video sdk
-////            meetingID = JitsiCallManager.shared.jitsiUrl ?? ""
-////            videoCallEnabled = callTypeAudio == Call.CallType.audio.rawValue ? "false" : "true"
-////        } else {
-////            meetingID = JitsiCallManager.shared.transactionID!
-////            videoCallEnabled = videoCallEnabled == Call.CallType.audio.rawValue ? "false" : "true"
-////        }
-//
-//        let userId = self.activeCall?.currentUser.peerId ?? ""
-//
-//        var components = URLComponents()
-//        components.scheme = "https"
-//        components.host = "embed.videosdk.live"
-//        components.path = "/rtc-js-prebuilt/0.1.13"
-//        components.queryItems = [
-//            URLQueryItem(name: "name", value: fullName),
-//            URLQueryItem(name: "micEnabled", value: "true"),
-//            URLQueryItem(name: "webcamEnabled", value: videoCallEnabled),
-//            URLQueryItem(name: "participantCanToggleOtherMic", value: "true"),
-//            URLQueryItem(name: "chatEnabled", value: "false"),
-//            URLQueryItem(name: "screenShareEnabled", value: "true"),
-//            URLQueryItem(name: "meetingId", value: meetingID),
-//            URLQueryItem(name: "pollEnabled", value: "false"),
-//            URLQueryItem(name: "whiteBoardEnabled", value: "false"),
-//            URLQueryItem(name: "redirectOnLeave", value: "https://hippo-api-dev1.fuguchat.com:3003/api/call/endCall?channel_id=\(channelID)&user_id=\(userId)"),//"https://hippochat.io/"),
-//            URLQueryItem(name: "participantCanToggleSelfWebcam", value: videoCallEnabled),
-//            URLQueryItem(name: "participantCanToggleOtherWebcam", value: videoCallEnabled),
-//            URLQueryItem(name: "participantCanToggleSelfMic", value: "true"),
-//            URLQueryItem(name: "raiseHandEnabled", value: "true"),
-////            URLQueryItem(name: "token", value: accesstoken),
-//            URLQueryItem(name: "brandingEnabled", value: "false"),
-//            URLQueryItem(name: "recordingEnabled", value: "false"),
-//            URLQueryItem(name: "recordingWebhookUrl", value: "https://api.hippochat.io/"),
-//            URLQueryItem(name: "joinScreenEnabled", value: "false"),
-//            //            URLQueryItem(name: "joinScreenTitle", value: "Call"),
-//            //            URLQueryItem(name: "joinScreenMeetingUrl", value: "https://api.hippochat.io/")
-//
-//        ]
-//
-//
-//        self.openSafariVC(with: components.string ?? "")
-//    }
-    
     
     func getLastVisibleController(ofParent parent: UIViewController? = nil) -> UIViewController? {
         if let vc = parent {
@@ -274,282 +163,9 @@ class CallClient{
         }
     }
     
-    
-//    func handleVideoSDKForStartCall(callType: Call.CallType) {
-//
-//        videoCallEnabled = callType.rawValue == "AUDIO" ? "false" : "true"
-//
-//        let userId = self.activeCall?.currentUser.peerId ?? ""
-//
-//        var components = URLComponents()
-//        components.scheme = "https"
-//        components.host = "embed.videosdk.live"
-//        components.path = "/rtc-js-prebuilt/0.1.13"
-//        components.queryItems = [
-//            URLQueryItem(name: "name", value: fullName),
-//            URLQueryItem(name: "micEnabled", value: "true"),
-//            URLQueryItem(name: "webcamEnabled", value: videoCallEnabled),
-//            URLQueryItem(name: "chatEnabled", value: "false"),
-//            URLQueryItem(name: "screenShareEnabled", value: "true"),
-//            URLQueryItem(name: "meetingId", value: meetingID),
-//            URLQueryItem(name: "pollEnabled", value: "false"),
-//            URLQueryItem(name: "whiteBoardEnabled", value: "false"),
-//            URLQueryItem(name: "redirectOnLeave", value: "https://hippo-api-dev1.fuguchat.com:3003/api/call/endCall?channel_id=\(channelID)&user_id=\(userId)"),//"https://hippochat.io/"),
-//            URLQueryItem(name: "participantCanToggleSelfWebcam", value: videoCallEnabled),
-//            URLQueryItem(name: "participantCanToggleOtherWebcam", value: videoCallEnabled),
-//            URLQueryItem(name: "participantCanToggleSelfMic", value: "true"),
-//            URLQueryItem(name: "raiseHandEnabled", value: "true"),
-////            URLQueryItem(name: "token", value: accesstoken),
-//            URLQueryItem(name: "brandingEnabled", value: "false"),
-//            URLQueryItem(name: "participantCanToggleOtherMic", value: "true"),
-//            URLQueryItem(name: "recordingEnabled", value: "false"),
-//            URLQueryItem(name: "recordingWebhookUrl", value: "https://api.hippochat.io/"),
-//            URLQueryItem(name: "joinScreenEnabled", value: "false"),
-//        ]
-//
-//
-////        let callUrl = components.url!
-////        newUrl = "\(callUrl)"
-////        JitsiCallManager.shared.jitsiUrl = meetingID
-////        JitsiCallManager.shared.link = newUrl
-////        print("LINK    ------>>>>>>>>>> \(newUrl)")
-//
-//    }
-    
-    func openSafariVC(with link: String){
-        print("GOT LINK ------>>>>>>", link)
-        if let urlToOpen = URL(string : link) {
-            if CallStartAndReceivedView.shared != nil{
-                CallStartAndReceivedView.shared.openSafariViewController(url: urlToOpen)
-            }else{
-                DispatchQueue.main.async {
-                    if let keyWindow = UIApplication.shared.windows.first {
-                        CallStartAndReceivedView.shared = CallStartAndReceivedView.loadView()
-                        CallStartAndReceivedView.shared.openSafariViewController(url: urlToOpen)
-                        guard  !keyWindow.subviews.contains(CallStartAndReceivedView.shared!) else {
-                            CallStartAndReceivedView.shared = nil
-                            return
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-    
     func appSecretFromHippoCallClient(key : String){
-        HippoCallClientUrl.shared.appSecretKey = key
+//        HippoCallClientUrl.shared.appSecretKey = key
     }
-    
-//    func getParamsForVideoToken() -> [String : Any]{
-//        var params = [String : Any]()
-//        params["app_secret_key"] = appSecretKey
-//        params["request_token"] = 1
-//        return params
-//    }
-    
-//    func getParamsForMeetingID() -> [String : Any]{
-//        var params = [String : Any]()
-//        params["app_secret_key"] = appSecretKey
-//        if serverVidToken != "" {
-//            params["meet_token"] = self.accesstoken
-//        }
-//        params["create_meet"] = 1
-//        return params
-//    }
-    
-    func getParamsForVideoSDK(with callType: Call.CallType, channelId: String? = nil) -> [String : Any]{
-        
-        var channelIdToSend = HippoCallClientUrl.shared.channelId
-        if let channelID = channelId{
-            channelIdToSend = "\(channelID)"
-        }
-        
-        let innerParam: [String: Any] = [
-            "call_type" : callType.rawValue,
-            "disable_screen_share": "true",
-            "send_hung_up_event": "true",
-            "channel_id": channelIdToSend!,
-            "user_id": HippoCallClientUrl.shared.id,
-            "user_name": HippoCallClientUrl.shared.userName
-        ]
-        
-        var params: [String: Any] = [
-            
-            "custom_attributes" : innerParam,
-            "app_secret_key": HippoCallClientUrl.shared.appSecretKey,
-            "en_creator_id": HippoCallClientUrl.shared.enUserId,
-            "creator_id": HippoCallClientUrl.shared.id,
-        ]
-        
-        if JitsiCallManager.shared.jitsiUrl == nil{
-            params["meet_url"] = JitsiCallManager.shared.randomString(length: 8)
-        }else{
-            params["meet_url"] = JitsiCallManager.shared.jitsiUrl
-        }
-        
-        return params
-    }
-    
-//    func GetTokenRequest(calltype: Int, success: (() -> Void)? = nil){
-//        
-////        let loader = UIActivityIndicatorView()
-//        
-//        let params = getParamsForVideoToken()
-//        var urlRequest = URLRequest(url: URL(string: HippoCallClientUrl.baseUrl + "api/meet/videoSdkToken/")!)
-//        // "https://hippo-api-dev1.fuguchat.com:3003/api/meet/videoSdkToken/")!)//"https://api.hippochat.io/api/meet/videoSdkToken")!) 
-//        urlRequest.timeoutInterval = 60
-//        urlRequest.httpMethod = "POST"
-//        urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
-//        
-//        switch enCodeType{
-//        case .json:
-//            if let body = try? JSONSerialization.data(withJSONObject: params, options: []) {
-//                urlRequest.httpBody = body
-//            }
-//        case .url:
-//            break
-//        }
-//        let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
-//            guard let data = data else {
-//                print(String(describing: error))
-//                return
-//            }
-//            do {
-//                let jsonObject = try JSONSerialization.jsonObject(with: data)
-//                if let dictionary = jsonObject as? [String: Any],
-//                   let results = dictionary["data"] as? [String: Any],
-//                   let statusCode = dictionary["statusCode"] as? Int, (200...299).contains(statusCode) {
-//                    JitsiCallManager.shared.link = results["token"] as? String ?? ""
-//                    
-//                    if calltype == JitsiCallSignal.VideoSdkCallType.incomingCall.rawValue || calltype == JitsiCallSignal.VideoSdkCallType.groupCall.rawValue || calltype == JitsiCallSignal.VideoSdkCallType.scheduleCall.rawValue{
-//                        CallClient.shared.handleVideoSDK(callType: calltype)
-//                    }
-//                    //                    else {
-//                    //                        CallClient.shared.handleVideoSDKForStartCall(callType: isAudioCall ?? .audio)
-//                    //                    }
-//                    success?()
-//                }else{
-//                    if let jsonDict = jsonObject as? [String: Any], let msg = jsonDict["message"], let errorMsg = msg as? String{
-//                        self.showAlert(with: errorMsg)
-//                    }
-//                }
-//            } catch {
-//                print("JSONSerialization error:", error)
-//            }
-//        }
-//        task.resume()
-//    }
-    
-    fileprivate func showAlert(with message: String) {
-        let alert = UIAlertController(title: "Alert", message: message, preferredStyle: UIAlertController.Style.alert)
-        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
-        
-        let keyWindow = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
-        
-        if var topController = keyWindow?.rootViewController {
-            while let presentedViewController = topController.presentedViewController {
-                topController = presentedViewController
-            }
-            
-            DispatchQueue.main.async {
-                topController.present(alert, animated: true, completion: nil)
-            }
-        }
-    }
-    
-    func getVideoSdkLink(with callType: Call.CallType, channelId: String? = nil, success: ((_ meetId: String) -> Void)? = nil){
-        let params = getParamsForVideoSDK(with: callType, channelId: channelId)
-        let url = URL(string: HippoCallClientUrl.baseUrl + "api/meet/createInviteLink/")!
-        var urlRequest = URLRequest(url: url)
-        urlRequest.timeoutInterval = 60
-        urlRequest.httpMethod = "POST"
-        urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        switch enCodeType{
-        case .json:
-            if let body = try? JSONSerialization.data(withJSONObject: params, options: []) {
-                urlRequest.httpBody = body
-            }
-        case .url:
-            break
-        }
-        
-        let task = URLSession.shared.dataTask(with: urlRequest) { [weak self] data, response, error in
-            guard let data = data else {
-                print(String(describing: error))
-                return
-            }
-            do {
-                let jsonObject = try JSONSerialization.jsonObject(with: data)
-                if let dictionary = jsonObject as? [String: Any],
-                   let results = dictionary["data"] as? [String: Any], let statusCode = dictionary["statusCode"] as? Int, (200...299).contains(statusCode) {
-
-                    JitsiCallManager.shared.link = results["meet_url"] as? String ?? ""
-                    
-                    print("MEET URL ------>>>>>>>", results["meet_url"] as? String ?? "")
-
-                    if success == nil{
-                        self?.openSafariVC(with: results["meet_url"] as? String ?? "")
-                    }else{
-                        success?(params["meet_url"] as? String ?? "")
-                    }
-                    
-                }else{
-                    if let jsonDict = jsonObject as? [String: Any], let msg = jsonDict["message"], let errorMsg = msg as? String{
-                        self?.showAlert(with: errorMsg)
-                    }
-                }
-            } catch {
-                print("JSONSerialization error:", error)
-            }
-        }
-        task.resume()
-    }
-    
-    //    func setLoader() -> ActivityIndicatorView{
-    //        JitsiCallManager
-    //
-    //        var activityIndicatorView = ActivityIndicatorView(title: "Processing...", center: self.view.center)
-    //        view.addSubview(self.activityIndicatorView.getViewActivityIndicator())
-    //    }
-    
-    func callHangupParams() -> [String : Any]{
-        var params = [String : Any]()
-        params["channelId"] = channelID
-        return params
-    }
-    
-    func callHangUp(){
-        let params = callHangupParams()
-        var urlRequest = URLRequest(url: URL(string: HippoCallClientUrl.baseUrl + "api/call/endCall?channel_id=")!)
-        urlRequest.timeoutInterval = 60
-        urlRequest.httpMethod = "POST"
-        urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        switch enCodeType{
-        case .json:
-            if let body = try? JSONSerialization.data(withJSONObject: params, options: []) {
-                urlRequest.httpBody = body
-            }
-        case .url:
-            break
-        }
-        let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
-            guard let data = data else {
-                print(String(describing: error))
-                return
-            }
-            do {
-                let jsonObject = try JSONSerialization.jsonObject(with: data)
-                print(jsonObject)
-            } catch {
-                print("JSONSerialization error:", error)
-            }
-        }
-        task.resume()
-    }
-    
     
     func handleCallEvent(for data: [String: Any], call: Call, jitsiSignal: JitsiCallSignal,isInviteEnabled: Bool) {
         
@@ -663,7 +279,7 @@ class CallClient{
             self?.startSendingStartCallUntilItExpires(signal: signal, call: call)
         }
     }
-
+    
     
     func startNew(call: Call, completion: @escaping (Bool) -> Void) {
         
@@ -871,18 +487,18 @@ class CallClient{
         if activeCall?.rtcClient == nil {
             let request = PresentCallRequest(peer: activeCall!.peer, callType: activeCall!.type, callUUID: activeCall!.uID)
             
-           
-//            } else {
-                callPresenter?.reportIncomingCallWith(request: request) { [weak self] (success) in
-                    guard success, let weakSelf = self else {
-                        return
-                    }
-                    
-                    weakSelf.activeCall?.rtcClient = WebRTCClient(delegate: weakSelf, credentials: weakSelf.credentials, isVoiceOnlyCall: weakSelf.activeCall!.type == .audio)
-                    weakSelf.activeCall?.status = .incomingCall
-                    weakSelf.activeCall?.rtcClient?.sdpReceivedFromSignalling(json: signal.rtcSignal)
-                    
+            
+            //            } else {
+            callPresenter?.reportIncomingCallWith(request: request) { [weak self] (success) in
+                guard success, let weakSelf = self else {
+                    return
                 }
+                
+                weakSelf.activeCall?.rtcClient = WebRTCClient(delegate: weakSelf, credentials: weakSelf.credentials, isVoiceOnlyCall: weakSelf.activeCall!.type == .audio)
+                weakSelf.activeCall?.status = .incomingCall
+                weakSelf.activeCall?.rtcClient?.sdpReceivedFromSignalling(json: signal.rtcSignal)
+                
+            }
             //            callPresenter?.reportIncomingCallWith(request: request) { [weak self] (success) in
             //                guard success, let weakSelf = self else {
             //                    return
@@ -1071,7 +687,7 @@ class CallClient{
         self.activeCall?.status = .inCall
         self.callPresenter?.callConnected()
     }
-
+    
     private func registerSwitchCameraInCallPresenter() {
         callPresenter?.switchCameraButtonPressed = { [weak self] in
             guard let rtcClient = self?.activeCall?.rtcClient else {
@@ -1152,8 +768,8 @@ class CallClient{
                   let weakSelf = self,
                   let call = weakSelf.activeCall,
                   weakSelf.shouldHandle(signal: signal, call: call) else {
-                return
-            }
+                      return
+                  }
             
             self?.takeActionOnSignalReceived(signal)
         }
