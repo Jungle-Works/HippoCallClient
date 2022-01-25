@@ -193,7 +193,6 @@ class CallClient{
         }
     }
     
-    
     func appSecretFromHippoCallClient(key : String){
         HippoCallClientUrl.shared.appSecretKey = key
     }
