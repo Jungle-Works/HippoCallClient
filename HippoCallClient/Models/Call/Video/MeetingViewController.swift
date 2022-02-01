@@ -421,7 +421,8 @@ private extension MeetingViewController {
         
         // onCameraTapped
         buttonControlsView.onCameraTapped = { position in
-            self.meeting?.switchWebcam(position: position)
+            self.meeting?.switchWebcam()
+//            self.meeting?.switchWebcam(position: position)
         }
         
         /// Menu tap
