@@ -188,11 +188,3 @@ extension ParticipantViewCell {
         micButton.alpha = micEnabled ? 0.0 : 1.0
     }
 }
-
-extension UIView {
-    
-    func makeRounded() {
-        self.layer.cornerRadius = self.frame.width / 2.0
-        self.clipsToBounds = true
-    }
-}

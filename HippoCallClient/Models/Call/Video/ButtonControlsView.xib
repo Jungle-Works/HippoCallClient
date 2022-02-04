@@ -19,7 +19,7 @@
                     <rect key="frame" x="0.0" y="10" width="280" height="40"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xYL-Cr-nz0">
-                            <rect key="frame" x="0.0" y="0.0" width="44" height="40"/>
+                            <rect key="frame" x="0.0" y="0.0" width="34" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="YOi-W3-St2"/>
                             </constraints>
@@ -32,7 +32,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j51-RL-5Tw">
-                            <rect key="frame" x="59" y="0.0" width="44" height="40"/>
+                            <rect key="frame" x="49" y="0.0" width="34.5" height="40"/>
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <state key="normal">
                                 <imageReference key="image" image="video.fill" catalog="system" symbolScale="medium"/>
@@ -42,7 +42,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dMu-ZA-6Dc">
-                            <rect key="frame" x="118" y="0.0" width="44" height="40"/>
+                            <rect key="frame" x="98.5" y="0.0" width="34" height="40"/>
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <state key="normal">
                                 <imageReference key="image" image="phone.fill" catalog="system" symbolScale="large"/>
@@ -52,7 +52,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="1Ny-g4-hRr">
-                            <rect key="frame" x="177" y="0.0" width="44" height="40"/>
+                            <rect key="frame" x="147.5" y="0.0" width="34" height="40"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -63,8 +63,19 @@
                                 <action selector="cameraButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="IVc-H7-dGm"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ftB-V8-49J">
+                            <rect key="frame" x="196.5" y="0.0" width="34.5" height="40"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <state key="normal">
+                                <imageReference key="image" image="chat" symbolScale="large"/>
+                            </state>
+                            <connections>
+                                <action selector="chatButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="Ycz-nq-LCl"/>
+                            </connections>
+                        </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="D6q-s7-bGe">
-                            <rect key="frame" x="236" y="0.0" width="44" height="40"/>
+                            <rect key="frame" x="246" y="0.0" width="34" height="40"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <state key="normal">
@@ -97,6 +108,7 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="cameraButton" destination="1Ny-g4-hRr" id="9of-B4-jOc"/>
+                <outlet property="chatButton" destination="ftB-V8-49J" id="qtM-eu-EVd"/>
                 <outlet property="leaveMeetingButton" destination="dMu-ZA-6Dc" id="hNM-Ku-Aq3"/>
                 <outlet property="menuButton" destination="D6q-s7-bGe" id="ysb-Lb-ruV"/>
                 <outlet property="micButton" destination="xYL-Cr-nz0" id="9V6-l2-NJc"/>
@@ -107,6 +119,7 @@
     </objects>
     <resources>
         <image name="arrow.triangle.2.circlepath.camera.fill" catalog="system" width="128" height="94"/>
+        <image name="chat" width="20" height="21"/>
         <image name="ellipsis" catalog="system" width="128" height="37"/>
         <image name="mic.fill" catalog="system" width="108" height="128"/>
         <image name="phone.fill" catalog="system" width="128" height="114"/>

@@ -26,6 +26,7 @@ Pod::Spec.new do |s|
     s.preserve_paths = 'README.md'
     s.vendored_frameworks =  ['Conference/ConferenceCall/ConferenceCall/JitsiMeetSDK.framework']
     s.dependency 'VideoSDKRTC', '~> 1.2.4'
+    s.dependency 'MessageKit'
    # s.dependency 'Kingfisher'
 
 

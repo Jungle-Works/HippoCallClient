@@ -42,6 +42,7 @@ enum MenuOption: String {
 private let reuseIdentifier = "ParticipantViewCell"
 private let addStreamOutputSegueIdentifier = "Add Livestream Outputs"
 private let recordingWebhookUrl = "https://www.google.com"
+private let CHAT_TOPIC = "CHAT"
 
 class MeetingViewController: UIViewController, UICollectionViewDataSource {
     
@@ -80,6 +81,8 @@ class MeetingViewController: UIViewController, UICollectionViewDataSource {
     // update events to other user
     weak var delegate: JitsiConfrenceCallViewDelegate?
     
+    //enable disable chat
+    var isChatEnabled: Bool = UserDefaults.standard.value(forKey: "enable_chat_in_call") as? Bool ?? false
     
     // MARK: - Life Cycle
     
@@ -95,19 +98,21 @@ class MeetingViewController: UIViewController, UICollectionViewDataSource {
         
         // config
         VideoSDK.config(token: meetingData.token)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
         
         // init meeting
         initializeMeeting()
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isHidden = true
         
-        meeting = nil
+        buttonControlsView.unreadMessageView.isHidden = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.navigationBar.isHidden = false
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -197,6 +202,9 @@ extension MeetingViewController: MeetingEventListener {
         
         // show in ui
         addParticipantToGridView()
+        
+        // listen/subscribe for chat topic
+        meeting?.pubsub.subscribe(topic: CHAT_TOPIC, forListener: self)
     }
     
     /// Meeting ended
@@ -377,6 +385,31 @@ extension MeetingViewController: ParticipantEventListener {
     }
 }
 
+// MARK: - Chat
+
+extension MeetingViewController {
+    
+    func openChat() {
+        let chatViewController = ChatViewController(meeting: meeting!, topic: CHAT_TOPIC)
+        navigationController?.pushViewController(chatViewController, animated: true)
+    }
+}
+
+// MARK: - PubSubMessageListener
+
+extension MeetingViewController: PubSubMessageListener {
+    
+    func onMessageReceived(_ message: PubSubMessage) {
+        print("Message Received:= " + message.message)
+        
+        if let chatViewController = navigationController?.topViewController as? ChatViewController {
+            chatViewController.showNewMessage(message)
+        }else{
+            buttonControlsView.unreadMessageView.isHidden = !isChatEnabled
+        }
+    }
+}
+
 // MARK: - Actions
 
 private extension MeetingViewController {
@@ -394,6 +427,8 @@ private extension MeetingViewController {
         
         // onVideoTapped
         buttonControlsView.onVideoTapped = { on in
+//            self.meeting?.pubsub.publish(topic: "CHAT", message: "How are you?", options: [:])
+            
             if !on {
                 self.meeting?.enableWebcam()
             } else {
@@ -423,6 +458,11 @@ private extension MeetingViewController {
         buttonControlsView.onCameraTapped = { position in
             self.meeting?.switchWebcam()
 //            self.meeting?.switchWebcam(position: position)
+        }
+        
+        /// Chat Button Tap
+        buttonControlsView.onChatButtonTapped = {
+            self.openChat()
         }
         
         /// Menu tap
@@ -623,6 +663,9 @@ private extension MeetingViewController {
             buttonControlsView.videoButton.isHidden = false
             buttonControlsView.cameraButton.isHidden = false
         }
+        
+        buttonControlsView.unreadMessageView.isHidden = !isChatEnabled
+        buttonControlsView.chatButton.isHidden = !isChatEnabled
     }
     
     func updateMenuButton() {
@@ -678,54 +721,3 @@ private extension MeetingViewController {
     }
 }
 
-extension UIViewController {
-    
-    func showActionsheet(options: [MenuOption], fromView view: UIView, completion: @escaping (MenuOption) -> Void) {
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        if let popover = alertController.popoverPresentationController {
-            popover.sourceView = view
-        }
-        
-        options.forEach {
-            let action = UIAlertAction(title: $0.rawValue, style: $0.style) { action in
-                let option = MenuOption(rawValue: action.title!)!
-                completion(option)
-            }
-            alertController.addAction(action)
-        }
-        
-        alertController.addAction(.init(title: "Cancel", style: .cancel, handler: nil))
-        present(alertController, animated: true, completion: nil)
-    }
-    
-    func showAlert(title: String?, message: String?, autoDismiss: Bool = false) {
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alertController.addAction(.init(title: "Ok", style: .default, handler: nil))
-        present(alertController, animated: true, completion: nil)
-        
-        if autoDismiss {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                alertController.dismiss(animated: true, completion: nil)
-            }
-        }
-    }
-    
-    func showAlertWithTextField(title: String? = nil, message: String? = nil, value: String? = nil, completion: @escaping (String?) -> Void) {
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alertController.addTextField { textField in
-            textField.keyboardType = .URL
-            textField.text = value
-        }
-        
-        alertController.addAction(.init(title: "Ok", style: .default, handler: { action in
-            completion(alertController.textFields?.first?.text)
-        }))
-        present(alertController, animated: true, completion: nil)
-    }
-    
-    func showAlert(title: String?, message: String?, actions: [UIAlertAction]) {
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        actions.forEach { alertController.addAction($0) }
-        present(alertController, animated: true, completion: nil)
-    }
-}

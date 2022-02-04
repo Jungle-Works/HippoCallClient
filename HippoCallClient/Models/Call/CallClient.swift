@@ -167,23 +167,26 @@ class CallClient{
     }
     
     func joinVideoSdkCall(){
+        
         let bundle = Bundle.init(identifier: "org.cocoapods.HippoCallClient")
         let vVc = UIStoryboard.init(name: "VideoSdk", bundle: bundle).instantiateViewController(withIdentifier: "MeetingViewController") as? MeetingViewController
-        vVc?.modalPresentationStyle = .fullScreen
         
         vVc!.meetingData = MeetingData(token: self.videoSdkToken, name: HippoCallClientUrl.shared.userName, meetingId: JitsiCallManager.shared.nativeMeetID, micEnabled: true, cameraEnabled: JitsiCallManager.shared.callTypeForIncomingCall == .video ? true : false)
         vVc!.delegate = JitsiCallManager.shared
         JitsiCallManager.shared.videoSdkView = vVc
         
+        let nav = UINavigationController(rootViewController: vVc!)
+        nav.modalPresentationStyle = .overFullScreen
+        
         if CallStartAndReceivedView.shared != nil{
             let vc = CallStartAndReceivedView.shared.getLastVisibleController()
-            vc?.present(vVc!, animated: true, completion: nil)
+            vc?.present(nav, animated: true, completion: nil)
         }else{
             DispatchQueue.main.async {
                 if let keyWindow = UIApplication.shared.windows.first {
                     CallStartAndReceivedView.shared = CallStartAndReceivedView.loadView()
                     let vc = CallStartAndReceivedView.shared.getLastVisibleController()
-                    vc?.present(vVc!, animated: true, completion: nil)
+                    vc?.present(nav, animated: true, completion: nil)
                     guard  !keyWindow.subviews.contains(CallStartAndReceivedView.shared!) else {
                         CallStartAndReceivedView.shared = nil
                         return
