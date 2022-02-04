@@ -17,6 +17,7 @@ class ButtonControlsView: UIView {
     @IBOutlet weak var videoButton: UIButton!
     @IBOutlet weak var leaveMeetingButton: UIButton!
     @IBOutlet weak var menuButton: UIButton!
+    @IBOutlet weak var chatButton: UIButton!
     @IBOutlet weak var cameraButton: UIButton!
     
     override func awakeFromNib() {
@@ -32,6 +33,7 @@ class ButtonControlsView: UIView {
     var onEndMeetingTapped: (() -> Void)?
     var onMenuButtonTapped: (() -> Void)?
     var onCameraTapped: ((CameraPosition) -> Void)?
+    var onChatButtonTapped: (() -> Void)?
     
     // handling for mic
     var micEnabled = true {
@@ -60,6 +62,13 @@ class ButtonControlsView: UIView {
             updateMenuButton()
         }
     }
+    
+    //Small red dot over messgae button
+    lazy var unreadMessageView: UIView =  {
+        let vw = UIView()
+        vw.backgroundColor = UIColor.systemRed ?? UIColor.red
+        return vw
+    }()
     
     // Update Buttons
     func updateButtons(forStream stream: MediaStream, enabled: Bool) {
@@ -96,6 +105,10 @@ class ButtonControlsView: UIView {
         onCameraTapped?(cameraPosition)
     }
     
+    @IBAction func chatButtonTapped(_ sender: Any) {
+        onChatButtonTapped?()
+    }
+    
 }
 
 extension ButtonControlsView {
@@ -108,8 +121,9 @@ extension ButtonControlsView {
         updateLeaveMeetingButton()
         updateMenuButton()
         updateCameraButton()
+        updateChatButton()
         
-        [micButton, videoButton, leaveMeetingButton, menuButton, cameraButton].forEach {
+        [micButton, videoButton, leaveMeetingButton, menuButton, cameraButton, chatButton].forEach {
             $0?.layer.cornerRadius = 8
             $0?.tintColor = .white
             $0?.heightAnchor.constraint(equalTo: $0!.widthAnchor, multiplier: 1.0).isActive = true
@@ -147,5 +161,29 @@ extension ButtonControlsView {
         let backgroundColor = UIColor.systemGray
         cameraButton.setImage(UIImage(named: imageName, in: Bundle.init(identifier: "org.cocoapods.HippoCallClient"), compatibleWith: nil), for: .normal)
         cameraButton.backgroundColor = backgroundColor
+    }
+    
+    func updateChatButton() {
+        let imageName = "chat"
+        chatButton.setImage(UIImage(named: imageName, in: Bundle.init(identifier: "org.cocoapods.HippoCallClient"), compatibleWith: nil), for: .normal)
+        chatButton.backgroundColor = UIColor.systemGray
+        
+        setDotViewOnMessageButton()
+    }
+    
+    func setDotViewOnMessageButton(){
+        
+        self.chatButton.addSubview(unreadMessageView)
+        unreadMessageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            
+            self.unreadMessageView.heightAnchor.constraint(equalToConstant: 12),
+            self.unreadMessageView.widthAnchor.constraint(equalTo: self.unreadMessageView.heightAnchor),
+            self.unreadMessageView.bottomAnchor.constraint(equalTo: self.chatButton.topAnchor, constant: 4),
+            self.unreadMessageView.trailingAnchor.constraint(equalTo: self.chatButton.trailingAnchor, constant: 4)
+            
+        ])
+        self.unreadMessageView.layer.cornerRadius = 6
     }
 }

@@ -438,6 +438,9 @@ extension JitsiCallManager {
     
     func showDailCallView(completion: VersionMismatchCallBack? = nil) {
         if let keyWindow = UIApplication.shared.windows.first {
+            if CallStartAndReceivedView.shared != nil{
+                CallStartAndReceivedView.shared = nil
+            }
             if CallStartAndReceivedView.shared == nil {
                 CallStartAndReceivedView.shared = CallStartAndReceivedView.loadView()
                 CallStartAndReceivedView.shared.userInfo = userDataforDailCall()
@@ -1150,7 +1153,6 @@ extension JitsiCallManager {
         timeElapsedSinceWaitingForOffer = 0
         isOfferRecieved = nil
         jitsiUrl = nil
-        CallStartAndReceivedView.shared = nil
     }
     
     func showBusyView(with message: String) {
