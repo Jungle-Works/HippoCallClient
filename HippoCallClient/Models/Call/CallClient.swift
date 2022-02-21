@@ -272,7 +272,7 @@ class CallClient{
     
     func getParamsForVideoSDKNative() -> [String : Any] {
         var params: [String: Any] = [
-            "app_secret_key" : HippoCallClientUrl.shared.appSecretKey,
+            "app_secret_key" : HippoCallClientUrl.shared.appSecretKey ?? "",
             "create_meet": 1
         ]
         
