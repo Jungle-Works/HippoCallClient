@@ -21,6 +21,8 @@ import Foundation
     public var channelId: String!
     public var userName: String!
     public var callingType = 2
+    public var agentToken: String!
+    public var userType: userType = .customer
     
 }
 
@@ -28,3 +30,7 @@ public enum Environment {
     case live, dev, beta
 }
 
+public enum userType {
+    case customer
+    case agent
+}

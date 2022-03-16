@@ -50,8 +50,8 @@ public class HippoCallClient {
         CallClient.shared.voipNotificationRecievedForGroupCall(dictionary: dictionary, peer: peer, signalingClient: signalingClient, currentUser: currentUser, isInviteEnabled: isInviteEnabled)
     }
     
-    public func appSecretkeyFromCallManager(key : String){
-        CallClient.shared.appSecretFromHippoCallClient(key : key)
+    public func appSecretkeyFromCallManager(key: String, agentToken: String, userType: userType){
+        CallClient.shared.appSecretFromHippoCallClient(key: key, agentToken: agentToken, userType: userType)
     }
     
     
@@ -137,19 +137,6 @@ public class HippoCallClient {
                 JitsiCallManager.shared.jitsiUrl = call.transactionId!
             }
             
-            //            CallClient.shared.getVideoSdkLink(with: call.type) { (meetId) in
-            //                JitsiCallManager.shared.startCall(with: call, isInviteEnabled: isInviteEnabled, meetingId: meetId) { (versionMismatch) in
-            //
-            //                    if versionMismatch {
-            //                        let info = [NSLocalizedDescriptionKey:"Calling failed due to verison mismatch."];
-            //                        let versionMismatchError = NSError(domain: "error.hippo", code: 415, userInfo: info)
-            //                        completion(false,versionMismatchError)
-            //                    }
-            //                    else {
-            //                        completion(true,nil)
-            //                    }
-            //                }
-            //            }
             CallClient.shared.getVideoSdkTokenNative() { meetId in
                 
                 JitsiCallManager.shared.callTypeForIncomingCall = call.type

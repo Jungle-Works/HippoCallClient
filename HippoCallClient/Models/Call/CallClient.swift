@@ -196,8 +196,10 @@ class CallClient{
         }
     }
     
-    func appSecretFromHippoCallClient(key : String){
+    func appSecretFromHippoCallClient(key: String, agentToken: String, userType: userType){
         HippoCallClientUrl.shared.appSecretKey = key
+        HippoCallClientUrl.shared.agentToken = agentToken
+        HippoCallClientUrl.shared.userType = userType
     }
     
     fileprivate func showAlert(with message: String) {
@@ -272,9 +274,15 @@ class CallClient{
     
     func getParamsForVideoSDKNative() -> [String : Any] {
         var params: [String: Any] = [
-            "app_secret_key" : HippoCallClientUrl.shared.appSecretKey ?? "",
             "create_meet": 1
         ]
+        
+        if HippoCallClientUrl.shared.userType == .agent{
+            params["access_token"] = HippoCallClientUrl.shared.agentToken
+        }else{
+            params["app_secret_key"] = HippoCallClientUrl.shared.appSecretKey ?? ""
+        }
+        
         
         if JitsiCallManager.shared.jitsiUrl?.isEmpty ?? true{
             params["transaction_id"] = JitsiCallManager.shared.randomString(length: 8)
