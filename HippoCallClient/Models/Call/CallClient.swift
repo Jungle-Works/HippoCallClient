@@ -59,7 +59,7 @@ class CallClient{
     //    var videoCallEnabled: String = "false"
     //    var jsonSignalDictionary : [AnyHashable: Any] = [:]
     //    var newUrl = ""
-//    @objc weak var object: AnyObject?
+    //    @objc weak var object: AnyObject?
     //    var channelID = ""
     
     
@@ -178,22 +178,8 @@ class CallClient{
         let nav = UINavigationController(rootViewController: vVc!)
         nav.modalPresentationStyle = .overFullScreen
         
-        if CallStartAndReceivedView.shared != nil{
-            let vc = CallStartAndReceivedView.shared.getLastVisibleController()
-            vc?.present(nav, animated: true, completion: nil)
-        }else{
-            DispatchQueue.main.async {
-                if let keyWindow = UIApplication.shared.windows.first {
-                    CallStartAndReceivedView.shared = CallStartAndReceivedView.loadView()
-                    let vc = CallStartAndReceivedView.shared.getLastVisibleController()
-                    vc?.present(nav, animated: true, completion: nil)
-                    guard  !keyWindow.subviews.contains(CallStartAndReceivedView.shared!) else {
-                        CallStartAndReceivedView.shared = nil
-                        return
-                    }
-                }
-            }
-        }
+        let vc = self.getLastVisibleController()
+        vc?.present(nav, animated: true, completion: nil)
     }
     
     func appSecretFromHippoCallClient(key: String, agentToken: String, userType: userType){

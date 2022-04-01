@@ -20,8 +20,8 @@ class JitsiCallManager : NSObject{
             if activeCall == nil {
                 print("active call nil")
             }else{
-                HippoCallClientUrl.shared.id = Int(activeCall.currentUser.peerId)
-                HippoCallClientUrl.shared.enUserId = activeCall.currentUser.enUserId
+//                HippoCallClientUrl.shared.id = Int(activeCall.currentUser.peerId)
+//                HippoCallClientUrl.shared.enUserId = activeCall.currentUser.enUserId
                 HippoCallClientUrl.shared.userName = activeCall.currentUser.name
             }
         }
@@ -130,8 +130,8 @@ class JitsiCallManager : NSObject{
     
     
     func startReceivedCall(newCall: Call, signal: JitsiCallSignal, isInviteEnabled: Bool) {
-        
         if muidOne2oneDic?.keys.first == newCall.uID, muidOne2oneDic?[newCall.uID] == true{
+            print("return 1111111")
             return
         }
 
@@ -141,6 +141,7 @@ class JitsiCallManager : NSObject{
         }
         
         if RecievedGroupCallView.shared != nil || JitsiConfrenceCallView.shared != nil || CallStartAndReceivedView.shared != nil{
+            print("return 222222", RecievedGroupCallView.shared, JitsiConfrenceCallView.shared, CallStartAndReceivedView.shared)
             return
         }
         self.isInviteEnabled = isInviteEnabled
@@ -438,9 +439,6 @@ extension JitsiCallManager {
     
     func showDailCallView(completion: VersionMismatchCallBack? = nil) {
         if let keyWindow = UIApplication.shared.windows.first {
-            if CallStartAndReceivedView.shared != nil{
-                CallStartAndReceivedView.shared = nil
-            }
             if CallStartAndReceivedView.shared == nil {
                 CallStartAndReceivedView.shared = CallStartAndReceivedView.loadView()
                 CallStartAndReceivedView.shared.userInfo = userDataforDailCall()
@@ -1047,6 +1045,7 @@ extension JitsiCallManager {
                     keyWindow.addSubview(JitsiConfrenceCallView.shared)
                 }
             }else{
+                HippoCallClientUrl.shared.userName = customerName
                 CallClient.shared.getVideoSdkTokenNative()
             }
         }

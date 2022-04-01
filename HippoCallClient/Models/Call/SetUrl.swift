@@ -15,12 +15,12 @@ import Foundation
     public static var baseUrl = ""
     public static var urlType: Environment = Environment.dev
     
-    public var id: Int!
-    public var enUserId: String!
+//    public var id: Int!
+//    public var enUserId: String!
     public var appSecretKey: String!
-    public var channelId: String!
+//    public var channelId: String!
     public var userName: String!
-    public var callingType = 2
+//    public var callingType = 2
     public var agentToken: String!
     public var userType: userType = .customer
     

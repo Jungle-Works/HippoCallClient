@@ -57,54 +57,6 @@ class CallStartAndReceivedView: UIView {
         return view
     }
     
-    func openSafariViewController(url:URL){
-        
-        var presentedVC: UIViewController?
-        
-        DispatchQueue.main.async {
-            let keyWindow = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
-            
-            if var topController = keyWindow?.rootViewController {
-                while let presentedViewController = topController.presentedViewController {
-                    topController = presentedViewController
-                }
-                presentedVC = topController
-                print("PRESNETED VIEW CONTROLLER ----->>>>> \(topController)")
-                // topController should now be your topmost view controller
-            }
-            
-            
-            if presentedVC != self.safariViewController{
-                self.safariViewController = SFSafariViewController(url: url)
-                self.safariViewController.delegate = self
-                
-                self.getLastVisibleController()?.present(self.safariViewController, animated: true)
-            }
-            
-        }
-    }
-    
-    func getLastVisibleController(ofParent parent: UIViewController? = nil) -> UIViewController? {
-        if let vc = parent {
-            if let tab = vc as? UITabBarController, let selected = tab.selectedViewController {
-                return getLastVisibleController(ofParent: selected)
-            } else if let nav = vc as? UINavigationController, let top = nav.topViewController {
-                return getLastVisibleController(ofParent: top)
-            } else if let presented = vc.presentedViewController {
-                return getLastVisibleController(ofParent: presented)
-            } else {
-                return vc
-            }
-        } else {
-            if let rootVC = UIApplication.shared.windows.first?.rootViewController {
-                return getLastVisibleController(ofParent: rootVC)
-            } else {
-                return nil
-            }
-        }
-    }
-    
-    
     func setup() {
         nameLabel.font = FuguFont.titilliumWebSemiBold(with: 19)
         nameLabel.textColor = UIColor.iLightBlack

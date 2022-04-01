@@ -127,8 +127,8 @@ public class HippoCallClient {
     
     public func startCall(call: Call, isInviteEnabled: Bool, completion: @escaping (Bool, NSError?) -> Void) {
         
-        HippoCallClientUrl.shared.id = Int(call.currentUser.peerId)
-        HippoCallClientUrl.shared.enUserId = call.currentUser.enUserId
+//        HippoCallClientUrl.shared.id = Int(call.currentUser.peerId)
+//        HippoCallClientUrl.shared.enUserId = call.currentUser.enUserId
         HippoCallClientUrl.shared.userName = call.peer.name
         
         if JitsiCallManager.shared.callingType == 3{                            //VIDEO SDK CALL
