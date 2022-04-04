@@ -53,7 +53,7 @@ class MeetingViewController: UIViewController, UICollectionViewDataSource {
     @IBOutlet weak var buttonsView: UIView!
     
     /// View for handling meeting controls consists of Mic, Video, and End buttons
-    lazy var buttonControlsView: ButtonControlsView! = {
+    lazy var buttonControlsView: ButtonControlsView! = { [weak self] in
         Bundle.init(identifier: "org.cocoapods.HippoCallClient")?.loadNibNamed("ButtonControlsView", owner: self, options: nil)?[0] as! ButtonControlsView
     }()
     
@@ -101,6 +101,8 @@ class MeetingViewController: UIViewController, UICollectionViewDataSource {
         
         // init meeting
         initializeMeeting()
+        
+        UIApplication.shared.isIdleTimerDisabled = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -122,11 +124,11 @@ class MeetingViewController: UIViewController, UICollectionViewDataSource {
             let addStreamsController = navigationController.viewControllers.first as? AddStreamOutputiewController
         else { return }
         
-        addStreamsController.onStart =  { streamOutputs in
+        addStreamsController.onStart = { [weak self] streamOutputs in
             if !streamOutputs.isEmpty {
-                self.meeting?.startLivestream(outputs: streamOutputs)
+                self?.meeting?.startLivestream(outputs: streamOutputs)
             } else {
-                self.showAlert(title: "Error", message: "Add stream outputs to start livestream.")
+                self?.showAlert(title: "Error", message: "Add stream outputs to start livestream.")
             }
         }
     }
@@ -176,8 +178,8 @@ class MeetingViewController: UIViewController, UICollectionViewDataSource {
         cell.setParticipant(participant)
         
         // on menu tap
-        cell.onMenuTapped = { peer in
-            self.showParticipantControlOptions(peer)
+        cell.onMenuTapped = { [weak self]  peer in
+            self?.showParticipantControlOptions(peer)
         }
         
         return cell
@@ -417,22 +419,22 @@ private extension MeetingViewController {
     func setupActions() {
         
         // onMicTapped
-        buttonControlsView.onMicTapped = { on in
+        buttonControlsView.onMicTapped = { [weak self] on in
             if !on {
-                self.meeting?.unmuteMic()
+                self?.meeting?.unmuteMic()
             } else {
-                self.meeting?.muteMic()
+                self?.meeting?.muteMic()
             }
         }
         
         // onVideoTapped
-        buttonControlsView.onVideoTapped = { on in
+        buttonControlsView.onVideoTapped = { [weak self] on in
 //            self.meeting?.pubsub.publish(topic: "CHAT", message: "How are you?", options: [:])
             
             if !on {
-                self.meeting?.enableWebcam()
+                self?.meeting?.enableWebcam()
             } else {
-                self.meeting?.disableWebcam()
+                self?.meeting?.disableWebcam()
             }
         }
         
@@ -452,41 +454,42 @@ private extension MeetingViewController {
 //            }
             self?.delegate?.userDidTerminatedConference()
             self?.meeting?.leave()
+            UIApplication.shared.isIdleTimerDisabled = false
         }
         
         // onCameraTapped
-        buttonControlsView.onCameraTapped = { position in
-            self.meeting?.switchWebcam()
+        buttonControlsView.onCameraTapped = { [weak self] position in
+            self?.meeting?.switchWebcam()
 //            self.meeting?.switchWebcam(position: position)
         }
         
         /// Chat Button Tap
-        buttonControlsView.onChatButtonTapped = {
-            self.openChat()
+        buttonControlsView.onChatButtonTapped = { [weak self] in
+            self?.openChat()
         }
         
         /// Menu tap
-        buttonControlsView.onMenuButtonTapped = {
+        buttonControlsView.onMenuButtonTapped = { [weak self] in
             var menuOptions: [MenuOption] = []
-            menuOptions.append(!self.recordingStarted ? .startRecording : .stopRecording)
-            menuOptions.append(!self.liveStreamStarted ? .startLivestream : .stopLivestream)
+            menuOptions.append(!self!.recordingStarted ? .startRecording : .stopRecording)
+            menuOptions.append(!self!.liveStreamStarted ? .startLivestream : .stopLivestream)
             
-            self.showActionsheet(options: menuOptions, fromView: self.buttonControlsView.menuButton) { option in
+            self?.showActionsheet(options: menuOptions, fromView: self!.buttonControlsView.menuButton) { option in
                 switch option {
                 case .startRecording:
-                    self.showAlertWithTextField(title: "Enter Webhook Url", value: recordingWebhookUrl) { url in
-                        self.meeting?.startRecording(webhookUrl: url!)
+                    self?.showAlertWithTextField(title: "Enter Webhook Url", value: recordingWebhookUrl) { url in
+                        self?.meeting?.startRecording(webhookUrl: url!)
                     }
                 case .stopRecording:
-                    self.stopRecording()
+                    self?.stopRecording()
                     
                 case .startLivestream:
                     let bundle = Bundle.init(identifier: "org.cocoapods.HippoCallClient")
                     let vVc = UIStoryboard.init(name: "VideoSdk", bundle: bundle).instantiateViewController(withIdentifier: "AddStreamOutputiewController") as? AddStreamOutputiewController
-                    self.present(vVc!, animated: true, completion:  nil)
+                    self?.present(vVc!, animated: true, completion:  nil)
 //                    self.performSegue(withIdentifier: addStreamOutputSegueIdentifier, sender: nil)
                 case .stopLivestream:
-                    self.stopLivestream()
+                    self?.stopLivestream()
                 
                 default:
                     break
