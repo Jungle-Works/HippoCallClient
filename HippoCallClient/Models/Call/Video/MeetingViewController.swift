@@ -439,7 +439,7 @@ private extension MeetingViewController {
         }
         
         // onEndMeetingTapped
-        buttonControlsView.onEndMeetingTapped = { [weak self] in
+        buttonControlsView.onEndMeetingTapped = {
 //            let menuOptions: [MenuOption] = [.leaveMeeting, .endMeeting]
 //
 //            self.showActionsheet(options: menuOptions, fromView: self.buttonControlsView.leaveMeetingButton) { option in
@@ -452,8 +452,8 @@ private extension MeetingViewController {
 //                    break
 //                }
 //            }
-            self?.delegate?.userDidTerminatedConference()
-            self?.meeting?.leave()
+            self.delegate?.userDidTerminatedConference()
+            self.meeting?.leave()
             UIApplication.shared.isIdleTimerDisabled = false
         }
         
