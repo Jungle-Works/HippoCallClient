@@ -216,6 +216,7 @@ extension MeetingViewController: MeetingEventListener {
         meeting?.localParticipant.removeEventListener(self)
         meeting?.removeEventListener(self)
         
+        print("meeting left called")
         // dismiss controller
         dismiss(animated: true, completion: nil)
     }
