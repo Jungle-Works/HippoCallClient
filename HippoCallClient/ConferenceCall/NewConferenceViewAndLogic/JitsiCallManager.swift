@@ -992,6 +992,7 @@ extension JitsiCallManager : CallStartAndReceivedViewDelegate {
             let signal = JitsiCallSignal(signalType: .HUNGUP_CONFERENCE, callUID: activeCall!.uID, sender: activeCall!.currentUser, senderDeviceID: activeCall?.uID ?? "", callType: activeCall!.type , link: callingType == 3 ? jitsiUrl ?? "" : link, isFSilent: true , jitsiUrl: jitsiUrl ?? "")
             let dict = signal.getJsonToSendToFaye()
             sendData(dict: dict)
+            self.reportEndCallToCallKit(self.activeCall?.uID ?? "", .unanswered)
         }
         removeDialAndReceivedView()
         resetAllResourceForNewCall()
