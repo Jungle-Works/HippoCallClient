@@ -49,16 +49,16 @@ class JitsiConfrenceCallView: UIView {
         
         let userInfo =  JitsiMeetUserInfo(displayName: data.userName, andEmail: data.userEmail, andAvatar: data.userImage)
         let conferenceOptions =  JitsiMeetConferenceOptions.fromBuilder { (ptionsBuilder) in
-            ptionsBuilder.subject = " "
-            ptionsBuilder.audioOnly = data.audioOnly
+            ptionsBuilder.setSubject(" ")
+            ptionsBuilder.setAudioOnly(data.audioOnly)
             ptionsBuilder.serverURL = data.serverURL
             ptionsBuilder.room = data.roomID
-            ptionsBuilder.audioMuted = data.isMuted
+            ptionsBuilder.setAudioMuted(data.isMuted)
             ptionsBuilder.userInfo = userInfo
             ptionsBuilder.setFeatureFlag("chat.enabled", withValue: false)
             ptionsBuilder.setFeatureFlag("call-integration.enabled", withValue: true)
             ptionsBuilder.setFeatureFlag("pip.enabled", withBoolean: true)
-            ptionsBuilder.setFeatureFlag("invite.enabled", withValue: data.isInviteEnabled ? true : false)
+            ptionsBuilder.setFeatureFlag("invite.enabled", withValue: data.isInviteEnabled)
             ptionsBuilder.setFeatureFlag("security-options.enabled", withValue: false)
             ptionsBuilder.setFeatureFlag("live-streaming.enabled", withBoolean: false)
             ptionsBuilder.setFeatureFlag("video-share.enabled", withBoolean: false)
