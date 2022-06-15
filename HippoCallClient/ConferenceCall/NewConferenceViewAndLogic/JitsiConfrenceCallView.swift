@@ -63,6 +63,7 @@ class JitsiConfrenceCallView: UIView {
             ptionsBuilder.setFeatureFlag("live-streaming.enabled", withBoolean: false)
             ptionsBuilder.setFeatureFlag("video-share.enabled", withBoolean: false)
             ptionsBuilder.setFeatureFlag("meeting-name.enabled", withBoolean: false)
+            ptionsBuilder.setFeatureFlag("ios.screensharing.enabled", withValue: true)
         }
         
         print("room id ---->>>>", data.roomID, "\n server url --->>>>", data.serverURL)
@@ -80,6 +81,7 @@ class JitsiConfrenceCallView: UIView {
     
     
     func leaveConfrence(completion: @escaping(Bool)-> Void){
+        self.jitsiView?.toggleScreenShare(false)
 //        playSound(soundName: "disconnect_call", numberOfLoops: Int.max)
         DispatchQueue.main.async() { [weak self] in
             self?.jitsiView.leave()
