@@ -24,9 +24,10 @@ Pod::Spec.new do |s|
     s.exclude_files = 'Classes/Exclude'
     s.static_framework = false
     s.preserve_paths = 'README.md'
-    s.vendored_frameworks =  ['Conference/ConferenceCall/ConferenceCall/JitsiMeetSDK.framework',
-                              'Conference/ConferenceCall/ConferenceCall/WebRTC.framework',
-                              'Conference/ConferenceCall/ConferenceCall/GiphyUISDK.framework']
+    s.dependency 'JitsiMeetSDK'
+#    s.vendored_frameworks =  ['Conference/ConferenceCall/ConferenceCall/JitsiMeetSDK.framework',
+#                              'Conference/ConferenceCall/ConferenceCall/WebRTC.framework',
+#                              'Conference/ConferenceCall/ConferenceCall/GiphyUISDK.framework']
    # s.dependency 'Kingfisher'
 
     s.pod_target_xcconfig = { 'ENABLE_BITCODE' => 'No' }
