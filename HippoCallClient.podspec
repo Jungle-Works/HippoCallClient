@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
     s.license      = { :type => 'MIT', :file => 'FILE_LICENSE' }
     s.author       = { 'Vishal Jhanjhri' => 'jhanjhri.vishal@gmail.com' }
 
-    s.ios.deployment_target = '11.0'
+    s.ios.deployment_target = '12.0'
     s.source       = { :git => 'https://github.com/Jungle-Works/HippoCallClient.git', :tag => s.version}
 
     s.swift_version = '4.2'
