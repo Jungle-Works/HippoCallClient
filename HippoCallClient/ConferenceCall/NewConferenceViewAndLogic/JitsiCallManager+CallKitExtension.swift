@@ -7,7 +7,7 @@
 //
 
 //import JitsiMeetSDK
-import WebRTC
+//import WebRTC
 import CallKit
 
 extension JitsiCallManager {
