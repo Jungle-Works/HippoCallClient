@@ -55,8 +55,10 @@ class JitsiConfrenceCallView: UIView {
             ptionsBuilder.room = data.roomID
             ptionsBuilder.setAudioMuted(data.isMuted)
             ptionsBuilder.userInfo = userInfo
+            ptionsBuilder.setFeatureFlag("prejoinpage.enabled", withBoolean: false)
+            ptionsBuilder.setFeatureFlag("welcomepage.enabled", withBoolean: false)
             ptionsBuilder.setFeatureFlag("chat.enabled", withValue: false)
-            ptionsBuilder.setFeatureFlag("call-integration.enabled", withValue: true)
+            ptionsBuilder.setFeatureFlag("call-integration.enabled", withBoolean: true)
             ptionsBuilder.setFeatureFlag("pip.enabled", withBoolean: true)
             ptionsBuilder.setFeatureFlag("invite.enabled", withValue: data.isInviteEnabled)
             ptionsBuilder.setFeatureFlag("security-options.enabled", withValue: false)
