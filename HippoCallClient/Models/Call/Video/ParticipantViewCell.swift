@@ -77,26 +77,51 @@ class ParticipantViewCell: UICollectionViewCell {
     }
     
     func updateView(forStream stream: MediaStream, enabled: Bool) {
-        switch stream.kind {
-        case .video:
-            if let videotrack = stream.track as? RTCVideoTrack {
+        switch stream.kind{
+            
+       
+        case .share:
+            break
+        case .state(value: let value):
+            switch value{
                 
-                if enabled {
-                    // show video
-                    videotrack.add(videoView)
-                    showVideoView(true)
-                } else {
-                    // hide video
-                    videotrack.remove(videoView)
-                    showVideoView(false)
+            case .audio:
+                updateMic(enabled)
+            case .video:
+                if let videotrack = stream.track as? RTCVideoTrack {
+                    
+                    if enabled {
+                        // show video
+                        videotrack.add(videoView)
+                        showVideoView(true)
+                    } else {
+                        // hide video
+                        videotrack.remove(videoView)
+                        showVideoView(false)
+                    }
                 }
             }
-        case .audio:
-            updateMic(enabled)
-            
-        default:
-            break
         }
+//        switch stream.kind {
+//        case .video:
+//            if let videotrack = stream.track as? RTCVideoTrack {
+//
+//                if enabled {
+//                    // show video
+//                    videotrack.add(videoView)
+//                    showVideoView(true)
+//                } else {
+//                    // hide video
+//                    videotrack.remove(videoView)
+//                    showVideoView(false)
+//                }
+//            }
+//        case .audio:
+//            updateMic(enabled)
+//
+//        default:
+//            break
+//        }
     }
     
     func showActiveSpeakerIndicator(_ show: Bool) {
@@ -112,7 +137,7 @@ class ParticipantViewCell: UICollectionViewCell {
             $0?.text = ""
         }
         
-        if let videoTrack = participant?.streams.first(where: { $1.kind == .video })?.value.track as? RTCVideoTrack {
+        if let videoTrack = participant?.streams.first(where: { $1.kind == .state(value: .video) })?.value.track as? RTCVideoTrack {
             videoTrack.remove(videoView)
         }
     }

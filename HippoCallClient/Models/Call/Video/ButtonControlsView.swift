@@ -72,13 +72,26 @@ class ButtonControlsView: UIView {
     
     // Update Buttons
     func updateButtons(forStream stream: MediaStream, enabled: Bool) {
-        switch stream.kind {
-        case .video:
-            self.videoEnabled = enabled
-        case .audio:
-            self.micEnabled = enabled
-        default:
+//        switch stream.kind {
+//        case .video:
+//            self.videoEnabled = enabled
+//        case .audio:
+//            self.micEnabled = enabled
+//        default:
+//            break
+//        }
+        switch stream.kind{
+            
+        case .share:
             break
+        case .state(value: let value):
+            switch value{
+                
+            case .audio:
+                self.micEnabled = enabled
+            case .video:
+                self.videoEnabled = enabled
+            }
         }
     }
     

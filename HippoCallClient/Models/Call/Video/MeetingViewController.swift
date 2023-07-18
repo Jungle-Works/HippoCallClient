@@ -152,7 +152,7 @@ class MeetingViewController: UIViewController, UICollectionViewDataSource {
         meeting?.addEventListener(self)
         
         // join
-        meeting?.join()
+        meeting?.join(cameraPosition: .front)
     }
 
     // MARK: UICollectionViewDataSource
