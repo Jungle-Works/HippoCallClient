@@ -1271,7 +1271,7 @@ extension JitsiCallManager : JitsiConfrenceCallViewDelegate  {
     }
     
     func userWillLeaveConference() {
-        
+        self.reportEndCallToCallKit(self.activeCall?.uID ?? "", .remoteEnded)
     }
     
     func userDidTerminatedConference() {

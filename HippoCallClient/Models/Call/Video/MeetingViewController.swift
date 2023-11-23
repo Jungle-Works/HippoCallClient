@@ -248,16 +248,20 @@ extension MeetingViewController: MeetingEventListener {
         
         // remove participant from list
         participants.remove(at: index)
+        // hide from ui
+        removeParticipantFromGridView(at: index)
         if participants.count <= 1{
             meeting?.localParticipant.removeEventListener(self)
             meeting?.removeEventListener(self)
 
+            self.delegate?.userWillLeaveConference()
+//            self.meeting?.leave()
+//            UIApplication.shared.isIdleTimerDisabled = false
             print("meeting left called")
             // dismiss controller
             dismiss(animated: true, completion: nil)
         }
-        // hide from ui
-        removeParticipantFromGridView(at: index)
+
     }
     
     /// Called after recording starts
