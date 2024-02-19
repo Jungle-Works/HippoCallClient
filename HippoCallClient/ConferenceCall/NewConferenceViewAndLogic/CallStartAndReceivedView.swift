@@ -57,6 +57,15 @@ class CallStartAndReceivedView: UIView {
         return view
     }
     
+    fileprivate var bundle: Bundle? {
+
+        let podBundle = Bundle(for: FuguImage.self)
+        guard let bundleURL = podBundle.url(forResource: "HippoCallClient", withExtension: "bundle"), let fetchBundle = Bundle(url: bundleURL) else {
+            return nil
+        }
+        return fetchBundle
+    }
+    
     func openSafariViewController(url:URL){
         
         var presentedVC: UIViewController?
@@ -115,13 +124,13 @@ class CallStartAndReceivedView: UIView {
          ansButton.setImage(UIImage(named: "connectCall"), for: .normal)
         cancelButton.layer.cornerRadius = cancelButton.frame.height / 2
         cancelButton.layer.masksToBounds = true
-        cancelButton.setImage(UIImage(named: "disconnectCall"), for: .normal)
-
+//        cancelButton.setImage(UIImage(named: "disconnectCall"), for: .normal)
+        cancelButton.setImage(UIImage(named: "disconnectCall", in: self.bundle, compatibleWith: nil), for: .normal)
         userImageView.layer.cornerRadius = userImageView.frame.height / 2
         dailCallCancelButton.layer.cornerRadius = dailCallCancelButton.frame.height / 2
         dailCallCancelButton.layer.masksToBounds = true
-        dailCallCancelButton.setImage(UIImage(named: "disconnectCall"), for: .normal)
-
+//        dailCallCancelButton.setImage(UIImage(named: "disconnectCall"), for: .normal)
+        dailCallCancelButton.setImage(UIImage(named: "disconnectCall", in: self.bundle, compatibleWith: nil), for: .normal)
         userImageView.layer.borderWidth = 0.5
         userImageView.layer.borderColor = UIColor.lightGray.cgColor
         nameLabel.text = userInfo["label"] as? String
