@@ -64,16 +64,14 @@ class CallStartAndReceivedView: UIView {
         callStateMessageLabel.textColor = UIColor.iLightBlack
         ansButton.layer.cornerRadius = ansButton.frame.height / 2
         ansButton.layer.masksToBounds = true
-         ansButton.setImage(UIImage(named: "connectCall"), for: .normal)
+        ansButton.setImage(UIImage(named: "connectCall", in: self.bundle, compatibleWith: nil), for: .normal)
         cancelButton.layer.cornerRadius = cancelButton.frame.height / 2
         cancelButton.layer.masksToBounds = true
-        cancelButton.setImage(UIImage(named: "disconnectCall"), for: .normal)
-
+        cancelButton.setImage(UIImage(named: "disconnectCall", in: self.bundle, compatibleWith: nil), for: .normal)
         userImageView.layer.cornerRadius = userImageView.frame.height / 2
         dailCallCancelButton.layer.cornerRadius = dailCallCancelButton.frame.height / 2
         dailCallCancelButton.layer.masksToBounds = true
-        dailCallCancelButton.setImage(UIImage(named: "disconnectCall"), for: .normal)
-
+        dailCallCancelButton.setImage(UIImage(named: "disconnectCall", in: self.bundle, compatibleWith: nil), for: .normal)
         userImageView.layer.borderWidth = 0.5
         userImageView.layer.borderColor = UIColor.lightGray.cgColor
         nameLabel.text = userInfo["label"] as? String
@@ -86,6 +84,17 @@ class CallStartAndReceivedView: UIView {
         
     }
     
+    fileprivate var bundle: Bundle? {
+
+          let podBundle = Bundle(for: FuguImage.self)
+          guard let bundleURL = podBundle.url(forResource: "HippoCallClient", withExtension: "bundle"), let fetchBundle = Bundle(url: bundleURL) else {
+              return nil
+          }
+          return fetchBundle
+      }
+
+
+
     @IBAction func ansButtonTapped(_ sender: Any) {
         JitsiCallManager.shared.userDidAnswered()
 //        JitsiCallManager.shared.callingType = UserDefaults.standard.value(forKey: "callingType") as! Int
