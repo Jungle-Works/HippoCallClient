@@ -152,7 +152,7 @@ class MeetingViewController: UIViewController, UICollectionViewDataSource {
         meeting?.addEventListener(self)
 
         // join
-        meeting?.join(cameraPosition: .front)
+        meeting?.join()
     }
 
     // MARK: UICollectionViewDataSource
@@ -206,7 +206,14 @@ extension MeetingViewController: MeetingEventListener {
         addParticipantToGridView()
 
         // listen/subscribe for chat topic
-        meeting?.pubsub.subscribe(topic: CHAT_TOPIC, forListener: self)
+//        meeting?.pubsub.subscribe(topic: CHAT_TOPIC, forListener: self)
+        if #available(iOS 13.0, *) {
+            Task {
+                await meeting?.pubsub.subscribe(topic: CHAT_TOPIC, forListener: self)
+            }
+        } else {
+            // Fallback on earlier versions
+        }
     }
 
     /// Meeting ended
@@ -669,7 +676,8 @@ private extension MeetingViewController {
 
         buttonsView.addSubview(buttonControlsView)
         buttonControlsView.frame = buttonsView.bounds
-        buttonControlsView.menuButton.isHidden = true
+       
+        buttonControlsView.menuButton.isHidden = false
 
         if !self.meetingData.cameraEnabled{
             buttonControlsView.videoButton.isHidden = true

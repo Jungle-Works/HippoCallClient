@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
     s.license      = { :type => 'MIT', :file => 'FILE_LICENSE' }
     s.author       = { 'Vishal Jhanjhri' => 'jhanjhri.vishal@gmail.com' }
 
-    s.ios.deployment_target = '11.0'
+    s.ios.deployment_target = '13.0'
     s.source       = { :git => 'https://github.com/Jungle-Works/HippoCallClient.git', :tag => s.version}
 
     s.swift_version = '4.2'
@@ -25,7 +25,7 @@ Pod::Spec.new do |s|
     s.static_framework = false
     s.preserve_paths = 'README.md'
     s.vendored_frameworks =  ['Conference/ConferenceCall/ConferenceCall/JitsiMeetSDK.framework']
-    s.dependency 'VideoSDKRTC', '~> 2.0.4'
+    s.dependency 'VideoSDKRTC', '~> 2.2.1'
     s.dependency 'MessageKit'
    # s.dependency 'Kingfisher'
 

@@ -13,7 +13,7 @@ target 'HippoCallClient' do
           
           target.build_configurations.each do |config|
               
-              config.build_settings['SWIFT_VERSION'] = '3.0'
+              config.build_settings['SWIFT_VERSION'] = '5.0'
               
           end
           

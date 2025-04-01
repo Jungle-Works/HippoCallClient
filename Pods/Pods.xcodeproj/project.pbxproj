@@ -19,13 +19,13 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		9AD87CC35BA8E79AF94DC07C6E30FD3B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
-		A6A69987626D47FAEEB4DB546712F780 /* Pods-HippoCallClient-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1719F69DA297E287F7C242FD56316005 /* Pods-HippoCallClient-dummy.m */; };
-		D52D5A9AD0B4F48D304AAEBC83244159 /* Pods-HippoCallClient-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 32E6C6FFBE062B0BEE8E6CB643806833 /* Pods-HippoCallClient-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9BB3A3CB6BBED0E01A04E994A5C273D1 /* Pods-HippoCallClient-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1719F69DA297E287F7C242FD56316005 /* Pods-HippoCallClient-dummy.m */; };
+		B991065D63C9780260FFB8359F3C4258 /* Pods-HippoCallClient-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 32E6C6FFBE062B0BEE8E6CB643806833 /* Pods-HippoCallClient-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D01C82231ADB5D728D0F48061B895233 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 384DDA2CB25005BD6479B5987C619DD4 /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		7A71680C10F3DC197F453CBB83DD5C6F /* PBXContainerItemProxy */ = {
+		23581F45D62684FB58A2F6F95AA6833B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
@@ -38,9 +38,9 @@
 		0357DCCD6A6DAC25DAFF0ECC02620734 /* Pods-HippoCallClient-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-HippoCallClient-acknowledgements.markdown"; sourceTree = "<group>"; };
 		1719F69DA297E287F7C242FD56316005 /* Pods-HippoCallClient-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-HippoCallClient-dummy.m"; sourceTree = "<group>"; };
 		32E6C6FFBE062B0BEE8E6CB643806833 /* Pods-HippoCallClient-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-HippoCallClient-umbrella.h"; sourceTree = "<group>"; };
+		384DDA2CB25005BD6479B5987C619DD4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		3ECCD2FBC6DA593300D44815581E505E /* Pods-HippoCallClient.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-HippoCallClient.debug.xcconfig"; sourceTree = "<group>"; };
 		5D6AC12BA5B14C7A3F4D618B954D8E75 /* FuguConference.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = FuguConference.debug.xcconfig; sourceTree = "<group>"; };
-		73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		89F5D7B7439E355C5E71A8104AD290A1 /* FuguConference.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = FuguConference.release.xcconfig; sourceTree = "<group>"; };
 		8A3B210AFB12D0D6187720B744CB7DD8 /* FuguConference.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = FuguConference.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -52,11 +52,11 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		040A202B77C8E971888CEAFCE442D8F4 /* Frameworks */ = {
+		6545ABCEC452B12C236B77D4324DEB36 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9AD87CC35BA8E79AF94DC07C6E30FD3B /* Foundation.framework in Frameworks */,
+				D01C82231ADB5D728D0F48061B895233 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,14 +77,6 @@
 			);
 			name = "Pods-HippoCallClient";
 			path = "Target Support Files/Pods-HippoCallClient";
-			sourceTree = "<group>";
-		};
-		578452D2E740E91742655AC8F1636D1F /* iOS */ = {
-			isa = PBXGroup;
-			children = (
-				73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */,
-			);
-			name = iOS;
 			sourceTree = "<group>";
 		};
 		7E3B87F351936537D9AA25FE04110A7E /* Products */ = {
@@ -143,9 +135,17 @@
 		D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				578452D2E740E91742655AC8F1636D1F /* iOS */,
+				E4801F62A6B08CD9B5410329F1A18FDE /* iOS */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E4801F62A6B08CD9B5410329F1A18FDE /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				384DDA2CB25005BD6479B5987C619DD4 /* Foundation.framework */,
+			);
+			name = iOS;
 			sourceTree = "<group>";
 		};
 		EB828E2201E9A6F5AF1E0DB544507251 /* FuguConference */ = {
@@ -161,11 +161,11 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		66B71AB0F58C39E61055AD1B263B6018 /* Headers */ = {
+		4CBB30111696855D0CAD1CDB003F64A9 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D52D5A9AD0B4F48D304AAEBC83244159 /* Pods-HippoCallClient-umbrella.h in Headers */,
+				B991065D63C9780260FFB8359F3C4258 /* Pods-HippoCallClient-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -174,17 +174,17 @@
 /* Begin PBXNativeTarget section */
 		20C7E53F629F3016CC43A3481BD005FC /* Pods-HippoCallClient */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3CCD2573B07841C34A803702D2D90124 /* Build configuration list for PBXNativeTarget "Pods-HippoCallClient" */;
+			buildConfigurationList = 92A74738AA7B1756BFE53759AA9DCA72 /* Build configuration list for PBXNativeTarget "Pods-HippoCallClient" */;
 			buildPhases = (
-				66B71AB0F58C39E61055AD1B263B6018 /* Headers */,
-				D122DB72AE98B89407F3994DD285E902 /* Sources */,
-				040A202B77C8E971888CEAFCE442D8F4 /* Frameworks */,
-				FC1B404BB6AE41021A29615CA621532E /* Resources */,
+				4CBB30111696855D0CAD1CDB003F64A9 /* Headers */,
+				43200BD4CE67568EF36E7ED0A13C4404 /* Sources */,
+				6545ABCEC452B12C236B77D4324DEB36 /* Frameworks */,
+				4DBA4408037DC5D495D70FE8B7867437 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				2EF38231C0E54AD4A3E0D19E143DBA10 /* PBXTargetDependency */,
+				A76137F68FB69091E1F78110EFD56CA8 /* PBXTargetDependency */,
 			);
 			name = "Pods-HippoCallClient";
 			productName = Pods_HippoCallClient;
@@ -197,8 +197,8 @@
 		BFDFE7DC352907FC980B868725387E98 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1240;
-				LastUpgradeCheck = 1240;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
 			};
 			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 9.3";
@@ -209,6 +209,8 @@
 				en,
 			);
 			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
+			minimizedProjectReferenceProxies = 0;
+			preferredProjectObjectVersion = 77;
 			productRefGroup = 7E3B87F351936537D9AA25FE04110A7E /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -220,7 +222,7 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		FC1B404BB6AE41021A29615CA621532E /* Resources */ = {
+		4DBA4408037DC5D495D70FE8B7867437 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -230,29 +232,48 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		D122DB72AE98B89407F3994DD285E902 /* Sources */ = {
+		43200BD4CE67568EF36E7ED0A13C4404 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A6A69987626D47FAEEB4DB546712F780 /* Pods-HippoCallClient-dummy.m in Sources */,
+				9BB3A3CB6BBED0E01A04E994A5C273D1 /* Pods-HippoCallClient-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		2EF38231C0E54AD4A3E0D19E143DBA10 /* PBXTargetDependency */ = {
+		A76137F68FB69091E1F78110EFD56CA8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = FuguConference;
 			target = C88EAB8315923859573F10EF1BD46A09 /* FuguConference */;
-			targetProxy = 7A71680C10F3DC197F453CBB83DD5C6F /* PBXContainerItemProxy */;
+			targetProxy = 23581F45D62684FB58A2F6F95AA6833B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		4E349F5566FEB20099FF777CB61CBCC8 /* Release */ = {
+		2779C6897D21D23A36FD16B75530D8C5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FDAE9E633E41D14D69C5C634D9CBF283 /* Pods-HippoCallClient.release.xcconfig */;
+			baseConfigurationReference = 89F5D7B7439E355C5E71A8104AD290A1 /* FuguConference.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		745E9615F2194119F8677739814F520C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3ECCD2FBC6DA593300D44815581E505E /* Pods-HippoCallClient.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_OBJC_WEAK = NO;
@@ -264,6 +285,8 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = "Target Support Files/Pods-HippoCallClient/Pods-HippoCallClient-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -281,13 +304,12 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = Release;
+			name = Debug;
 		};
 		903A0004D3E6651EFD5D2E16214D101B /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -351,23 +373,64 @@
 			};
 			name = Release;
 		};
-		A7EE3FE658738824B6E63414E3ADC46D /* Release */ = {
+		AC69E30998AFD6682CCF29D2B446871E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 89F5D7B7439E355C5E71A8104AD290A1 /* FuguConference.release.xcconfig */;
+			baseConfigurationReference = FDAE9E633E41D14D69C5C634D9CBF283 /* Pods-HippoCallClient.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				INFOPLIST_FILE = "Target Support Files/Pods-HippoCallClient/Pods-HippoCallClient-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-HippoCallClient/Pods-HippoCallClient.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		B2A129145AAC2F8683E43D90DA23EAC8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5D6AC12BA5B14C7A3F4D618B954D8E75 /* FuguConference.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				SDKROOT = iphoneos;
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
 			};
-			name = Release;
+			name = Debug;
 		};
 		B4EFE046ACF8F37157F6E322C7FCFC28 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -435,73 +498,9 @@
 			};
 			name = Debug;
 		};
-		CD2444E9AE2E2B7ED995FA2721803999 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3ECCD2FBC6DA593300D44815581E505E /* Pods-HippoCallClient.debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-HippoCallClient/Pods-HippoCallClient-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-HippoCallClient/Pods-HippoCallClient.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		F00052A5D8C9D5E8E8CE9BFC209DE9C8 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5D6AC12BA5B14C7A3F4D618B954D8E75 /* FuguConference.debug.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				SDKROOT = iphoneos;
-				SWIFT_VERSION = 3.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		3CCD2573B07841C34A803702D2D90124 /* Build configuration list for PBXNativeTarget "Pods-HippoCallClient" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				CD2444E9AE2E2B7ED995FA2721803999 /* Debug */,
-				4E349F5566FEB20099FF777CB61CBCC8 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -511,11 +510,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		92A74738AA7B1756BFE53759AA9DCA72 /* Build configuration list for PBXNativeTarget "Pods-HippoCallClient" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				745E9615F2194119F8677739814F520C /* Debug */,
+				AC69E30998AFD6682CCF29D2B446871E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		C2314E2FCADFAB94A116E8614A159515 /* Build configuration list for PBXAggregateTarget "FuguConference" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				F00052A5D8C9D5E8E8CE9BFC209DE9C8 /* Debug */,
-				A7EE3FE658738824B6E63414E3ADC46D /* Release */,
+				B2A129145AAC2F8683E43D90DA23EAC8 /* Debug */,
+				2779C6897D21D23A36FD16B75530D8C5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

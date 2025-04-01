@@ -94,7 +94,7 @@ class VideoSdkView: UIViewController {
         // listener
 //        meeting?.addEventListener(self)
         
-        meeting?.join(cameraPosition: .front)
+        meeting?.join()
     }
 }
 //
