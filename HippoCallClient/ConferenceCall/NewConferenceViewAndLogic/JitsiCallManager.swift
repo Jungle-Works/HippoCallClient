@@ -524,7 +524,10 @@ extension JitsiCallManager {
     func removeConnectingView(){
         timeElapsedSinceWaitingForOffer = 0
         if EstablishingConnectionView.shared != nil{
-            EstablishingConnectionView.shared.removeFromSuperview()
+            DispatchQueue.main.async {
+                EstablishingConnectionView.shared.removeFromSuperview()
+            }
+            
         }
     }
 }
