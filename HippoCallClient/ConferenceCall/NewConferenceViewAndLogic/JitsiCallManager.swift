@@ -80,7 +80,7 @@ class JitsiCallManager : NSObject{
             finalMeetId = call.transactionId!
         }
         
-//        CallClient.shared.fullName = call.peer.name
+        //        CallClient.shared.fullName = call.peer.name
         JitsiCallManager.shared.jitsiUrl = finalMeetId
         
         
@@ -171,8 +171,8 @@ extension JitsiCallManager{
     
     func startGroupCall(with call: Call, with groupCallData : CallClientGroupCallData){
         transactionID = groupCallData.transactionId!
-//        CallClient.shared.videoCallEnabled = call.type.rawValue
-//        CallClient.shared.fullName = groupCallData.userType!
+        //        CallClient.shared.videoCallEnabled = call.type.rawValue
+        //        CallClient.shared.fullName = groupCallData.userType!
         if isCallJoinedFromLink {
             return
         }
@@ -214,14 +214,25 @@ extension JitsiCallManager{
     
     
     func openPopupForGroupCall(){
-        if let keyWindow = UIApplication.shared.windows.first {
+        let keyWindow: UIWindow? = {
+            if #available(iOS 15.0, *) {
+                return UIApplication.shared.connectedScenes
+                    .compactMap { $0 as? UIWindowScene }
+                    .flatMap { $0.windows }
+                    .first { $0.isKeyWindow }
+            } else {
+                return UIApplication.shared.keyWindow
+            }
+        }()
+        
+        guard let window = keyWindow else { return }
             if muidDic?.keys.first == activeCall?.uID, muidDic?[activeCall?.uID ?? ""] == true{
                 return
             }
             if RecievedGroupCallView.shared == nil {
                 RecievedGroupCallView.shared = RecievedGroupCallView.loadView()
                 RecievedGroupCallView.shared.isHidden = true
-                guard  !keyWindow.subviews.contains(RecievedGroupCallView.shared) else {
+                guard  !window.subviews.contains(RecievedGroupCallView.shared) else {
                     RecievedGroupCallView.shared = nil
                     return
                 }
@@ -230,7 +241,7 @@ extension JitsiCallManager{
                 RecievedGroupCallView.shared.setUp()
                 RecievedGroupCallView.shared.delegate = self
                 print("ADD VIEW ON WINDOW*************** 7")
-                keyWindow.addSubview(RecievedGroupCallView.shared)
+                window.addSubview(RecievedGroupCallView.shared)
                 //RecievedGroupCallView.shared.playReceivedCallSound()
                 
                 //Add timer
@@ -246,7 +257,7 @@ extension JitsiCallManager{
                 }
                 isOfferRecieved = true
             }
-        }
+        
     }
     
     //MARK:- Methods to start group call
@@ -402,13 +413,23 @@ extension JitsiCallManager{
 extension JitsiCallManager {
     
     func showReceivedCallView() {
-        if let keyWindow = UIApplication.shared.windows.first{
-            
+        let keyWindow: UIWindow? = {
+            if #available(iOS 15.0, *) {
+                return UIApplication.shared.connectedScenes
+                    .compactMap { $0 as? UIWindowScene }
+                    .flatMap { $0.windows }
+                    .first { $0.isKeyWindow }
+            } else {
+                return UIApplication.shared.keyWindow
+            }
+        }()
+        
+        guard let window = keyWindow else { return }
             if CallStartAndReceivedView.shared == nil {
                 CallStartAndReceivedView.shared = CallStartAndReceivedView.loadView()
                 //hide the view by default, so that i donot need to change the checks for user busy
                 CallStartAndReceivedView.shared.isHidden = true
-                guard  !keyWindow.subviews.contains(CallStartAndReceivedView.shared!) else {
+                guard  !window.subviews.contains(CallStartAndReceivedView.shared!) else {
                     CallStartAndReceivedView.shared = nil
                     return
                 }
@@ -424,40 +445,37 @@ extension JitsiCallManager {
                 
                 //                if CallStartAndReceivedView.shared != nil{
                 let subView = CallStartAndReceivedView.shared
-                keyWindow.addSubview(subView!)
-                keyWindow.makeKeyAndVisible()
+                window.addSubview(subView!)
+                window.makeKeyAndVisible()
                 //                }else{
                 //                    CallStartAndReceivedView.loadView()?.remove()
                 //                }
             }
-        }
+        
     }
     
     func showDailCallView(completion: VersionMismatchCallBack? = nil) {
-        if let keyWindow = UIApplication.shared.windows.first {
+        let keyWindow: UIWindow? = {
+            if #available(iOS 15.0, *) {
+                return UIApplication.shared.connectedScenes
+                    .compactMap { $0 as? UIWindowScene }
+                    .flatMap { $0.windows }
+                    .first { $0.isKeyWindow }
+            } else {
+                return UIApplication.shared.keyWindow
+            }
+        }()
+        
+        guard let window = keyWindow else { return }
             if CallStartAndReceivedView.shared == nil {
                 CallStartAndReceivedView.shared = CallStartAndReceivedView.loadView()
                 CallStartAndReceivedView.shared.userInfo = userDataforDailCall()
                 CallStartAndReceivedView.shared.dailCallSetup()
                 CallStartAndReceivedView.shared.delegate = self
-                keyWindow.addSubview(CallStartAndReceivedView.shared!)
-                keyWindow.makeKeyAndVisible()
+                window.addSubview(CallStartAndReceivedView.shared!)
+                window.makeKeyAndVisible()
                 CallStartAndReceivedView.shared.playDailCallSound()
                 startTimerForConference(createCall: true)
-                
-                //                if JitsiCallSignal.JitsiSignalType.READY_TO_CONNECT_CONFERENCE == .READY_TO_CONNECT_CONFERENCE{
-                //                    sendStartCallFirstTime(){ (mismatch) in
-                //                        if completion != nil{
-                //                            completion!(mismatch)
-                //                        }
-                //                    }
-                //                }else{
-                //                    sendStartCallFirstTimeForiOS(){ (mismatch) in
-                //                        if completion != nil{
-                //                            completion!(mismatch)
-                //                        }
-                //                    }
-                //                }
                 
                 sendStartCallFirstTime(){ (mismatch) in
                     if completion != nil{
@@ -471,7 +489,7 @@ extension JitsiCallManager {
                     }
                 }
             }
-        }
+        
     }
     
     
@@ -488,14 +506,25 @@ extension JitsiCallManager {
     }
     
     func showConnectingView(){
-        if let keyWindow = UIApplication.shared.windows.first{
-            if EstablishingConnectionView.shared == nil{
-                EstablishingConnectionView.shared = EstablishingConnectionView.loadView(with: keyWindow.frame)
-                keyWindow.addSubview(EstablishingConnectionView.shared)
-            }else if keyWindow.subviews.contains(EstablishingConnectionView.shared) == false{
-                keyWindow.addSubview(EstablishingConnectionView.shared)
+        let keyWindow: UIWindow? = {
+            if #available(iOS 15.0, *) {
+                return UIApplication.shared.connectedScenes
+                    .compactMap { $0 as? UIWindowScene }
+                    .flatMap { $0.windows }
+                    .first { $0.isKeyWindow }
+            } else {
+                return UIApplication.shared.keyWindow
             }
-        }
+        }()
+        
+        guard let window = keyWindow else { return }
+            if EstablishingConnectionView.shared == nil{
+                EstablishingConnectionView.shared = EstablishingConnectionView.loadView(with: window.frame)
+                window.addSubview(EstablishingConnectionView.shared)
+            }else if window.subviews.contains(EstablishingConnectionView.shared) == false{
+                window.addSubview(EstablishingConnectionView.shared)
+            }
+        
     }
     
     
@@ -949,7 +978,7 @@ extension JitsiCallManager {
             let signal = JitsiCallSignal(signalType: .HUNGUP_CONFERENCE, callUID: activeCall!.uID, sender: activeCall!.currentUser, senderDeviceID: activeCall?.uID ?? "", callType: activeCall!.type , link: link, isFSilent: true , jitsiUrl: jitsiUrl ?? "")
             let dict = signal.getJsonToSendToFaye()
             sendData(dict: dict, completion: { (mismatch) in
-//                self.resetAllResourceForNewCall()
+                //                self.resetAllResourceForNewCall()
             })
             idForHungUpSent = activeCall?.uID
             self.resetAllResourceForNewCall()
@@ -1014,70 +1043,114 @@ extension JitsiCallManager {
     }
     
     func showJitsiViewToJoinLink(customerName: String, customerImage: String, url: String, isInviteEnabled: Bool) {
-        if let keyWindow = UIApplication.shared.windows.first{
-            if JitsiConfrenceCallView.shared == nil && activeCall == nil {
-                let tempLink = getLinkAfertRemoveAudio(link: (jitsiUrl ?? "") == "" ? link : jitsiUrl ?? "")
-                let data = getURLOrRoomId(for: tempLink)
-                let inviteLink = data.url
-                let roomId = data.roomId
-                let imageURL = URL(string: customerImage)
-                let model = JitsiMeetDataModel(userName: customerName, userEmail: "", userImage: imageURL, audioOnly: self.link.contains("startWithVideoMuted=true") ? true : false, serverURl: inviteLink, roomID: roomId, isMuted: false)
-                model.isInviteEnabled = isInviteEnabled
-                JitsiConfrenceCallView.shared = JitsiConfrenceCallView.loadView(with: keyWindow.frame)
-                JitsiConfrenceCallView.shared.setupJitsi(for: model)
-                JitsiConfrenceCallView.shared.delegate = self
-                keyWindow.addSubview(JitsiConfrenceCallView.shared)
+        // Get the key window using connected scenes (iOS 15+)
+        let keyWindow: UIWindow? = {
+            if #available(iOS 15.0, *) {
+                return UIApplication.shared.connectedScenes
+                    .compactMap { $0 as? UIWindowScene }
+                    .flatMap { $0.windows }
+                    .first { $0.isKeyWindow }
+            } else {
+                return UIApplication.shared.keyWindow
             }
+        }()
+        
+        guard let window = keyWindow else { return }
+        
+        if JitsiConfrenceCallView.shared == nil && activeCall == nil {
+            let tempLink = getLinkAfertRemoveAudio(link: (jitsiUrl ?? "") == "" ? link : jitsiUrl ?? "")
+            let data = getURLOrRoomId(for: tempLink)
+            let inviteLink = data.url
+            let roomId = data.roomId
+            let imageURL = URL(string: customerImage)
+            let model = JitsiMeetDataModel(
+                userName: customerName,
+                userEmail: "",
+                userImage: imageURL,
+                audioOnly: self.link.contains("startWithVideoMuted=true"),
+                serverURl: inviteLink,
+                roomID: roomId,
+                isMuted: false
+            )
+            model.isInviteEnabled = isInviteEnabled
+            
+            JitsiConfrenceCallView.shared = JitsiConfrenceCallView.loadView(with: window.frame)
+            JitsiConfrenceCallView.shared.setupJitsi(for: model)
+            JitsiConfrenceCallView.shared.delegate = self
+            window.addSubview(JitsiConfrenceCallView.shared)
         }
     }
     
     
+    
     func showJitsiViewForGroupCall(_ groupCallData : CallClientGroupCallData){
-        if let keyWindow = UIApplication.shared.windows.first{
-            if JitsiConfrenceCallView.shared == nil && activeCall != nil {
-                let imageURL = URL(string: activeCall.currentUser.image)
-                let tempLink = getLinkAfertRemoveAudio(link: (jitsiUrl ?? "") == "" ? link : jitsiUrl ?? "")
-                let data = getURLOrRoomId(for: tempLink)
-                let inviteLink = data.url
-                guard let roomId = groupCallData.roomUniqueId else{
-                    return
-                }
-                let model = JitsiMeetDataModel(userName: activeCall.currentUser.name, userEmail: "", userImage: imageURL, audioOnly: activeCall.type == .audio ? true : false, serverURl: inviteLink, roomID: roomId, isMuted: groupCallData.isMuted ?? false)
-                model.isInviteEnabled = isInviteEnabled
-                JitsiConfrenceCallView.shared = JitsiConfrenceCallView.loadView(with: keyWindow.frame)
-                JitsiConfrenceCallView.shared.setupJitsi(for: model)
-                JitsiConfrenceCallView.shared.delegate = self
-                keyWindow.addSubview(JitsiConfrenceCallView.shared)
-                self.sendStartGroupCall()
-                if groupCallData.userType == "customer"{
-                    self.acceptGroupCall(true)
-                }
-                
-                self.activeCall?.signalingClient.sendSessionStatus(status: "START_GROUP_CALL", transactionId : transactionID ?? "")
+        let keyWindow: UIWindow? = {
+            if #available(iOS 15.0, *) {
+                return UIApplication.shared.connectedScenes
+                    .compactMap { $0 as? UIWindowScene }
+                    .flatMap { $0.windows }
+                    .first { $0.isKeyWindow }
+            } else {
+                return UIApplication.shared.keyWindow
             }
+        }()
+        
+        guard let window = keyWindow else { return }
+        if JitsiConfrenceCallView.shared == nil && activeCall != nil {
+            let imageURL = URL(string: activeCall.currentUser.image)
+            let tempLink = getLinkAfertRemoveAudio(link: (jitsiUrl ?? "") == "" ? link : jitsiUrl ?? "")
+            let data = getURLOrRoomId(for: tempLink)
+            let inviteLink = data.url
+            guard let roomId = groupCallData.roomUniqueId else{
+                return
+            }
+            let model = JitsiMeetDataModel(userName: activeCall.currentUser.name, userEmail: "", userImage: imageURL, audioOnly: activeCall.type == .audio ? true : false, serverURl: inviteLink, roomID: roomId, isMuted: groupCallData.isMuted ?? false)
+            model.isInviteEnabled = isInviteEnabled
+            JitsiConfrenceCallView.shared = JitsiConfrenceCallView.loadView(with: window.frame)
+            JitsiConfrenceCallView.shared.setupJitsi(for: model)
+            JitsiConfrenceCallView.shared.delegate = self
+            window.addSubview(JitsiConfrenceCallView.shared)
+            self.sendStartGroupCall()
+            if groupCallData.userType == "customer"{
+                self.acceptGroupCall(true)
+            }
+            
+            self.activeCall?.signalingClient.sendSessionStatus(status: "START_GROUP_CALL", transactionId : transactionID ?? "")
         }
+        
     }
     
     func showJitsiView() {
         DispatchQueue.main.async {
-            if let keyWindow = UIApplication.shared.windows.first{
-                print("come in join call -------->>>>>>>>>>",JitsiConfrenceCallView.shared,self.activeCall)
-                if JitsiConfrenceCallView.shared == nil && self.activeCall != nil {
-                    //signal?.senderDeviceID != CallClient.shared.currentDeviceID
-                    let model = self.userDataForOutgoingCall()
-                    if self.link.contains("startWithVideoMuted"){
-                        model.audioOnly = true
-                    }
-                    if self.link.contains("startWithAudioMuted"){
-                        model.isMuted = true
-                    }
-                    model.isInviteEnabled = self.isInviteEnabled
-                    JitsiConfrenceCallView.shared = JitsiConfrenceCallView.loadView(with: keyWindow.frame)
-                    JitsiConfrenceCallView.shared.setupJitsi(for: model)
-                    JitsiConfrenceCallView.shared.delegate = self
-                    keyWindow.addSubview(JitsiConfrenceCallView.shared)
+            let keyWindow: UIWindow? = {
+                if #available(iOS 15.0, *) {
+                    return UIApplication.shared.connectedScenes
+                        .compactMap { $0 as? UIWindowScene }
+                        .flatMap { $0.windows }
+                        .first { $0.isKeyWindow }
+                } else {
+                    return UIApplication.shared.keyWindow
                 }
+            }()
+            
+            guard let window = keyWindow else { return }
+            print("come in join call -------->>>>>>>>>>",JitsiConfrenceCallView.shared,self.activeCall)
+            if JitsiConfrenceCallView.shared == nil && self.activeCall != nil {
+                //signal?.senderDeviceID != CallClient.shared.currentDeviceID
+                let model = self.userDataForOutgoingCall()
+                if self.link.contains("startWithVideoMuted"){
+                    model.audioOnly = true
+                }
+                if self.link.contains("startWithAudioMuted"){
+                    model.isMuted = true
+                }
+                model.isInviteEnabled = self.isInviteEnabled
+                JitsiConfrenceCallView.shared = JitsiConfrenceCallView.loadView(with: window.frame)
+                JitsiConfrenceCallView.shared.setupJitsi(for: model)
+                JitsiConfrenceCallView.shared.delegate = self
+                window.addSubview(JitsiConfrenceCallView.shared)
             }
+            
             self.endrepeatShowingPopup()
             self.removeDialAndReceivedView()
         }
@@ -1282,14 +1355,25 @@ extension JitsiCallManager : JitsiConfrenceCallViewDelegate  {
     func keyWindowChanged(){
         if activeCall != nil && JitsiConfrenceCallView.shared != nil{
             JitsiConfrenceCallView.shared.removeFromSuperview()
-            DispatchQueue.main.async {
-                if let keyWindow = UIApplication.shared.windows.first{
-                    keyWindow.addSubview(JitsiConfrenceCallView.shared)
+
+                DispatchQueue.main.async {
+                    let keyWindow: UIWindow? = {
+                        if #available(iOS 15.0, *) {
+                            return UIApplication.shared.connectedScenes
+                                .compactMap { $0 as? UIWindowScene }
+                                .flatMap { $0.windows }
+                                .first { $0.isKeyWindow }
+                        } else {
+                            return UIApplication.shared.keyWindow
+                        }
+                    }()
+                    
+                    guard let window = keyWindow else { return }
+                     window.addSubview(JitsiConfrenceCallView.shared)
+                    
                 }
-            }
         }
     }
-    
 }
 extension JitsiCallManager : RecievedGroupCallDelegate{
     func groupCallAnswered(){

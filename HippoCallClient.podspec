@@ -10,10 +10,10 @@ Pod::Spec.new do |s|
     s.license      = { :type => 'MIT', :file => 'FILE_LICENSE' }
     s.author       = { 'Vishal Jhanjhri' => 'jhanjhri.vishal@gmail.com' }
 
-    s.ios.deployment_target = '12.0'
+    s.ios.deployment_target = '15.1'
     s.source       = { :git => 'https://github.com/Jungle-Works/HippoCallClient.git', :tag => s.version}
 
-    s.swift_version = '4.2'
+    s.swift_version = '5.0'
     s.source_files  = 'HippoCallClient/**/*.{h,m,swift,xib,storyboard}'
     
     s.resource_bundles = {
@@ -24,11 +24,7 @@ Pod::Spec.new do |s|
     s.exclude_files = 'Classes/Exclude'
     s.static_framework = false
     s.preserve_paths = 'README.md'
-    s.dependency 'JitsiMeetSDK', '5.1.0'
-#    s.vendored_frameworks =  ['Conference/ConferenceCall/ConferenceCall/JitsiMeetSDK.framework',
-#                              'Conference/ConferenceCall/ConferenceCall/WebRTC.framework',
-#                              'Conference/ConferenceCall/ConferenceCall/GiphyUISDK.framework']
-   # s.dependency 'Kingfisher'
+    s.dependency 'JitsiMeetSDK', '10.2.0'
 
     s.pod_target_xcconfig = { 'ENABLE_BITCODE' => 'No' }
 end

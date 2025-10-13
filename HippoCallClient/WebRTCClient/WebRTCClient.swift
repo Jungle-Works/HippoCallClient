@@ -304,7 +304,7 @@ class WebRTCClient: NSObject, RTCPeerConnectionDelegate {
     }
     
     func frameOfLocalVideoContainerViewChanged() {
-        guard let view = localVideoRenderer as? RTCEAGLVideoView else {
+        guard let view = localVideoRenderer as? RTCMTLVideoView else {
             return
         }
         
@@ -315,7 +315,7 @@ class WebRTCClient: NSObject, RTCPeerConnectionDelegate {
     }
     
     func frameOfRemoteVideoContainerViewChanged() {
-        guard let view = remoteVideoRenderer as? RTCEAGLVideoView else {
+        guard let view = remoteVideoRenderer as? RTCMTLVideoView else {
             return
         }
         guard let superView = delegate?.viewForRenderingRemoteVideo() else {
@@ -447,7 +447,7 @@ class WebRTCClient: NSObject, RTCPeerConnectionDelegate {
     
     fileprivate func embed(view: RTCVideoRenderer, in superView: UIView, withAspectRatio ratio: CGSize?) {
         switch view {
-        case let videoView as RTCEAGLVideoView:
+        case let videoView as RTCMTLVideoView:
             superView.addSubview(videoView)
             let aspectRatio = ratio ?? defaultAspectRatio
             setRectOf(view: videoView, in: superView, withAspectRatio: aspectRatio)
@@ -501,7 +501,7 @@ class WebRTCClient: NSObject, RTCPeerConnectionDelegate {
         renderer.videoContentMode = .scaleAspectFit
         #else
         // Using OpenGLES for the rest
-        let renderer = RTCEAGLVideoView(frame: view.bounds)
+        let renderer = RTCMTLVideoView(frame: view.bounds)
         renderer.delegate = self
         #endif
         

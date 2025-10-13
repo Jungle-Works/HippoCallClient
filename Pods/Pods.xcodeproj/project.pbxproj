@@ -15,18 +15,17 @@
 			dependencies = (
 			);
 			name = FuguConference;
-			productName = FuguConference;
 		};
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		5CC4A238F3037AD4EA0F7464EC10DA02 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */; };
-		61A80241558AE10EBF980CB0BA560BD2 /* Pods-HippoCallClient-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1719F69DA297E287F7C242FD56316005 /* Pods-HippoCallClient-dummy.m */; };
-		ACD7DF390A61D9BEEA367F89B927339D /* Pods-HippoCallClient-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 32E6C6FFBE062B0BEE8E6CB643806833 /* Pods-HippoCallClient-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9BB3A3CB6BBED0E01A04E994A5C273D1 /* Pods-HippoCallClient-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1719F69DA297E287F7C242FD56316005 /* Pods-HippoCallClient-dummy.m */; };
+		B991065D63C9780260FFB8359F3C4258 /* Pods-HippoCallClient-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 32E6C6FFBE062B0BEE8E6CB643806833 /* Pods-HippoCallClient-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D01C82231ADB5D728D0F48061B895233 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 384DDA2CB25005BD6479B5987C619DD4 /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		04E8F27392F6EC4393413504E5E0EF27 /* PBXContainerItemProxy */ = {
+		C698FC57FE271A7778B82FBAE6A83F97 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
@@ -36,110 +35,139 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0266004F2D7383A40E050E7D813E35D9 /* RTCVideoViewShading.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoViewShading.h; sourceTree = "<group>"; };
-		0276921986B8B03708A75B90F264EE01 /* RTCVideoFrame.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoFrame.h; sourceTree = "<group>"; };
-		02EBF3B3E7BFA2FED4E60B355450D9DB /* RTCSessionDescription.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCSessionDescription.h; sourceTree = "<group>"; };
 		0357DCCD6A6DAC25DAFF0ECC02620734 /* Pods-HippoCallClient-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-HippoCallClient-acknowledgements.markdown"; sourceTree = "<group>"; };
-		0849E2266BF013234883484BF56C1997 /* RTCVideoFrameBuffer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoFrameBuffer.h; sourceTree = "<group>"; };
-		09DC7D012205BC7FBE02CA6676962896 /* RTCRtpReceiver.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCRtpReceiver.h; sourceTree = "<group>"; };
-		0A50E46851CACF9B0274CC6F4F004775 /* RTCDispatcher.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCDispatcher.h; sourceTree = "<group>"; };
-		11EB4104BB09E1C164D1AC3B3E2C22C6 /* RTCFileVideoCapturer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCFileVideoCapturer.h; sourceTree = "<group>"; };
-		134FC81B84FC89C653C635088E0E727E /* FuguConference.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = FuguConference.debug.xcconfig; sourceTree = "<group>"; };
-		13D8129B76961BD100A486230D6CFAEB /* UIDevice+RTCDevice.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "UIDevice+RTCDevice.h"; sourceTree = "<group>"; };
+		0380D8C1140AE503D5DE75E076377405 /* RTCNativeMutableI420Buffer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCNativeMutableI420Buffer.h; sourceTree = "<group>"; };
+		119BBD3B7616C23D2F7E591A6FA67D76 /* JitsiMeetLogger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = JitsiMeetLogger.h; sourceTree = "<group>"; };
+		12D9A3AFC263BDA7B3307131022A8BDD /* RTCVideoEncoderFactoryH264.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoEncoderFactoryH264.h; sourceTree = "<group>"; };
+		136FA8AF2B6E6ED5159EF3B3D46F36A6 /* RTCMutableI420Buffer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCMutableI420Buffer.h; sourceTree = "<group>"; };
+		1489EA43DB50F0AFD51F0CE0CD38F8F2 /* RTCLegacyStatsReport.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCLegacyStatsReport.h; sourceTree = "<group>"; };
+		1686E78847EC544FBF476DED7E933575 /* RTCEncodedImage.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCEncodedImage.h; sourceTree = "<group>"; };
 		1719F69DA297E287F7C242FD56316005 /* Pods-HippoCallClient-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-HippoCallClient-dummy.m"; sourceTree = "<group>"; };
-		1921DDA519EA5F2F1B028E7CBF0EE8F5 /* RTCEAGLVideoView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCEAGLVideoView.h; sourceTree = "<group>"; };
-		1FF8856A38A6C6AD4CAF6D1E861DFF59 /* RTCMetrics.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCMetrics.h; sourceTree = "<group>"; };
-		21B624161A1A8C0B6A6DC5409F8687CE /* RTCLogging.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCLogging.h; sourceTree = "<group>"; };
-		2243020EA7804D8CA5464160CC6B4EED /* RTCCallbackLogger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCCallbackLogger.h; sourceTree = "<group>"; };
-		23B7ADF91348E890E337B1CC4054A4A6 /* RTCAudioSource.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCAudioSource.h; sourceTree = "<group>"; };
-		3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		173A5A9919058DAB5998912B5A52F4DB /* RTCMediaSource.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCMediaSource.h; sourceTree = "<group>"; };
+		1D8299599B8ABB58FB226318724F6C63 /* RTCVideoTrack.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoTrack.h; sourceTree = "<group>"; };
+		26DCA9396D97649752AEBBB921C700B2 /* RTCVideoDecoder.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoDecoder.h; sourceTree = "<group>"; };
+		287F115AE038B564EBBD744839E70B73 /* RTCVideoEncoder.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoEncoder.h; sourceTree = "<group>"; };
+		29297FB89C96369EA29E39716A2E2825 /* FuguConference.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = FuguConference.release.xcconfig; sourceTree = "<group>"; };
+		2C5305E7C0D7BC4204A6510114FC5185 /* RTCIceServer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCIceServer.h; sourceTree = "<group>"; };
+		2D8457D73EBDF7F619B86737FF346787 /* RTCDataChannel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCDataChannel.h; sourceTree = "<group>"; };
+		2D9B10DEF64F6C7718CB02EBA8C51E01 /* JitsiMeetView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = JitsiMeetView.h; sourceTree = "<group>"; };
+		2FDBFF2B4C573BCE2959C07B948D7EB1 /* WebRTC.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = WebRTC.h; sourceTree = "<group>"; };
+		3095EC1C12E4AD15A617BB7F6CEE9529 /* RTCVideoFrameBuffer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoFrameBuffer.h; sourceTree = "<group>"; };
+		32B17590D9C6371451595383A4C7C0C6 /* GiphyYYFrameImage.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = GiphyYYFrameImage.h; sourceTree = "<group>"; };
 		32E6C6FFBE062B0BEE8E6CB643806833 /* Pods-HippoCallClient-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-HippoCallClient-umbrella.h"; sourceTree = "<group>"; };
-		3764E023E71DC490420A7C2B26521AA4 /* RTCCameraPreviewView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCCameraPreviewView.h; sourceTree = "<group>"; };
-		3960130D06988E15F4ED3E5434EEDB58 /* RTCPeerConnectionFactory.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCPeerConnectionFactory.h; sourceTree = "<group>"; };
+		330987E94D9FA68FCEC55B06BD578E48 /* RTCAudioTrack.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCAudioTrack.h; sourceTree = "<group>"; };
+		3478790BD69AED8A08F1DC6ECD1506E5 /* GiphyYYAnimatedImageView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = GiphyYYAnimatedImageView.h; sourceTree = "<group>"; };
+		3590A863CFBB970C1DA364C4CC0FCE52 /* RTCVideoEncoderH264.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoEncoderH264.h; sourceTree = "<group>"; };
+		35A7A6A6B5A5555485C67C0AC032B20E /* RTCVideoFrame.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoFrame.h; sourceTree = "<group>"; };
+		3705B83ADCF311CC86C577D40D4E8FAE /* RTCFileLogger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCFileLogger.h; sourceTree = "<group>"; };
+		3750A4BFC170C6591B463D5F9B405E55 /* RTCDefaultVideoDecoderFactory.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCDefaultVideoDecoderFactory.h; sourceTree = "<group>"; };
+		384DDA2CB25005BD6479B5987C619DD4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		3913EA3DED38EA7D603F1FBE937F5F9F /* RTCVideoDecoderVP9.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoDecoderVP9.h; sourceTree = "<group>"; };
+		3A662E83D614051581B9CC7433DE0530 /* RTCVideoEncoderFactory.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoEncoderFactory.h; sourceTree = "<group>"; };
 		3ECCD2FBC6DA593300D44815581E505E /* Pods-HippoCallClient.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-HippoCallClient.debug.xcconfig"; sourceTree = "<group>"; };
-		473F895D75B97975D8E1E6408CEEDF62 /* RTCLegacyStatsReport.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCLegacyStatsReport.h; sourceTree = "<group>"; };
-		4896ECEC88B6BF83933A18A95538D19D /* JitsiMeet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JitsiMeet.framework; path = ConferenceCall/JitsiMeet.framework; sourceTree = "<group>"; };
-		5361EC054A3DE5F446D02A4EF8E8842E /* RTCRtpSender.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCRtpSender.h; sourceTree = "<group>"; };
-		55919D5319424D3A4F75C9BD446FE84E /* RTCDataChannel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCDataChannel.h; sourceTree = "<group>"; };
-		58533D1E4D78139222D15338E73C1EBD /* RTCAudioTrack.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCAudioTrack.h; sourceTree = "<group>"; };
-		5AEDA823F48896F291C92A6855F2FB03 /* RTCPeerConnectionFactoryOptions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCPeerConnectionFactoryOptions.h; sourceTree = "<group>"; };
-		5B595AA791611AB3D33E4FB9B09988ED /* RTCVideoDecoderVP8.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoDecoderVP8.h; sourceTree = "<group>"; };
-		5E08103A78D2907152EA52E6E255A2B1 /* RTCMediaSource.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCMediaSource.h; sourceTree = "<group>"; };
-		5F3E071DFF8DD163334CAECC9DDCBEFE /* RTCVideoTrack.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoTrack.h; sourceTree = "<group>"; };
-		64CC695FF7C35E87F9D24E6196AC9056 /* RTCMediaConstraints.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCMediaConstraints.h; sourceTree = "<group>"; };
-		65469198B413A05EC7452E647B1D9D3F /* RTCMediaStream.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCMediaStream.h; sourceTree = "<group>"; };
-		676B1189B747D597E39F97860178B5CD /* RTCVideoCapturer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoCapturer.h; sourceTree = "<group>"; };
-		67DA4160755C90C39C157DF8ED78D223 /* RTCIceCandidate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCIceCandidate.h; sourceTree = "<group>"; };
-		6835E4CCDFA4C18E97EC5D5AB55B31EE /* RTCSSLAdapter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCSSLAdapter.h; sourceTree = "<group>"; };
-		68DF21A44B92B4D5139D3E03F0314B3C /* RTCVideoEncoderVP8.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoEncoderVP8.h; sourceTree = "<group>"; };
-		6BC6B0F6E7AC5CDA79047D2E1859256F /* RTCFieldTrials.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCFieldTrials.h; sourceTree = "<group>"; };
-		6CFE133C7BB416E5A3523FAB73213A5C /* JitsiMeet.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = JitsiMeet.h; sourceTree = "<group>"; };
-		74B8CD67473A606B1A8F03952F297EAC /* RTCRtpTransceiver.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCRtpTransceiver.h; sourceTree = "<group>"; };
-		781D4C4DA214295198858D18FFE01827 /* RTCRtpHeaderExtension.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCRtpHeaderExtension.h; sourceTree = "<group>"; };
-		799539F7F763485CED193ED27CBE11D7 /* RTCTracing.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCTracing.h; sourceTree = "<group>"; };
-		79E2562D541398B934E9AEC0FD3782F6 /* WebRTC.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = WebRTC.h; sourceTree = "<group>"; };
-		7BCAD8A6325AC950B810A21402FDFDD2 /* JitsiMeetView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = JitsiMeetView.h; sourceTree = "<group>"; };
-		7E36A5DCC00862B527F1C4EEC8FDDEE2 /* FuguConference.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = FuguConference.release.xcconfig; sourceTree = "<group>"; };
-		7EB94D29480FD7B2473F0250262A9C92 /* RTCVideoDecoderVP9.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoDecoderVP9.h; sourceTree = "<group>"; };
-		7F2B7CB536448526DC4AE6FD89FFAB9E /* RTCPeerConnection.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCPeerConnection.h; sourceTree = "<group>"; };
-		853BC7431BBF2FC9CD016BB60F8A2E8C /* RTCDtmfSender.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCDtmfSender.h; sourceTree = "<group>"; };
-		8696488742B8EB05653DF3B8F943AE7B /* RTCDataChannelConfiguration.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCDataChannelConfiguration.h; sourceTree = "<group>"; };
-		8ADF48846ED0D7466DBA4BF36175BAA6 /* JitsiMeet-Swift.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "JitsiMeet-Swift.h"; sourceTree = "<group>"; };
-		8FF657D32BAA003E6EABE0E850B9FB4A /* JitsiMeetUserInfo.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = JitsiMeetUserInfo.h; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		A15208E247AD8CB302767E51C093404F /* RTCVideoCodecH264.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoCodecH264.h; sourceTree = "<group>"; };
-		A740A0783C0B14C26F4597BB03F4F854 /* RTCAudioSession.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCAudioSession.h; sourceTree = "<group>"; };
+		3F9D25AF11AC6CAF4186C7C76C567D6E /* RTCMetrics.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCMetrics.h; sourceTree = "<group>"; };
+		40255ADDCB230D09BF813A9AE8A0730E /* FuguConference.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = FuguConference.debug.xcconfig; sourceTree = "<group>"; };
+		44C5537F48A1F25627F2FDACB28C3A8A /* RTCVideoCodecInfo.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoCodecInfo.h; sourceTree = "<group>"; };
+		45CF80A28A1F1F816C7DBA018C12A239 /* RTCSessionDescription.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCSessionDescription.h; sourceTree = "<group>"; };
+		479EA50EBAB1C02D7E6D01D029F9ECA8 /* RTCAudioSource.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCAudioSource.h; sourceTree = "<group>"; };
+		47A15299DFD665FB0E99D5D1A8841720 /* GiphyYYSpriteSheetImage.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = GiphyYYSpriteSheetImage.h; sourceTree = "<group>"; };
+		492B4EA745BD64D47321F8190BC614A7 /* RTCNativeI420Buffer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCNativeI420Buffer.h; sourceTree = "<group>"; };
+		4D222EF2BF5CEE9528ADFBA28BCF3D3D /* RTCVideoEncoderAV1.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoEncoderAV1.h; sourceTree = "<group>"; };
+		4D6C05C029AFAD7881CA9CA4443DB5A9 /* RTCVideoDecoderFactoryH264.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoDecoderFactoryH264.h; sourceTree = "<group>"; };
+		53C3A3AED198C1A2146A084570E69D02 /* RTCDispatcher.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCDispatcher.h; sourceTree = "<group>"; };
+		555D0DA38171ADAB4BFD0774ECB6AC9B /* RTCRtpEncodingParameters.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCRtpEncodingParameters.h; sourceTree = "<group>"; };
+		59456BE7705BADA6515ED11F220A4904 /* JitsiMeetConferenceOptions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = JitsiMeetConferenceOptions.h; sourceTree = "<group>"; };
+		597B7BA6889AF963B963013B922FE3FB /* RTCFileVideoCapturer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCFileVideoCapturer.h; sourceTree = "<group>"; };
+		5B577F7B09FF7484FA2F0E876F0EB1CD /* RTCAudioSession.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCAudioSession.h; sourceTree = "<group>"; };
+		5EC67D5CC9097A33905E43E9BDF07BA6 /* JitsiMeetViewDelegate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = JitsiMeetViewDelegate.h; sourceTree = "<group>"; };
+		63F3472D2C41E96B6CDECCFCE4788E76 /* RTCFieldTrials.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCFieldTrials.h; sourceTree = "<group>"; };
+		655A3D96E0356D3B7A4456DD6153617B /* RTCLogging.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCLogging.h; sourceTree = "<group>"; };
+		65F8C14593B8A2734A9442CE978DE472 /* RTCNetworkMonitor.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCNetworkMonitor.h; sourceTree = "<group>"; };
+		667809441477526223F541CC5947EDD3 /* RTCVideoSource.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoSource.h; sourceTree = "<group>"; };
+		690647F515FC005D7A7681632AB0A98E /* RTCRtpSender.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCRtpSender.h; sourceTree = "<group>"; };
+		6E5711943F77AB87403DE629CD0A26ED /* RTCVideoDecoderFactory.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoDecoderFactory.h; sourceTree = "<group>"; };
+		72E0841227458CA72F36E8EAA5E60CB3 /* RTCVideoDecoderH264.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoDecoderH264.h; sourceTree = "<group>"; };
+		740CD6935C2F8FB47CE68B8F1FC48D63 /* RTCVideoCodecConstants.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoCodecConstants.h; sourceTree = "<group>"; };
+		75FD95ABE2D25B047BCD4A4217461269 /* InfoPlistUtil.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = InfoPlistUtil.h; sourceTree = "<group>"; };
+		76E0B184FE483B14B14A58FAB26B2502 /* RTCStatisticsReport.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCStatisticsReport.h; sourceTree = "<group>"; };
+		76E5E025F939FC5D27FC1CB5E6DDA930 /* JitsiMeet.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = JitsiMeet.h; sourceTree = "<group>"; };
+		777B300D5C62B7E6AF3DA6423673DC27 /* RTCPeerConnectionFactoryOptions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCPeerConnectionFactoryOptions.h; sourceTree = "<group>"; };
+		79DAAAB5A15447B9E0CE3DAC9698DC7A /* RTCIceCandidateErrorEvent.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCIceCandidateErrorEvent.h; sourceTree = "<group>"; };
+		7AD9796DA2648489DA4C291C251F6BE8 /* RTCYUVPlanarBuffer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCYUVPlanarBuffer.h; sourceTree = "<group>"; };
+		7B8CB1F08C9E43F8AF7D45BCC019DA38 /* RTCEAGLVideoView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCEAGLVideoView.h; sourceTree = "<group>"; };
+		824A5C0590FD9448851629B6D4520ED9 /* RTCSSLAdapter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCSSLAdapter.h; sourceTree = "<group>"; };
+		8435EB21EFA53270AF1D49F97322B300 /* RTCCallbackLogger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCCallbackLogger.h; sourceTree = "<group>"; };
+		84CA564AB4F545B252C01E0EAC00538F /* RTCMediaStream.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCMediaStream.h; sourceTree = "<group>"; };
+		89FC49E0CE90C20BB3512F5F858AA423 /* JitsiAudioSession.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = JitsiAudioSession.h; sourceTree = "<group>"; };
+		8A550BB3F9DCB0DCA88D41F1B7D1AEF2 /* RTCRtpCodecParameters.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCRtpCodecParameters.h; sourceTree = "<group>"; };
+		8B533E8F130639AC3C4453085E1589A7 /* RTCCodecSpecificInfo.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCCodecSpecificInfo.h; sourceTree = "<group>"; };
+		8CD5404531DD6EC056771662BB5FBB41 /* RTCCodecSpecificInfoH264.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCCodecSpecificInfoH264.h; sourceTree = "<group>"; };
+		8D1953088B8EA3A58A94478040D052CE /* RTCVideoEncoderQpThresholds.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoEncoderQpThresholds.h; sourceTree = "<group>"; };
+		8EC4CAE7E6386612D672429FCEA8806D /* JitsiMeetSDK-Swift.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "JitsiMeetSDK-Swift.h"; sourceTree = "<group>"; };
+		91A313D39EE0C9B2DF1028E4A80CE4DB /* RTCVideoViewShading.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoViewShading.h; sourceTree = "<group>"; };
+		91EABB38548210E3AA1A9929B902C052 /* RTCMutableYUVPlanarBuffer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCMutableYUVPlanarBuffer.h; sourceTree = "<group>"; };
+		979C370A79730A92BF88DEECE80CEF34 /* JitsiMeetBaseLogHandler.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = JitsiMeetBaseLogHandler.h; sourceTree = "<group>"; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9F50CDFA7527F90CC3DF075A36130439 /* RTCVideoDecoderVP8.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoDecoderVP8.h; sourceTree = "<group>"; };
+		A0C9DCEBCBAC62DE147FE8F35E612E41 /* RTCDefaultVideoEncoderFactory.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCDefaultVideoEncoderFactory.h; sourceTree = "<group>"; };
+		A0ECD535B8300855B8FD3812DFCAB7BA /* JitsiMeetUserInfo.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = JitsiMeetUserInfo.h; sourceTree = "<group>"; };
+		A1F20FDCC26AC43D03E2968E85129158 /* UIDevice+RTCDevice.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "UIDevice+RTCDevice.h"; sourceTree = "<group>"; };
+		A4A0D9AB145DA06072AA9E30DF9C4B66 /* RTCVideoEncoderVP9.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoEncoderVP9.h; sourceTree = "<group>"; };
 		A79BC28AE64A55F08B20BA63E91BEE07 /* Pods-HippoCallClient-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-HippoCallClient-acknowledgements.plist"; sourceTree = "<group>"; };
-		A97041B2AA5B9307BAA3A9497B7E3EB0 /* RTCIntervalRange.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCIntervalRange.h; sourceTree = "<group>"; };
-		AD715968F1637266E56226DC20DD9684 /* JitsiMeetConferenceOptions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = JitsiMeetConferenceOptions.h; sourceTree = "<group>"; };
-		B6F7B28A5BE4AA1DF1765062774CAE23 /* FuguConference.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = FuguConference.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		C71783B30BB6A8B0C04AF092D2B9A150 /* JitsiMeetViewDelegate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = JitsiMeetViewDelegate.h; sourceTree = "<group>"; };
-		CA1DB84B829B9D39F2C07E262220F5C7 /* JitsiMeetLogger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = JitsiMeetLogger.h; sourceTree = "<group>"; };
-		CB01D69FDE7F7892BBECBD3D3B4A2F54 /* JitsiMeetBaseLogHandler.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = JitsiMeetBaseLogHandler.h; sourceTree = "<group>"; };
-		CC9021BC6EE61B7BDAF69CDC7507B2B9 /* RTCVideoEncoderVP9.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoEncoderVP9.h; sourceTree = "<group>"; };
-		CF0A3E4A67B7963DF95B8AC25DD5F818 /* RTCConfiguration.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCConfiguration.h; sourceTree = "<group>"; };
-		CF9D4899A1F819BDCE9BF4F5A7F4DB3E /* RTCVideoCodecFactory.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoCodecFactory.h; sourceTree = "<group>"; };
-		D2EDCDEC4EB55450A5C0DE379D86F57D /* Pods_HippoCallClient.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HippoCallClient.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D4C93E6C7AB7DE78735EEFC228FBEFE5 /* RTCMediaStreamTrack.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCMediaStreamTrack.h; sourceTree = "<group>"; };
-		D89AEBC0C0E9CFE8C3871A8730F913FE /* RTCCameraVideoCapturer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCCameraVideoCapturer.h; sourceTree = "<group>"; };
+		A8E903B134865304A7D7B6172828F827 /* RTCVideoRenderer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoRenderer.h; sourceTree = "<group>"; };
+		A9564311362DF96792E06F280819A715 /* RTCPeerConnectionFactory.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCPeerConnectionFactory.h; sourceTree = "<group>"; };
+		AC4EE2CF1AB1ABE5FA17B0E2CB782025 /* RTCMTLVideoView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCMTLVideoView.h; sourceTree = "<group>"; };
+		AF3B0A56E6E6F882D1B4EF44CB9CCC36 /* RTCI420Buffer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCI420Buffer.h; sourceTree = "<group>"; };
+		B264AABE6E345ACAA08C6FDEC4AC870B /* RTCVideoEncoderVP8.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoEncoderVP8.h; sourceTree = "<group>"; };
+		BAED2DBF79D49CF574A27B79FA36A443 /* RTCConfiguration.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCConfiguration.h; sourceTree = "<group>"; };
+		BDF5699F90E35E94571B4A905511ADE1 /* RTCH264ProfileLevelId.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCH264ProfileLevelId.h; sourceTree = "<group>"; };
+		C0A8689B89778E9A8917A09EF1EA91DE /* RTCIceCandidate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCIceCandidate.h; sourceTree = "<group>"; };
+		C554AC08157DB7855BA86739B47CAA69 /* FuguConference.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = FuguConference.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		C70104228CD0648D5CDAB0C18F88FC56 /* RTCMacros.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCMacros.h; sourceTree = "<group>"; };
+		C7FEC0F2763DD52794F4D2E980D99AF9 /* GiphyUISDK.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = GiphyUISDK.h; sourceTree = "<group>"; };
+		C9794A4D33E15F3F88EF19970DC2C656 /* RTCMediaConstraints.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCMediaConstraints.h; sourceTree = "<group>"; };
+		CA2BD1B8F48AA8810D962103BD573974 /* RTCPeerConnection.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCPeerConnection.h; sourceTree = "<group>"; };
+		CCC420AD0270DD31B28C99FEC1CAFEC9 /* GiphyYYImageCoder.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = GiphyYYImageCoder.h; sourceTree = "<group>"; };
+		CDD9AB1A51C96FE24D8A2198C4B9A8CA /* RTCCameraPreviewView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCCameraPreviewView.h; sourceTree = "<group>"; };
+		D2EDCDEC4EB55450A5C0DE379D86F57D /* Pods-HippoCallClient */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-HippoCallClient"; path = Pods_HippoCallClient.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D36F7164AE2C7A725BF13E05F238488C /* RTCDtmfSender.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCDtmfSender.h; sourceTree = "<group>"; };
+		D47C2170C6E75F7702AC6136B10314A4 /* RTCMetricsSampleInfo.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCMetricsSampleInfo.h; sourceTree = "<group>"; };
+		D52A1BBB8DE5A7429D7B2D9A8711CB26 /* RTCCryptoOptions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCCryptoOptions.h; sourceTree = "<group>"; };
+		D778E7AE8CF1D995E9E9AAF7A04EB809 /* RTCCertificate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCCertificate.h; sourceTree = "<group>"; };
 		DA21B61EB6BE40AD933250E7678A6190 /* Pods-HippoCallClient.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-HippoCallClient.modulemap"; sourceTree = "<group>"; };
-		E02DF3E3B99BAB20E4303701E328AC6F /* RTCFileLogger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCFileLogger.h; sourceTree = "<group>"; };
-		E0B6C2C409631E0EE5165664662E8D54 /* RTCRtpEncodingParameters.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCRtpEncodingParameters.h; sourceTree = "<group>"; };
-		E1141336FABA2F43E8230F0E942F9FE0 /* RTCIceServer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCIceServer.h; sourceTree = "<group>"; };
-		E85187F774F4DC6D084924001217DC48 /* RTCVideoRenderer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoRenderer.h; sourceTree = "<group>"; };
-		E8B41E9306C6B6300C2E7C43B1F42D73 /* RTCAudioSessionConfiguration.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCAudioSessionConfiguration.h; sourceTree = "<group>"; };
-		EA09C72CCB270F31681EEC9C02A1A61C /* RTCVideoSource.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoSource.h; sourceTree = "<group>"; };
-		EA79E878FBC06AD402B7B025E0F2F969 /* RTCRtcpParameters.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCRtcpParameters.h; sourceTree = "<group>"; };
-		EAA0DB23A772436E4E7B2B7449294792 /* RTCMetricsSampleInfo.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCMetricsSampleInfo.h; sourceTree = "<group>"; };
-		F31450ED854FF1D6CCE917A30C15C224 /* RTCMTLVideoView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCMTLVideoView.h; sourceTree = "<group>"; };
-		F6CAC2986FD79B500371881F30FC1A71 /* RTCRtpCodecParameters.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCRtpCodecParameters.h; sourceTree = "<group>"; };
+		DD0B1FFDB20924B7D56CBCC3F76CA664 /* RTCTracing.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCTracing.h; sourceTree = "<group>"; };
+		DDA40B287FAFA64A985CAEE2BC5932A5 /* RTCRtpReceiver.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCRtpReceiver.h; sourceTree = "<group>"; };
+		E0E2492DED7B69646F7C208DFA400446 /* GiphyYYImage.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = GiphyYYImage.h; sourceTree = "<group>"; };
+		E229BAFE9C377F068F2DF4C4EC281285 /* RTCMediaStreamTrack.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCMediaStreamTrack.h; sourceTree = "<group>"; };
+		E5962899A64AFEF809B0C4AF14C291D3 /* RTCRtpTransceiver.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCRtpTransceiver.h; sourceTree = "<group>"; };
+		E7511E519C465A91D59D63C7025E5DDE /* RTCAudioSessionConfiguration.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCAudioSessionConfiguration.h; sourceTree = "<group>"; };
+		EC2122DCE4BBE3FCD94DD2837E711776 /* RTCCameraVideoCapturer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCCameraVideoCapturer.h; sourceTree = "<group>"; };
+		EC5784DCA418AAB6DB3166588E0643E5 /* RTCVideoDecoderAV1.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoDecoderAV1.h; sourceTree = "<group>"; };
+		EE24FE206007839ED85EB1467B0D5028 /* RTCRtpParameters.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCRtpParameters.h; sourceTree = "<group>"; };
+		F0A41C8703562A5E560EE31B8B5BDB9A /* GiphyUISDK-Swift.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "GiphyUISDK-Swift.h"; sourceTree = "<group>"; };
+		F2C0978658693EE23F2C2DF6F187DDF6 /* RTCRtpHeaderExtension.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCRtpHeaderExtension.h; sourceTree = "<group>"; };
+		F361931FE61BFE8795B78B1DCD84F3F8 /* JitsiMeetSDK.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = JitsiMeetSDK.h; sourceTree = "<group>"; };
+		F38D38013071DCAFFEA2FBE38386C495 /* RTCCVPixelBuffer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCCVPixelBuffer.h; sourceTree = "<group>"; };
+		F40AB5DF3CD8B9147A1ABA81D944CD18 /* RTCVideoCapturer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoCapturer.h; sourceTree = "<group>"; };
+		F441F11CD38AA3572893C78A9AB740CB /* RTCDataChannelConfiguration.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCDataChannelConfiguration.h; sourceTree = "<group>"; };
+		F6C0511444BE80FAF46FE8A81C257992 /* RTCRtcpParameters.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCRtcpParameters.h; sourceTree = "<group>"; };
+		F71ABA311126AF39C0C6AF9D85F07DC9 /* RTCVideoEncoderSettings.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoEncoderSettings.h; sourceTree = "<group>"; };
 		F8294EA821F2ED0C23FBB48AFA6CD975 /* Pods-HippoCallClient-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-HippoCallClient-Info.plist"; sourceTree = "<group>"; };
-		F99C8AFB2A8654B8D9F55F2EA49501F2 /* RTCRtpParameters.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCRtpParameters.h; sourceTree = "<group>"; };
-		FB7C453E3951840A23740A7FC7983C8D /* RTCVideoCodec.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCVideoCodec.h; sourceTree = "<group>"; };
 		FDAE9E633E41D14D69C5C634D9CBF283 /* Pods-HippoCallClient.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-HippoCallClient.release.xcconfig"; sourceTree = "<group>"; };
-		FE95FCAE3391566B7382B9F4E8B0B125 /* RTCMacros.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTCMacros.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		30FA2FD03544F21780FD3CD59F1B2295 /* Frameworks */ = {
+		6545ABCEC452B12C236B77D4324DEB36 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5CC4A238F3037AD4EA0F7464EC10DA02 /* Foundation.framework in Frameworks */,
+				D01C82231ADB5D728D0F48061B895233 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00A3D5E21EA639C124168ECBF9FAE1E9 /* Pod */ = {
-			isa = PBXGroup;
-			children = (
-				B6F7B28A5BE4AA1DF1765062774CAE23 /* FuguConference.podspec */,
-			);
-			name = Pod;
-			sourceTree = "<group>";
-		};
 		1AC4623ECE2BC6D56F467E03F59484E9 /* Pods-HippoCallClient */ = {
 			isa = PBXGroup;
 			children = (
@@ -156,34 +184,182 @@
 			path = "Target Support Files/Pods-HippoCallClient";
 			sourceTree = "<group>";
 		};
-		373E08927C701FAE6DA1731E7D18B8AF /* FuguConference */ = {
+		1FC4F47DCD00F756FABA751952A6CB58 /* JitsiMeetSDK.framework */ = {
 			isa = PBXGroup;
 			children = (
-				E40365322911AE6FE93A509E22D97A97 /* Frameworks */,
-				7E2A5A4E1043A062F9EA77D1C7CC0E9C /* JitsiMeet.framework */,
-				00A3D5E21EA639C124168ECBF9FAE1E9 /* Pod */,
-				F29B08DBE0D427322EA442F89123EF4D /* Support Files */,
-				BD094215523EC500F103E09DFEF66DA3 /* WebRTC.framework */,
+				272D483A54EFCA99E4D20E4CB6E8FEED /* Headers */,
+			);
+			name = JitsiMeetSDK.framework;
+			path = ConferenceCall/JitsiMeetSDK.framework;
+			sourceTree = "<group>";
+		};
+		272D483A54EFCA99E4D20E4CB6E8FEED /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				75FD95ABE2D25B047BCD4A4217461269 /* InfoPlistUtil.h */,
+				89FC49E0CE90C20BB3512F5F858AA423 /* JitsiAudioSession.h */,
+				76E5E025F939FC5D27FC1CB5E6DDA930 /* JitsiMeet.h */,
+				979C370A79730A92BF88DEECE80CEF34 /* JitsiMeetBaseLogHandler.h */,
+				59456BE7705BADA6515ED11F220A4904 /* JitsiMeetConferenceOptions.h */,
+				119BBD3B7616C23D2F7E591A6FA67D76 /* JitsiMeetLogger.h */,
+				F361931FE61BFE8795B78B1DCD84F3F8 /* JitsiMeetSDK.h */,
+				8EC4CAE7E6386612D672429FCEA8806D /* JitsiMeetSDK-Swift.h */,
+				A0ECD535B8300855B8FD3812DFCAB7BA /* JitsiMeetUserInfo.h */,
+				2D9B10DEF64F6C7718CB02EBA8C51E01 /* JitsiMeetView.h */,
+				5EC67D5CC9097A33905E43E9BDF07BA6 /* JitsiMeetViewDelegate.h */,
+			);
+			name = Headers;
+			path = Headers;
+			sourceTree = "<group>";
+		};
+		2AC90EFFDF25F19E1DF28100CCB5E243 /* WebRTC.framework */ = {
+			isa = PBXGroup;
+			children = (
+				3D696362D9C23B48F627FA46C2B21CE1 /* Headers */,
+			);
+			name = WebRTC.framework;
+			path = ConferenceCall/WebRTC.framework;
+			sourceTree = "<group>";
+		};
+		3D696362D9C23B48F627FA46C2B21CE1 /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				5B577F7B09FF7484FA2F0E876F0EB1CD /* RTCAudioSession.h */,
+				E7511E519C465A91D59D63C7025E5DDE /* RTCAudioSessionConfiguration.h */,
+				479EA50EBAB1C02D7E6D01D029F9ECA8 /* RTCAudioSource.h */,
+				330987E94D9FA68FCEC55B06BD578E48 /* RTCAudioTrack.h */,
+				8435EB21EFA53270AF1D49F97322B300 /* RTCCallbackLogger.h */,
+				CDD9AB1A51C96FE24D8A2198C4B9A8CA /* RTCCameraPreviewView.h */,
+				EC2122DCE4BBE3FCD94DD2837E711776 /* RTCCameraVideoCapturer.h */,
+				D778E7AE8CF1D995E9E9AAF7A04EB809 /* RTCCertificate.h */,
+				8B533E8F130639AC3C4453085E1589A7 /* RTCCodecSpecificInfo.h */,
+				8CD5404531DD6EC056771662BB5FBB41 /* RTCCodecSpecificInfoH264.h */,
+				BAED2DBF79D49CF574A27B79FA36A443 /* RTCConfiguration.h */,
+				D52A1BBB8DE5A7429D7B2D9A8711CB26 /* RTCCryptoOptions.h */,
+				F38D38013071DCAFFEA2FBE38386C495 /* RTCCVPixelBuffer.h */,
+				2D8457D73EBDF7F619B86737FF346787 /* RTCDataChannel.h */,
+				F441F11CD38AA3572893C78A9AB740CB /* RTCDataChannelConfiguration.h */,
+				3750A4BFC170C6591B463D5F9B405E55 /* RTCDefaultVideoDecoderFactory.h */,
+				A0C9DCEBCBAC62DE147FE8F35E612E41 /* RTCDefaultVideoEncoderFactory.h */,
+				53C3A3AED198C1A2146A084570E69D02 /* RTCDispatcher.h */,
+				D36F7164AE2C7A725BF13E05F238488C /* RTCDtmfSender.h */,
+				7B8CB1F08C9E43F8AF7D45BCC019DA38 /* RTCEAGLVideoView.h */,
+				1686E78847EC544FBF476DED7E933575 /* RTCEncodedImage.h */,
+				63F3472D2C41E96B6CDECCFCE4788E76 /* RTCFieldTrials.h */,
+				3705B83ADCF311CC86C577D40D4E8FAE /* RTCFileLogger.h */,
+				597B7BA6889AF963B963013B922FE3FB /* RTCFileVideoCapturer.h */,
+				BDF5699F90E35E94571B4A905511ADE1 /* RTCH264ProfileLevelId.h */,
+				AF3B0A56E6E6F882D1B4EF44CB9CCC36 /* RTCI420Buffer.h */,
+				C0A8689B89778E9A8917A09EF1EA91DE /* RTCIceCandidate.h */,
+				79DAAAB5A15447B9E0CE3DAC9698DC7A /* RTCIceCandidateErrorEvent.h */,
+				2C5305E7C0D7BC4204A6510114FC5185 /* RTCIceServer.h */,
+				1489EA43DB50F0AFD51F0CE0CD38F8F2 /* RTCLegacyStatsReport.h */,
+				655A3D96E0356D3B7A4456DD6153617B /* RTCLogging.h */,
+				C70104228CD0648D5CDAB0C18F88FC56 /* RTCMacros.h */,
+				C9794A4D33E15F3F88EF19970DC2C656 /* RTCMediaConstraints.h */,
+				173A5A9919058DAB5998912B5A52F4DB /* RTCMediaSource.h */,
+				84CA564AB4F545B252C01E0EAC00538F /* RTCMediaStream.h */,
+				E229BAFE9C377F068F2DF4C4EC281285 /* RTCMediaStreamTrack.h */,
+				3F9D25AF11AC6CAF4186C7C76C567D6E /* RTCMetrics.h */,
+				D47C2170C6E75F7702AC6136B10314A4 /* RTCMetricsSampleInfo.h */,
+				AC4EE2CF1AB1ABE5FA17B0E2CB782025 /* RTCMTLVideoView.h */,
+				136FA8AF2B6E6ED5159EF3B3D46F36A6 /* RTCMutableI420Buffer.h */,
+				91EABB38548210E3AA1A9929B902C052 /* RTCMutableYUVPlanarBuffer.h */,
+				492B4EA745BD64D47321F8190BC614A7 /* RTCNativeI420Buffer.h */,
+				0380D8C1140AE503D5DE75E076377405 /* RTCNativeMutableI420Buffer.h */,
+				65F8C14593B8A2734A9442CE978DE472 /* RTCNetworkMonitor.h */,
+				CA2BD1B8F48AA8810D962103BD573974 /* RTCPeerConnection.h */,
+				A9564311362DF96792E06F280819A715 /* RTCPeerConnectionFactory.h */,
+				777B300D5C62B7E6AF3DA6423673DC27 /* RTCPeerConnectionFactoryOptions.h */,
+				F6C0511444BE80FAF46FE8A81C257992 /* RTCRtcpParameters.h */,
+				8A550BB3F9DCB0DCA88D41F1B7D1AEF2 /* RTCRtpCodecParameters.h */,
+				555D0DA38171ADAB4BFD0774ECB6AC9B /* RTCRtpEncodingParameters.h */,
+				F2C0978658693EE23F2C2DF6F187DDF6 /* RTCRtpHeaderExtension.h */,
+				EE24FE206007839ED85EB1467B0D5028 /* RTCRtpParameters.h */,
+				DDA40B287FAFA64A985CAEE2BC5932A5 /* RTCRtpReceiver.h */,
+				690647F515FC005D7A7681632AB0A98E /* RTCRtpSender.h */,
+				E5962899A64AFEF809B0C4AF14C291D3 /* RTCRtpTransceiver.h */,
+				45CF80A28A1F1F816C7DBA018C12A239 /* RTCSessionDescription.h */,
+				824A5C0590FD9448851629B6D4520ED9 /* RTCSSLAdapter.h */,
+				76E0B184FE483B14B14A58FAB26B2502 /* RTCStatisticsReport.h */,
+				DD0B1FFDB20924B7D56CBCC3F76CA664 /* RTCTracing.h */,
+				F40AB5DF3CD8B9147A1ABA81D944CD18 /* RTCVideoCapturer.h */,
+				740CD6935C2F8FB47CE68B8F1FC48D63 /* RTCVideoCodecConstants.h */,
+				44C5537F48A1F25627F2FDACB28C3A8A /* RTCVideoCodecInfo.h */,
+				26DCA9396D97649752AEBBB921C700B2 /* RTCVideoDecoder.h */,
+				EC5784DCA418AAB6DB3166588E0643E5 /* RTCVideoDecoderAV1.h */,
+				6E5711943F77AB87403DE629CD0A26ED /* RTCVideoDecoderFactory.h */,
+				4D6C05C029AFAD7881CA9CA4443DB5A9 /* RTCVideoDecoderFactoryH264.h */,
+				72E0841227458CA72F36E8EAA5E60CB3 /* RTCVideoDecoderH264.h */,
+				9F50CDFA7527F90CC3DF075A36130439 /* RTCVideoDecoderVP8.h */,
+				3913EA3DED38EA7D603F1FBE937F5F9F /* RTCVideoDecoderVP9.h */,
+				287F115AE038B564EBBD744839E70B73 /* RTCVideoEncoder.h */,
+				4D222EF2BF5CEE9528ADFBA28BCF3D3D /* RTCVideoEncoderAV1.h */,
+				3A662E83D614051581B9CC7433DE0530 /* RTCVideoEncoderFactory.h */,
+				12D9A3AFC263BDA7B3307131022A8BDD /* RTCVideoEncoderFactoryH264.h */,
+				3590A863CFBB970C1DA364C4CC0FCE52 /* RTCVideoEncoderH264.h */,
+				8D1953088B8EA3A58A94478040D052CE /* RTCVideoEncoderQpThresholds.h */,
+				F71ABA311126AF39C0C6AF9D85F07DC9 /* RTCVideoEncoderSettings.h */,
+				B264AABE6E345ACAA08C6FDEC4AC870B /* RTCVideoEncoderVP8.h */,
+				A4A0D9AB145DA06072AA9E30DF9C4B66 /* RTCVideoEncoderVP9.h */,
+				35A7A6A6B5A5555485C67C0AC032B20E /* RTCVideoFrame.h */,
+				3095EC1C12E4AD15A617BB7F6CEE9529 /* RTCVideoFrameBuffer.h */,
+				A8E903B134865304A7D7B6172828F827 /* RTCVideoRenderer.h */,
+				667809441477526223F541CC5947EDD3 /* RTCVideoSource.h */,
+				1D8299599B8ABB58FB226318724F6C63 /* RTCVideoTrack.h */,
+				91A313D39EE0C9B2DF1028E4A80CE4DB /* RTCVideoViewShading.h */,
+				7AD9796DA2648489DA4C291C251F6BE8 /* RTCYUVPlanarBuffer.h */,
+				A1F20FDCC26AC43D03E2968E85129158 /* UIDevice+RTCDevice.h */,
+				2FDBFF2B4C573BCE2959C07B948D7EB1 /* WebRTC.h */,
+			);
+			name = Headers;
+			path = Headers;
+			sourceTree = "<group>";
+		};
+		7E3B87F351936537D9AA25FE04110A7E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D2EDCDEC4EB55450A5C0DE379D86F57D /* Pods-HippoCallClient */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		810E958ED95E989FE8DDEFEF66962834 /* FuguConference */ = {
+			isa = PBXGroup;
+			children = (
+				81D9FBE54FDBD526880FA3599861E8D2 /* GiphyUISDK.framework */,
+				1FC4F47DCD00F756FABA751952A6CB58 /* JitsiMeetSDK.framework */,
+				A9D4C3B83DC15193F235EE1DB860CE18 /* Pod */,
+				B8F8615BE0B27C82B0CCC80A9C14FFEA /* Support Files */,
+				2AC90EFFDF25F19E1DF28100CCB5E243 /* WebRTC.framework */,
 			);
 			name = FuguConference;
 			path = ../Conference/ConferenceCall;
 			sourceTree = "<group>";
 		};
-		7E2A5A4E1043A062F9EA77D1C7CC0E9C /* JitsiMeet.framework */ = {
+		81D9FBE54FDBD526880FA3599861E8D2 /* GiphyUISDK.framework */ = {
 			isa = PBXGroup;
 			children = (
-				C0ECB0D4544C2BF9A27454B22848D506 /* Headers */,
+				B8C286822B2FC5A3A529D243CE0377E8 /* Headers */,
 			);
-			name = JitsiMeet.framework;
-			path = ConferenceCall/JitsiMeet.framework;
+			name = GiphyUISDK.framework;
+			path = ConferenceCall/GiphyUISDK.framework;
 			sourceTree = "<group>";
 		};
 		975E57F7DF2CF31CF062AB752A773EB2 /* Development Pods */ = {
 			isa = PBXGroup;
 			children = (
-				373E08927C701FAE6DA1731E7D18B8AF /* FuguConference */,
+				810E958ED95E989FE8DDEFEF66962834 /* FuguConference */,
 			);
 			name = "Development Pods";
+			sourceTree = "<group>";
+		};
+		A9D4C3B83DC15193F235EE1DB860CE18 /* Pod */ = {
+			isa = PBXGroup;
+			children = (
+				C554AC08157DB7855BA86739B47CAA69 /* FuguConference.podspec */,
+			);
+			name = Pod;
 			sourceTree = "<group>";
 		};
 		B856F5366B17128ABC8107F6CB325002 /* Targets Support Files */ = {
@@ -194,36 +370,29 @@
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
-		BD094215523EC500F103E09DFEF66DA3 /* WebRTC.framework */ = {
+		B8C286822B2FC5A3A529D243CE0377E8 /* Headers */ = {
 			isa = PBXGroup;
 			children = (
-				F6D390AE089EDA193960C6D32F6A6A31 /* Headers */,
+				C7FEC0F2763DD52794F4D2E980D99AF9 /* GiphyUISDK.h */,
+				F0A41C8703562A5E560EE31B8B5BDB9A /* GiphyUISDK-Swift.h */,
+				3478790BD69AED8A08F1DC6ECD1506E5 /* GiphyYYAnimatedImageView.h */,
+				32B17590D9C6371451595383A4C7C0C6 /* GiphyYYFrameImage.h */,
+				E0E2492DED7B69646F7C208DFA400446 /* GiphyYYImage.h */,
+				CCC420AD0270DD31B28C99FEC1CAFEC9 /* GiphyYYImageCoder.h */,
+				47A15299DFD665FB0E99D5D1A8841720 /* GiphyYYSpriteSheetImage.h */,
 			);
-			name = WebRTC.framework;
-			path = ConferenceCall/WebRTC.framework;
-			sourceTree = "<group>";
-		};
-		C0834CEBB1379A84116EF29F93051C60 /* iOS */ = {
-			isa = PBXGroup;
-			children = (
-				3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */,
-			);
-			name = iOS;
-			sourceTree = "<group>";
-		};
-		C0ECB0D4544C2BF9A27454B22848D506 /* Headers */ = {
-			isa = PBXGroup;
-			children = (
-				6CFE133C7BB416E5A3523FAB73213A5C /* JitsiMeet.h */,
-				8ADF48846ED0D7466DBA4BF36175BAA6 /* JitsiMeet-Swift.h */,
-				CB01D69FDE7F7892BBECBD3D3B4A2F54 /* JitsiMeetBaseLogHandler.h */,
-				AD715968F1637266E56226DC20DD9684 /* JitsiMeetConferenceOptions.h */,
-				CA1DB84B829B9D39F2C07E262220F5C7 /* JitsiMeetLogger.h */,
-				8FF657D32BAA003E6EABE0E850B9FB4A /* JitsiMeetUserInfo.h */,
-				7BCAD8A6325AC950B810A21402FDFDD2 /* JitsiMeetView.h */,
-				C71783B30BB6A8B0C04AF092D2B9A150 /* JitsiMeetViewDelegate.h */,
-			);
+			name = Headers;
 			path = Headers;
+			sourceTree = "<group>";
+		};
+		B8F8615BE0B27C82B0CCC80A9C14FFEA /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				40255ADDCB230D09BF813A9AE8A0730E /* FuguConference.debug.xcconfig */,
+				29297FB89C96369EA29E39716A2E2825 /* FuguConference.release.xcconfig */,
+			);
+			name = "Support Files";
+			path = "../../Pods/Target Support Files/FuguConference";
 			sourceTree = "<group>";
 		};
 		CF1408CF629C7361332E53B88F7BD30C = {
@@ -232,7 +401,7 @@
 				9D940727FF8FB9C785EB98E56350EF41 /* Podfile */,
 				975E57F7DF2CF31CF062AB752A773EB2 /* Development Pods */,
 				D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */,
-				EFF983C80CCA1403E7CEF67C71BD1FBC /* Products */,
+				7E3B87F351936537D9AA25FE04110A7E /* Products */,
 				B856F5366B17128ABC8107F6CB325002 /* Targets Support Files */,
 			);
 			sourceTree = "<group>";
@@ -240,111 +409,27 @@
 		D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C0834CEBB1379A84116EF29F93051C60 /* iOS */,
+				E4801F62A6B08CD9B5410329F1A18FDE /* iOS */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		E40365322911AE6FE93A509E22D97A97 /* Frameworks */ = {
+		E4801F62A6B08CD9B5410329F1A18FDE /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				4896ECEC88B6BF83933A18A95538D19D /* JitsiMeet.framework */,
+				384DDA2CB25005BD6479B5987C619DD4 /* Foundation.framework */,
 			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		EFF983C80CCA1403E7CEF67C71BD1FBC /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				D2EDCDEC4EB55450A5C0DE379D86F57D /* Pods_HippoCallClient.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		F29B08DBE0D427322EA442F89123EF4D /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				134FC81B84FC89C653C635088E0E727E /* FuguConference.debug.xcconfig */,
-				7E36A5DCC00862B527F1C4EEC8FDDEE2 /* FuguConference.release.xcconfig */,
-			);
-			name = "Support Files";
-			path = "../../Pods/Target Support Files/FuguConference";
-			sourceTree = "<group>";
-		};
-		F6D390AE089EDA193960C6D32F6A6A31 /* Headers */ = {
-			isa = PBXGroup;
-			children = (
-				A740A0783C0B14C26F4597BB03F4F854 /* RTCAudioSession.h */,
-				E8B41E9306C6B6300C2E7C43B1F42D73 /* RTCAudioSessionConfiguration.h */,
-				23B7ADF91348E890E337B1CC4054A4A6 /* RTCAudioSource.h */,
-				58533D1E4D78139222D15338E73C1EBD /* RTCAudioTrack.h */,
-				2243020EA7804D8CA5464160CC6B4EED /* RTCCallbackLogger.h */,
-				3764E023E71DC490420A7C2B26521AA4 /* RTCCameraPreviewView.h */,
-				D89AEBC0C0E9CFE8C3871A8730F913FE /* RTCCameraVideoCapturer.h */,
-				CF0A3E4A67B7963DF95B8AC25DD5F818 /* RTCConfiguration.h */,
-				55919D5319424D3A4F75C9BD446FE84E /* RTCDataChannel.h */,
-				8696488742B8EB05653DF3B8F943AE7B /* RTCDataChannelConfiguration.h */,
-				0A50E46851CACF9B0274CC6F4F004775 /* RTCDispatcher.h */,
-				853BC7431BBF2FC9CD016BB60F8A2E8C /* RTCDtmfSender.h */,
-				1921DDA519EA5F2F1B028E7CBF0EE8F5 /* RTCEAGLVideoView.h */,
-				6BC6B0F6E7AC5CDA79047D2E1859256F /* RTCFieldTrials.h */,
-				E02DF3E3B99BAB20E4303701E328AC6F /* RTCFileLogger.h */,
-				11EB4104BB09E1C164D1AC3B3E2C22C6 /* RTCFileVideoCapturer.h */,
-				67DA4160755C90C39C157DF8ED78D223 /* RTCIceCandidate.h */,
-				E1141336FABA2F43E8230F0E942F9FE0 /* RTCIceServer.h */,
-				A97041B2AA5B9307BAA3A9497B7E3EB0 /* RTCIntervalRange.h */,
-				473F895D75B97975D8E1E6408CEEDF62 /* RTCLegacyStatsReport.h */,
-				21B624161A1A8C0B6A6DC5409F8687CE /* RTCLogging.h */,
-				FE95FCAE3391566B7382B9F4E8B0B125 /* RTCMacros.h */,
-				64CC695FF7C35E87F9D24E6196AC9056 /* RTCMediaConstraints.h */,
-				5E08103A78D2907152EA52E6E255A2B1 /* RTCMediaSource.h */,
-				65469198B413A05EC7452E647B1D9D3F /* RTCMediaStream.h */,
-				D4C93E6C7AB7DE78735EEFC228FBEFE5 /* RTCMediaStreamTrack.h */,
-				1FF8856A38A6C6AD4CAF6D1E861DFF59 /* RTCMetrics.h */,
-				EAA0DB23A772436E4E7B2B7449294792 /* RTCMetricsSampleInfo.h */,
-				F31450ED854FF1D6CCE917A30C15C224 /* RTCMTLVideoView.h */,
-				7F2B7CB536448526DC4AE6FD89FFAB9E /* RTCPeerConnection.h */,
-				3960130D06988E15F4ED3E5434EEDB58 /* RTCPeerConnectionFactory.h */,
-				5AEDA823F48896F291C92A6855F2FB03 /* RTCPeerConnectionFactoryOptions.h */,
-				EA79E878FBC06AD402B7B025E0F2F969 /* RTCRtcpParameters.h */,
-				F6CAC2986FD79B500371881F30FC1A71 /* RTCRtpCodecParameters.h */,
-				E0B6C2C409631E0EE5165664662E8D54 /* RTCRtpEncodingParameters.h */,
-				781D4C4DA214295198858D18FFE01827 /* RTCRtpHeaderExtension.h */,
-				F99C8AFB2A8654B8D9F55F2EA49501F2 /* RTCRtpParameters.h */,
-				09DC7D012205BC7FBE02CA6676962896 /* RTCRtpReceiver.h */,
-				5361EC054A3DE5F446D02A4EF8E8842E /* RTCRtpSender.h */,
-				74B8CD67473A606B1A8F03952F297EAC /* RTCRtpTransceiver.h */,
-				02EBF3B3E7BFA2FED4E60B355450D9DB /* RTCSessionDescription.h */,
-				6835E4CCDFA4C18E97EC5D5AB55B31EE /* RTCSSLAdapter.h */,
-				799539F7F763485CED193ED27CBE11D7 /* RTCTracing.h */,
-				676B1189B747D597E39F97860178B5CD /* RTCVideoCapturer.h */,
-				FB7C453E3951840A23740A7FC7983C8D /* RTCVideoCodec.h */,
-				CF9D4899A1F819BDCE9BF4F5A7F4DB3E /* RTCVideoCodecFactory.h */,
-				A15208E247AD8CB302767E51C093404F /* RTCVideoCodecH264.h */,
-				5B595AA791611AB3D33E4FB9B09988ED /* RTCVideoDecoderVP8.h */,
-				7EB94D29480FD7B2473F0250262A9C92 /* RTCVideoDecoderVP9.h */,
-				68DF21A44B92B4D5139D3E03F0314B3C /* RTCVideoEncoderVP8.h */,
-				CC9021BC6EE61B7BDAF69CDC7507B2B9 /* RTCVideoEncoderVP9.h */,
-				0276921986B8B03708A75B90F264EE01 /* RTCVideoFrame.h */,
-				0849E2266BF013234883484BF56C1997 /* RTCVideoFrameBuffer.h */,
-				E85187F774F4DC6D084924001217DC48 /* RTCVideoRenderer.h */,
-				EA09C72CCB270F31681EEC9C02A1A61C /* RTCVideoSource.h */,
-				5F3E071DFF8DD163334CAECC9DDCBEFE /* RTCVideoTrack.h */,
-				0266004F2D7383A40E050E7D813E35D9 /* RTCVideoViewShading.h */,
-				13D8129B76961BD100A486230D6CFAEB /* UIDevice+RTCDevice.h */,
-				79E2562D541398B934E9AEC0FD3782F6 /* WebRTC.h */,
-			);
-			path = Headers;
+			name = iOS;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		4E0AE2CC5234CE2F7244CEF9D283665E /* Headers */ = {
+		4CBB30111696855D0CAD1CDB003F64A9 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ACD7DF390A61D9BEEA367F89B927339D /* Pods-HippoCallClient-umbrella.h in Headers */,
+				B991065D63C9780260FFB8359F3C4258 /* Pods-HippoCallClient-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -353,21 +438,21 @@
 /* Begin PBXNativeTarget section */
 		20C7E53F629F3016CC43A3481BD005FC /* Pods-HippoCallClient */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D329DCD2CC55DB5A47C73446A717E9BD /* Build configuration list for PBXNativeTarget "Pods-HippoCallClient" */;
+			buildConfigurationList = 92A74738AA7B1756BFE53759AA9DCA72 /* Build configuration list for PBXNativeTarget "Pods-HippoCallClient" */;
 			buildPhases = (
-				4E0AE2CC5234CE2F7244CEF9D283665E /* Headers */,
-				13BC7704B8CF105C169453B3AB64B923 /* Sources */,
-				30FA2FD03544F21780FD3CD59F1B2295 /* Frameworks */,
-				56F84B5EC53881F1257E3B7AE99F9C01 /* Resources */,
+				4CBB30111696855D0CAD1CDB003F64A9 /* Headers */,
+				43200BD4CE67568EF36E7ED0A13C4404 /* Sources */,
+				6545ABCEC452B12C236B77D4324DEB36 /* Frameworks */,
+				4DBA4408037DC5D495D70FE8B7867437 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				9C4DC16A6AA68D80F7601001431C02F7 /* PBXTargetDependency */,
+				84F98FE78236F850C54A3EA35DA03D99 /* PBXTargetDependency */,
 			);
 			name = "Pods-HippoCallClient";
-			productName = "Pods-HippoCallClient";
-			productReference = D2EDCDEC4EB55450A5C0DE379D86F57D /* Pods_HippoCallClient.framework */;
+			productName = Pods_HippoCallClient;
+			productReference = D2EDCDEC4EB55450A5C0DE379D86F57D /* Pods-HippoCallClient */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -376,19 +461,21 @@
 		BFDFE7DC352907FC980B868725387E98 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1100;
-				LastUpgradeCheck = 1100;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
 			};
 			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
 				Base,
+				en,
 			);
 			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
-			productRefGroup = EFF983C80CCA1403E7CEF67C71BD1FBC /* Products */;
+			minimizedProjectReferenceProxies = 0;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 7E3B87F351936537D9AA25FE04110A7E /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -399,7 +486,7 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		56F84B5EC53881F1257E3B7AE99F9C01 /* Resources */ = {
+		4DBA4408037DC5D495D70FE8B7867437 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -409,30 +496,131 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		13BC7704B8CF105C169453B3AB64B923 /* Sources */ = {
+		43200BD4CE67568EF36E7ED0A13C4404 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				61A80241558AE10EBF980CB0BA560BD2 /* Pods-HippoCallClient-dummy.m in Sources */,
+				9BB3A3CB6BBED0E01A04E994A5C273D1 /* Pods-HippoCallClient-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		9C4DC16A6AA68D80F7601001431C02F7 /* PBXTargetDependency */ = {
+		84F98FE78236F850C54A3EA35DA03D99 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = FuguConference;
 			target = C88EAB8315923859573F10EF1BD46A09 /* FuguConference */;
-			targetProxy = 04E8F27392F6EC4393413504E5E0EF27 /* PBXContainerItemProxy */;
+			targetProxy = C698FC57FE271A7778B82FBAE6A83F97 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		196DFA3E4A09A28224918543529A1885 /* Debug */ = {
+		05C08DE6581E590B0EC3C7891624B5B1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3ECCD2FBC6DA593300D44815581E505E /* Pods-HippoCallClient.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				INFOPLIST_FILE = "Target Support Files/Pods-HippoCallClient/Pods-HippoCallClient-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-HippoCallClient/Pods-HippoCallClient.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		1FEB16FD00C568A6129ED2DED032669A /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FDAE9E633E41D14D69C5C634D9CBF283 /* Pods-HippoCallClient.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				INFOPLIST_FILE = "Target Support Files/Pods-HippoCallClient/Pods-HippoCallClient-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-HippoCallClient/Pods-HippoCallClient.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		2779C6897D21D23A36FD16B75530D8C5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 29297FB89C96369EA29E39716A2E2825 /* FuguConference.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		2B9E26EAE2CD392AD762421F663075A1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -455,6 +643,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -493,45 +682,11 @@
 			};
 			name = Debug;
 		};
-		5966D7EF3A165F5261FE9C130D1A337E /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7E36A5DCC00862B527F1C4EEC8FDDEE2 /* FuguConference.release.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				SDKROOT = iphoneos;
-				SWIFT_VERSION = 3.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		78783717E69E2FC8903C38752C335927 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 134FC81B84FC89C653C635088E0E727E /* FuguConference.debug.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				SDKROOT = iphoneos;
-				SWIFT_VERSION = 3.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		B01D14FDC83DCF9D4BE53066BEA96D05 /* Release */ = {
+		63FAF33E1C55B71A5F5A8B3CC8749F99 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -554,6 +709,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -588,84 +744,23 @@
 			};
 			name = Release;
 		};
-		DF89403702DDA4BF9B37A52F5F243940 /* Debug */ = {
+		B2A129145AAC2F8683E43D90DA23EAC8 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3ECCD2FBC6DA593300D44815581E505E /* Pods-HippoCallClient.debug.xcconfig */;
+			baseConfigurationReference = 40255ADDCB230D09BF813A9AE8A0730E /* FuguConference.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-HippoCallClient/Pods-HippoCallClient-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
 				);
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-HippoCallClient/Pods-HippoCallClient.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
 			};
 			name = Debug;
-		};
-		DFF07CB8CB2E1BB36ACF382A9F0AE166 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = FDAE9E633E41D14D69C5C634D9CBF283 /* Pods-HippoCallClient.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-HippoCallClient/Pods-HippoCallClient-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-HippoCallClient/Pods-HippoCallClient.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
@@ -673,8 +768,17 @@
 		4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				196DFA3E4A09A28224918543529A1885 /* Debug */,
-				B01D14FDC83DCF9D4BE53066BEA96D05 /* Release */,
+				2B9E26EAE2CD392AD762421F663075A1 /* Debug */,
+				63FAF33E1C55B71A5F5A8B3CC8749F99 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		92A74738AA7B1756BFE53759AA9DCA72 /* Build configuration list for PBXNativeTarget "Pods-HippoCallClient" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				05C08DE6581E590B0EC3C7891624B5B1 /* Debug */,
+				1FEB16FD00C568A6129ED2DED032669A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -682,17 +786,8 @@
 		C2314E2FCADFAB94A116E8614A159515 /* Build configuration list for PBXAggregateTarget "FuguConference" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				78783717E69E2FC8903C38752C335927 /* Debug */,
-				5966D7EF3A165F5261FE9C130D1A337E /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		D329DCD2CC55DB5A47C73446A717E9BD /* Build configuration list for PBXNativeTarget "Pods-HippoCallClient" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				DF89403702DDA4BF9B37A52F5F243940 /* Debug */,
-				DFF07CB8CB2E1BB36ACF382A9F0AE166 /* Release */,
+				B2A129145AAC2F8683E43D90DA23EAC8 /* Debug */,
+				2779C6897D21D23A36FD16B75530D8C5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
