@@ -732,6 +732,8 @@ extension JitsiCallManager {
                     break
                 }
             }
+        }else{
+            return
         }
     }
     
