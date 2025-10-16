@@ -598,22 +598,22 @@ extension JitsiCallManager {
                     //                    self?.showReceivedCallView()
                     break// nerver come on socket alway come from push
                 case .READY_TO_CONNECT_CONFERENCE :
-                    //self?.endRepeatStartCall()
-                    if CallStartAndReceivedView.shared == nil || JitsiConfrenceCallView.shared != nil{
+                    guard let strongSelf = self,
+                          let activeCall = strongSelf.activeCall else {
+                        print("self or activeCall is nil")
                         return
                     }
-                    if self?.activeCall.currentUser.peerId == signal?.sender.peerId{
+                    let currentUser = activeCall.currentUser
+                    if currentUser.peerId == signal?.sender.peerId {
                         return
                     }
-                    
-                    if self?.link != signal?.conferenceLink{
+                    if strongSelf.link != signal?.conferenceLink {
                         return
                     }
-                    
-                    if (CallStartAndReceivedView.shared != nil){
-                        CallStartAndReceivedView.shared.callStateText = HippoCallClientStrings.ringing
+                    if let callView = CallStartAndReceivedView.shared {
+                        callView.callStateText = HippoCallClientStrings.ringing
                     }
-                    self?.sendOffer()
+                    strongSelf.sendOffer()
                 case .ANSWER_CONFERENCE:
                     guard signal?.sender.peerId != self?.activeCall?.currentUser.peerId  else {
                         ///if answer_conference recieved from same user (peerid) from another device
