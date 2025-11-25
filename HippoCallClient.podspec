@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name         = 'HippoCallClient'
-    s.version      = '1.0.9'
+    s.version      = '1.1.0'
     s.summary      = 'Hippo Call Client'
     s.description  = <<-DESC
                     Hippo Call Client to perform high quality video call and audio call
