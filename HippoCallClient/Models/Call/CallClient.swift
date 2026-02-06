@@ -285,6 +285,7 @@ class CallClient{
         
         let jsonDict = data
         if let signal = jsonDict["video_call_type"] as? String, let signalType = JitsiCallSignal.JitsiSignalType(rawValue:signal) {
+            HippoCallClient.shared.delgate?.didReceiveCallSignalType(signalType)
             print("handleCallEvent callClient 87", signalType,  CallClient.shared.currentDeviceID)
             if ((signalType == .HUNGUP_CONFERENCE || signalType == .REJECT_CONFERENCE) && call.isCallByMe ){
                 JitsiCallManager.shared.otherUserCallHungup()

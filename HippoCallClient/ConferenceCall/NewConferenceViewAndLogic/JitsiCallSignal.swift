@@ -12,7 +12,7 @@ import Foundation
 import Foundation
 
 
-struct JitsiCallSignal {
+public struct JitsiCallSignal {
     // MARK: - Properties
     var signalType: JitsiSignalType
     let callUID: String
