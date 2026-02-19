@@ -182,6 +182,30 @@ class CallClient{
         vc?.present(nav, animated: true, completion: nil)
     }
     
+    func joinVideoSdkCallByMeetingID(serverToken: String, meetingID: String){
+        let bundle = Bundle.init(identifier: "org.cocoapods.HippoCallClient")
+        let vVc = UIStoryboard.init(name: "VideoSdk", bundle: bundle).instantiateViewController(withIdentifier: "StartMeetingViewController") as? StartMeetingViewController
+        vVc?.serverToken = serverToken
+        vVc?.meetingID = meetingID
+        let nav = UINavigationController(rootViewController: vVc!)
+        nav.modalPresentationStyle = .overFullScreen
+        let vc = self.getLastVisibleController()
+        vc?.present(nav, animated: true, completion: nil)
+    }
+    
+    func joinMeeting(serverToken: String, meetingID: String,name: String,micEnabled:Bool, cameraEnabled:Bool ){
+        
+        let bundle = Bundle.init(identifier: "org.cocoapods.HippoCallClient")
+        let vVc = UIStoryboard.init(name: "VideoSdk", bundle: bundle).instantiateViewController(withIdentifier: "MeetingViewController") as? MeetingViewController
+        vVc!.meetingData = MeetingData(token: serverToken, name: name, meetingId: meetingID, micEnabled: micEnabled, cameraEnabled: cameraEnabled)
+        vVc!.delegate = JitsiCallManager.shared
+        JitsiCallManager.shared.videoSdkView = vVc
+        let nav = UINavigationController(rootViewController: vVc!)
+        nav.modalPresentationStyle = .overFullScreen
+        let vc = self.getLastVisibleController()
+        vc?.present(nav, animated: true, completion: nil)
+    }
+    
     func appSecretFromHippoCallClient(key: String, agentToken: String, userType: userType){
         HippoCallClientUrl.shared.appSecretKey = key
         HippoCallClientUrl.shared.agentToken = agentToken
@@ -205,7 +229,7 @@ class CallClient{
         }
     }
     
-    func getVideoSdkTokenNative(completion: ((String) -> Void)? = nil){
+    func getVideoSdkTokenNative(comingFrom: String = "",completion: ((String) -> Void)? = nil){
         
         let params = getParamsForVideoSDKNative()
         let url = URL(string: HippoCallClientUrl.baseUrl + "api/meet/videoSdkToken")!
@@ -237,13 +261,18 @@ class CallClient{
                     JitsiCallManager.shared.nativeMeetID = results["meeting_id"] as? String ?? ""
                     
                     print("token ------>>>>>>>", results["token"] as? String ?? "", "\n meeting id ---->>>>>", results["meeting_id"] as? String ?? "")
-                    
-                    if completion == nil{
+                    if comingFrom == "deeplink"{
                         DispatchQueue.main.async {
-                            self?.joinVideoSdkCall()
+                            self?.joinVideoSdkCallByMeetingID(serverToken: results["token"] as? String ?? "", meetingID: results["meeting_id"] as? String ?? "")
                         }
                     }else{
-                        completion?(params["transaction_id"] as? String ?? "")
+                        if completion == nil{
+                            DispatchQueue.main.async {
+                                self?.joinVideoSdkCall()
+                            }
+                        }else{
+                            completion?(params["transaction_id"] as? String ?? "")
+                        }
                     }
                     
                 }else{

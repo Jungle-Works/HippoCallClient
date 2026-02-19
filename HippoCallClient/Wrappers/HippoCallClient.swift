@@ -167,6 +167,12 @@ public class HippoCallClient {
         }
     }
     
+    public func joinCall() {
+       CallClient.shared.getVideoSdkTokenNative(comingFrom: "deeplink") { meetId in
+             }
+       
+    }
+    
     public func randomString(length: Int = 10) -> String {
         let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
         return String((0..<length).map{ _ in letters.randomElement()! })
@@ -213,6 +219,10 @@ public class HippoCallClient {
     
     public func unHideViewInPip(){
         JitsiCallManager.shared.unHideJitsiView()
+    }
+    
+    public func joinVideoSdkCallByMeetingID(serverToken: String, meetingID: String){
+        CallClient.shared.joinVideoSdkCallByMeetingID(serverToken: serverToken, meetingID: meetingID)
     }
     
 }
