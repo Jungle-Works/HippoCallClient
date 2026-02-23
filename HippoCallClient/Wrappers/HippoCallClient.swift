@@ -167,9 +167,9 @@ public class HippoCallClient {
         }
     }
     
-    public func joinCall() {
-       CallClient.shared.getVideoSdkTokenNative(comingFrom: "deeplink") { meetId in
-             }
+    public func joinCall(transaction_id: String) {
+        CallClient.shared.getVideoSdkTokenNative(comingFrom: "deeplink", transaction_id: transaction_id) { meetId in
+        }
        
     }
     

@@ -229,9 +229,11 @@ class CallClient{
         }
     }
     
-    func getVideoSdkTokenNative(comingFrom: String = "",completion: ((String) -> Void)? = nil){
-        
-        let params = getParamsForVideoSDKNative()
+    func getVideoSdkTokenNative(comingFrom: String = "",transaction_id: String = "", completion: ((String) -> Void)? = nil){
+        var params = getParamsForVideoSDKNative()
+        if comingFrom == "deeplink"{
+            params["transaction_id"] = transaction_id
+        }
         let url = URL(string: HippoCallClientUrl.baseUrl + "api/meet/videoSdkToken")!
         var urlRequest = URLRequest(url: url)
         urlRequest.timeoutInterval = 60
