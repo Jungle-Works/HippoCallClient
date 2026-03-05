@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name         = 'HippoCallClient'
-    s.version      = '1.0.2'
+    s.version      = '1.0.3'
     s.summary      = 'Hippo Call Client'
     s.description  = <<-DESC
                     Hippo Call Client to start video call and audio call
@@ -8,12 +8,12 @@ Pod::Spec.new do |s|
 
     s.homepage     = 'https://github.com/Jungle-Works/HippoCallClient.git'
     s.license      = { :type => 'MIT', :file => 'FILE_LICENSE' }
-    s.author       = { 'Vishal Jhanjhri' => 'jhanjhri.vishal@gmail.com' }
-
-    s.ios.deployment_target = '13.0'
+    s.author       = { 'Neha Vaish' => 'neha.vaish@jungleworks.com' }
+    
+    s.ios.deployment_target = '15.6'
     s.source       = { :git => 'https://github.com/Jungle-Works/HippoCallClient.git', :tag => s.version}
 
-    s.swift_version = '4.2'
+    s.swift_version = '5.9'
     s.source_files  = 'HippoCallClient/**/*.{h,m,swift,xib,storyboard}'
     
     s.resource_bundles = {

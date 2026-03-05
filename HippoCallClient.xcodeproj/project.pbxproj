@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -421,7 +421,6 @@
 				};
 			};
 			buildConfigurationList = C99E2E85219C50F100833F36 /* Build configuration list for PBXProject "HippoCallClient" */;
-			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -429,6 +428,7 @@
 				Base,
 			);
 			mainGroup = C99E2E81219C50F100833F36;
+			preferredProjectObjectVersion = 77;
 			productRefGroup = C99E2E8B219C50F100833F36 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -570,7 +570,7 @@
 				);
 				INFOPLIST_FILE = HippoCallClient/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -612,7 +612,7 @@
 				);
 				INFOPLIST_FILE = HippoCallClient/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
