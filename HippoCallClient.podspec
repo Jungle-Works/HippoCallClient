@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name         = 'HippoCallClient'
-    s.version      = '1.0.3'
+    s.version      = '1.0.4'
     s.summary      = 'Hippo Call Client'
     s.description  = <<-DESC
                     Hippo Call Client to start video call and audio call
@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
     s.license      = { :type => 'MIT', :file => 'FILE_LICENSE' }
     s.author       = { 'Neha Vaish' => 'neha.vaish@jungleworks.com' }
     
-    s.ios.deployment_target = '15.6'
+    s.ios.deployment_target = '13.0'
     s.source       = { :git => 'https://github.com/Jungle-Works/HippoCallClient.git', :tag => s.version}
 
     s.swift_version = '5.9'
@@ -25,7 +25,7 @@ Pod::Spec.new do |s|
     s.static_framework = false
     s.preserve_paths = 'README.md'
     s.vendored_frameworks =  ['Conference/ConferenceCall/ConferenceCall/JitsiMeetSDK.framework']
-    s.dependency 'VideoSDKRTC', '~> 2.2.9'
+    s.dependency 'VideoSDKRTC', '~> 2.5'
     s.dependency 'MessageKit'
    # s.dependency 'Kingfisher'
 
