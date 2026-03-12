@@ -5,7 +5,7 @@ target 'HippoCallClient' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 	# Pods for HippoCallClient
-	pod 'FuguConference', :path => 'Conference/ConferenceCall'
+#	pod 'FuguConference', :path => 'Conference/ConferenceCall'
  # pod 'Kingfisher'
    post_install do |installer|
       

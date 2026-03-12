@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name         = 'HippoCallClient'
-    s.version      = '1.0.5'
+    s.version      = '1.0.6'
     s.summary      = 'Hippo Call Client'
     s.description  = <<-DESC
                     Hippo Call Client to start video call and audio call
@@ -24,7 +24,7 @@ Pod::Spec.new do |s|
     s.exclude_files = 'Classes/Exclude'
     s.static_framework = false
     s.preserve_paths = 'README.md'
-    s.vendored_frameworks =  ['Conference/ConferenceCall/ConferenceCall/JitsiMeetSDK.framework']
+#    s.vendored_frameworks =  ['Conference/ConferenceCall/ConferenceCall/JitsiMeetSDK.framework']
     s.dependency 'VideoSDKRTC', '~> 2.5'
     s.dependency 'MessageKit'
    # s.dependency 'Kingfisher'
