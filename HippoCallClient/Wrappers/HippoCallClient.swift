@@ -225,4 +225,7 @@ public class HippoCallClient {
         CallClient.shared.joinVideoSdkCallByMeetingID(serverToken: serverToken, meetingID: meetingID)
     }
     
+    public func endVideoCall(){
+    JitsiCallManager.shared.userDidTerminatedConference()
+    }
 }
