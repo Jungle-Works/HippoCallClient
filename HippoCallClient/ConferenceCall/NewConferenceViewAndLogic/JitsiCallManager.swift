@@ -1278,7 +1278,6 @@ extension JitsiCallManager : JitsiConfrenceCallViewDelegate  {
     }
     
     func userDidTerminatedConference() {
-        
         isCallJoinedFromLink = false
         self.reportEndCallToCallKit(self.activeCall?.uID ?? "", .remoteEnded)
         if (activeCall?.isGroupCall ?? false) == false{

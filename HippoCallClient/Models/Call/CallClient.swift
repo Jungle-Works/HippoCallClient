@@ -170,33 +170,33 @@ class CallClient{
         
         let bundle = Bundle.init(identifier: "org.cocoapods.HippoCallClient")
         let vVc = UIStoryboard.init(name: "VideoSdk", bundle: bundle).instantiateViewController(withIdentifier: "MeetingViewController") as? MeetingViewController
-        
         vVc!.meetingData = MeetingData(token: self.videoSdkToken, name: HippoCallClientUrl.shared.userName, meetingId: JitsiCallManager.shared.nativeMeetID, micEnabled: true, cameraEnabled: JitsiCallManager.shared.callTypeForIncomingCall == .video ? true : false)
         vVc!.delegate = JitsiCallManager.shared
         JitsiCallManager.shared.videoSdkView = vVc
         
         let nav = UINavigationController(rootViewController: vVc!)
         nav.modalPresentationStyle = .overFullScreen
-        
         let vc = self.getLastVisibleController()
         vc?.present(nav, animated: true, completion: nil)
     }
     
-    func joinVideoSdkCallByMeetingID(serverToken: String, meetingID: String){
+    func joinVideoSdkCallByMeetingID(serverToken: String, meetingID: String, meetingDuration: TimeInterval = 0 * 60 ){
         let bundle = Bundle.init(identifier: "org.cocoapods.HippoCallClient")
         let vVc = UIStoryboard.init(name: "VideoSdk", bundle: bundle).instantiateViewController(withIdentifier: "StartMeetingViewController") as? StartMeetingViewController
         vVc?.serverToken = serverToken
         vVc?.meetingID = meetingID
+        vVc?.meetingDuration = meetingDuration //minutes * seconds
         let nav = UINavigationController(rootViewController: vVc!)
         nav.modalPresentationStyle = .overFullScreen
         let vc = self.getLastVisibleController()
         vc?.present(nav, animated: true, completion: nil)
     }
     
-    func joinMeeting(serverToken: String, meetingID: String,name: String,micEnabled:Bool, cameraEnabled:Bool ){
+    func joinMeeting(serverToken: String, meetingID: String,name: String,micEnabled:Bool, cameraEnabled:Bool, meetingDuration: TimeInterval = 0 * 60 ){
         
         let bundle = Bundle.init(identifier: "org.cocoapods.HippoCallClient")
         let vVc = UIStoryboard.init(name: "VideoSdk", bundle: bundle).instantiateViewController(withIdentifier: "MeetingViewController") as? MeetingViewController
+        vVc?.meetingDuration = meetingDuration //minutes * seconds
         vVc!.meetingData = MeetingData(token: serverToken, name: name, meetingId: meetingID, micEnabled: micEnabled, cameraEnabled: cameraEnabled)
         vVc!.delegate = JitsiCallManager.shared
         JitsiCallManager.shared.videoSdkView = vVc
@@ -229,7 +229,7 @@ class CallClient{
         }
     }
     
-    func getVideoSdkTokenNative(comingFrom: String = "",transaction_id: String = "", completion: ((String) -> Void)? = nil){
+    func getVideoSdkTokenNative(comingFrom: String = "",transaction_id: String = "", meetingDuration: TimeInterval = 0 * 60, completion: ((String) -> Void)? = nil){
         var params = getParamsForVideoSDKNative()
         if comingFrom == "deeplink"{
             params["transaction_id"] = transaction_id
@@ -265,7 +265,7 @@ class CallClient{
                     print("token ------>>>>>>>", results["token"] as? String ?? "", "\n meeting id ---->>>>>", results["meeting_id"] as? String ?? "")
                     if comingFrom == "deeplink"{
                         DispatchQueue.main.async {
-                            self?.joinVideoSdkCallByMeetingID(serverToken: results["token"] as? String ?? "", meetingID: results["meeting_id"] as? String ?? "")
+                            self?.joinVideoSdkCallByMeetingID(serverToken: results["token"] as? String ?? "", meetingID: results["meeting_id"] as? String ?? "", meetingDuration: meetingDuration)
                         }
                     }else{
                         if completion == nil{

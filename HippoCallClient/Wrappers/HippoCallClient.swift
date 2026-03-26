@@ -167,8 +167,8 @@ public class HippoCallClient {
         }
     }
     
-    public func joinCall(transaction_id: String) {
-        CallClient.shared.getVideoSdkTokenNative(comingFrom: "deeplink", transaction_id: transaction_id) { meetId in
+    public func joinCall(transaction_id: String, meetingDuration: TimeInterval = 0 * 60) {
+        CallClient.shared.getVideoSdkTokenNative(comingFrom: "deeplink", transaction_id: transaction_id, meetingDuration: meetingDuration) { meetId in
         }
        
     }
@@ -221,8 +221,8 @@ public class HippoCallClient {
         JitsiCallManager.shared.unHideJitsiView()
     }
     
-    public func joinVideoSdkCallByMeetingID(serverToken: String, meetingID: String){
-        CallClient.shared.joinVideoSdkCallByMeetingID(serverToken: serverToken, meetingID: meetingID)
+    public func joinVideoSdkCallByMeetingID(serverToken: String, meetingID: String, meetingDuration: TimeInterval = 0 * 60){
+        CallClient.shared.joinVideoSdkCallByMeetingID(serverToken: serverToken, meetingID: meetingID, meetingDuration: meetingDuration)
     }
     
     public func endVideoCall(){

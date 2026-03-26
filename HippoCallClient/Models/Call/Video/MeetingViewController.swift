@@ -83,7 +83,9 @@ class MeetingViewController: UIViewController, UICollectionViewDataSource {
 
     //enable disable chat
     var isChatEnabled: Bool = UserDefaults.standard.value(forKey: "enable_chat_in_call") as? Bool ?? false
-
+    
+    var meetingDuration: TimeInterval = 0 * 60 // 10 minutes, set your desired value here (in seconds)
+    
     // MARK: - Life Cycle
 
     override var prefersStatusBarHidden: Bool { true }
@@ -98,10 +100,19 @@ class MeetingViewController: UIViewController, UICollectionViewDataSource {
 
         // config
         VideoSDK.config(token: meetingData.token)
-
+        
+        // When meeting starts:
+        if meetingDuration != 0.0{
+            MeetingTimerManager.shared.start(duration: meetingDuration) { [weak self] in
+                self?.delegate?.userDidTerminatedConference()
+                self?.meeting?.leave()
+                UIApplication.shared.isIdleTimerDisabled = false
+            }
+        }
+     
         // init meeting
         initializeMeeting()
-
+       
         UIApplication.shared.isIdleTimerDisabled = true
     }
 
