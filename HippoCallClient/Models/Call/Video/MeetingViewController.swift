@@ -200,6 +200,10 @@ class MeetingViewController: UIViewController, UICollectionViewDataSource {
 // MARK: - MeetingEventListener
 
 extension MeetingViewController: MeetingEventListener {
+    private func onQualityLimitation(type: VideoSDKRTC.QualityLimitationType, state: VideoSDKRTC.QualityLimitationState, timestamp: Int) {
+        print("onQualityLimitation")
+    }
+    
 
     /// Meeting started
     func onMeetingJoined() {
@@ -543,21 +547,33 @@ private extension MeetingViewController {
         self.showActionsheet(options: menuOptions, fromView: cell.menuButton) { option in
             switch option {
             case .toggleMic:
-                if !cell.micEnabled {
-                    participant.enableMic()
-                } else {
-                    participant.disableMic()
+                do {
+                    if !cell.micEnabled {
+                        try participant.enableMic()
+                    } else {
+                        try participant.disableMic()
+                    }
+                } catch {
+                    self.showAlert(title: "Error", message: "Failed to toggle microphone: \(error)")
                 }
 
             case .toggleWebcam:
-                if !cell.videoEnabled {
-                    participant.enableWebcam()
-                } else {
-                    participant.disableWebcam()
+                do {
+                    if !cell.videoEnabled {
+                        try participant.enableWebcam()
+                    } else {
+                        try participant.disableWebcam()
+                    }
+                } catch {
+                    self.showAlert(title: "Error", message: "Failed to toggle webcam: \(error)")
                 }
 
             case .remove:
-                participant.remove()
+                do {
+                    try participant.remove()
+                } catch {
+                    self.showAlert(title: "Error", message: "Failed to remove participant: \(error)")
+                }
 
             default:
                 break
