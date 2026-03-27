@@ -200,7 +200,7 @@ class MeetingViewController: UIViewController, UICollectionViewDataSource {
 // MARK: - MeetingEventListener
 
 extension MeetingViewController: MeetingEventListener {
-    private func onQualityLimitation(type: VideoSDKRTC.QualityLimitationType, state: VideoSDKRTC.QualityLimitationState, timestamp: Int) {
+     func onQualityLimitation(type: VideoSDKRTC.QualityLimitationType, state: VideoSDKRTC.QualityLimitationState, timestamp: Int) {
         print("onQualityLimitation")
     }
     
