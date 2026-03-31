@@ -277,8 +277,8 @@ extension MeetingViewController: MeetingEventListener {
             meeting?.removeEventListener(self)
 
             self.delegate?.userWillLeaveConference()
-//            self.meeting?.leave()
-//            UIApplication.shared.isIdleTimerDisabled = false
+            self.meeting?.leave()
+            UIApplication.shared.isIdleTimerDisabled = false
             print("meeting left called")
             // dismiss controller
             dismiss(animated: true, completion: nil)
