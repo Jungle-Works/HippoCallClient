@@ -233,13 +233,16 @@ class CallClient{
         var params = getParamsForVideoSDKNative()
         if comingFrom == "deeplink"{
             params["transaction_id"] = transaction_id
+            params["request_token"] = 1
+        }else{
+            params["create_meet"] = 1
         }
         let url = URL(string: HippoCallClientUrl.baseUrl + "api/meet/videoSdkToken")!
         var urlRequest = URLRequest(url: url)
         urlRequest.timeoutInterval = 60
         urlRequest.httpMethod = "POST"
         urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        
+        print(params)
         switch enCodeType{
         case .json:
             if let body = try? JSONSerialization.data(withJSONObject: params, options: []) {
@@ -258,7 +261,7 @@ class CallClient{
                 let jsonObject = try JSONSerialization.jsonObject(with: data)
                 if let dictionary = jsonObject as? [String: Any],
                    let results = dictionary["data"] as? [String: Any], let statusCode = dictionary["statusCode"] as? Int, (200...299).contains(statusCode) {
-                    
+                    print(results)
                     self?.videoSdkToken = results["token"] as? String ?? ""
                     JitsiCallManager.shared.nativeMeetID = results["meeting_id"] as? String ?? ""
                     
@@ -290,9 +293,7 @@ class CallClient{
     }
     
     func getParamsForVideoSDKNative() -> [String : Any] {
-        var params: [String: Any] = [
-            "create_meet": 1
-        ]
+        var params: [String: Any] = [:]
         
         if HippoCallClientUrl.shared.userType == .agent{
             params["access_token"] = HippoCallClientUrl.shared.agentToken
