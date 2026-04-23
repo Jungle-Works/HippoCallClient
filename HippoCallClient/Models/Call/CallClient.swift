@@ -252,6 +252,8 @@ class CallClient{
             break
         }
         
+        print("===== Req ====== \(urlRequest.httpMethod)\n \(urlRequest)")
+        print("===== Param ======\n \(params.toJSONString())")
         let task = URLSession.shared.dataTask(with: urlRequest) { [weak self] data, response, error in
             guard let data = data else {
                 print(String(describing: error))

@@ -65,7 +65,12 @@ class ParticipantViewCell: UICollectionViewCell {
     
     func setParticipant(_ participant: Participant) {
         self.participant = participant
-        
+
+        // VideoSDK mirrors the front-camera preview of the local participant.
+        // Un-mirror on first bind (initial camera is front). Switching to the
+        // back camera must clear this via setLocalVideoFlipped(false).
+        setLocalVideoFlipped(participant.isLocal)
+
         let nameComponents = participant.displayName.components(separatedBy: " ")
         nameLabel.text = nameComponents.first
         
@@ -132,6 +137,7 @@ class ParticipantViewCell: UICollectionViewCell {
         participant = nil
         livestreamIndicator.isHidden = true
         contentView.layer.borderColor = UIColor.clear.cgColor
+        videoView.transform = .identity
         
         [nameLabel, nameInitialsLabel].forEach {
             $0?.text = ""
@@ -147,6 +153,12 @@ class ParticipantViewCell: UICollectionViewCell {
     @IBAction func menuButtonTapped(_ sender: Any) {
         guard let peer = participant else { return }
         onMenuTapped?(peer)
+    }
+
+    /// Apply a horizontal flip to the local video view. Used to un-mirror the
+    /// front camera (which VideoSDK mirrors by default). Pass false for back.
+    func setLocalVideoFlipped(_ flipped: Bool) {
+        videoView.transform = flipped ? CGAffineTransform(scaleX: -1, y: 1) : .identity
     }
 }
 

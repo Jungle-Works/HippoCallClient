@@ -494,7 +494,12 @@ private extension MeetingViewController {
         // onCameraTapped
         buttonControlsView.onCameraTapped = { [weak self] position in
             self?.meeting?.switchWebcam()
-            //            self.meeting?.switchWebcam(position: position)
+            // Keep the local preview un-mirrored regardless of camera:
+            // flip for front (VideoSDK mirrors it), identity for back.
+            if let local = self?.meeting?.localParticipant,
+               let cell = self?.cellForParticipant(local) {
+                cell.setLocalVideoFlipped(position == .front)
+            }
         }
 
         /// Chat Button Tap
@@ -706,14 +711,8 @@ private extension MeetingViewController {
        
         buttonControlsView.menuButton.isHidden = false
 
-        if !self.meetingData.cameraEnabled{
-            buttonControlsView.videoButton.isHidden = true
-            buttonControlsView.cameraButton.isHidden = true
-        }else{
-            buttonControlsView.videoButton.isHidden = false
-            buttonControlsView.cameraButton.isHidden = false
-        }
-
+        buttonControlsView.micEnabled = self.meetingData.micEnabled
+        buttonControlsView.videoEnabled = self.meetingData.cameraEnabled
         buttonControlsView.unreadMessageView.isHidden = !isChatEnabled
         buttonControlsView.chatButton.isHidden = !isChatEnabled
     }
