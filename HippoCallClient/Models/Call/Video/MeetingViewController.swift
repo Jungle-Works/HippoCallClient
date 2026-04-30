@@ -84,6 +84,9 @@ class MeetingViewController: UIViewController, UICollectionViewDataSource {
     //enable disable chat
     var isChatEnabled: Bool = UserDefaults.standard.value(forKey: "enable_chat_in_call") as? Bool ?? false
     
+    private var isCameraOn = false
+
+    
     var meetingDuration: TimeInterval = 0 * 60 // 10 minutes, set your desired value here (in seconds)
     
     // MARK: - Life Cycle
@@ -467,8 +470,10 @@ private extension MeetingViewController {
 
             if !on {
                 self?.meeting?.enableWebcam()
+                self?.isCameraOn = true
             } else {
                 self?.meeting?.disableWebcam()
+                self?.isCameraOn = false
             }
         }
 
@@ -493,12 +498,18 @@ private extension MeetingViewController {
 
         // onCameraTapped
         buttonControlsView.onCameraTapped = { [weak self] position in
-            self?.meeting?.switchWebcam()
-            // Keep the local preview un-mirrored regardless of camera:
-            // flip for front (VideoSDK mirrors it), identity for back.
-            if let local = self?.meeting?.localParticipant,
-               let cell = self?.cellForParticipant(local) {
-                cell.setLocalVideoFlipped(position == .front)
+            guard let self = self else { return }
+               
+            if isCameraOn {
+                self.meeting?.switchWebcam()
+                // Keep the local preview un-mirrored regardless of camera:
+                // flip for front (VideoSDK mirrors it), identity for back.
+                if let local = self.meeting?.localParticipant,
+                   let cell = self.cellForParticipant(local) {
+                    cell.setLocalVideoFlipped(position == .front)
+                }
+            }else{
+                self.showAlert(title: "", message: "Camera is off")
             }
         }
 
@@ -705,7 +716,7 @@ private extension MeetingViewController {
     func setupUI() {
         // initially hide screensharing view
         screenSharingView.isHidden = true
-
+        isCameraOn = meetingData.cameraEnabled
         buttonsView.addSubview(buttonControlsView)
         buttonControlsView.frame = buttonsView.bounds
        

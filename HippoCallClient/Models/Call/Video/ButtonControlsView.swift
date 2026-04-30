@@ -114,8 +114,10 @@ class ButtonControlsView: UIView {
     }
     
     @IBAction func cameraButtonTapped(_ sender: Any) {
-        cameraPosition.toggle()
-        onCameraTapped?(cameraPosition)
+        if videoEnabled {
+            cameraPosition.toggle()
+            onCameraTapped?(cameraPosition)
+        }
     }
     
     @IBAction func chatButtonTapped(_ sender: Any) {
