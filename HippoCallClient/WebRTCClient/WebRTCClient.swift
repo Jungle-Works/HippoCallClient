@@ -557,7 +557,6 @@ class WebRTCClient: NSObject, RTCPeerConnectionDelegate {
     }
     
     fileprivate func getFPSFor(format: AVCaptureDevice.Format) -> Float64? {
-        // choosing highest fps
         #if swift(>=4.2)
         let frames = format.videoSupportedFrameRateRanges
         #else
@@ -565,13 +564,14 @@ class WebRTCClient: NSObject, RTCPeerConnectionDelegate {
             return nil
         }
         #endif
-        //        guard let frames = format.videoSupportedFrameRateRanges as? [AVFrameRateRange] else {
-        //            return nil
-        //        }
-        let fps: AVFrameRateRange? = frames.sorted {(f1, f2) -> Bool in
-            return f1.maxFrameRate < f2.maxFrameRate
-            }.last
-        return fps?.maxFrameRate
+        // Cap at 30 fps to halve GPU/CPU load and prevent device overheating during calls
+        let maxAllowedFPS: Float64 = 30
+        let suitable = frames.filter { $0.maxFrameRate <= maxAllowedFPS }
+        if let fps = suitable.max(by: { $0.maxFrameRate < $1.maxFrameRate })?.maxFrameRate {
+            return fps
+        }
+        // No range with ceiling ≤ 30 — return the cap directly (e.g. single [1.0, 60.0] range)
+        return frames.isEmpty ? nil : maxAllowedFPS
     }
     
     fileprivate func isHeadphonePluggedIn() -> Bool {

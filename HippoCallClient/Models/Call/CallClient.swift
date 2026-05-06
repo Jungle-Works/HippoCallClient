@@ -11,6 +11,7 @@ import Foundation
 import UIKit
 import UserNotifications
 import SafariServices
+import AVFoundation
 
 
 let utcDateFormatter: DateFormatter = {
@@ -166,44 +167,50 @@ class CallClient{
         }
     }
     
-    func joinVideoSdkCall(){
-        
-        let bundle = Bundle.init(identifier: "org.cocoapods.HippoCallClient")
-        let vVc = UIStoryboard.init(name: "VideoSdk", bundle: bundle).instantiateViewController(withIdentifier: "MeetingViewController") as? MeetingViewController
-        vVc!.meetingData = MeetingData(token: self.videoSdkToken, name: HippoCallClientUrl.shared.userName, meetingId: JitsiCallManager.shared.nativeMeetID, micEnabled: true, cameraEnabled: JitsiCallManager.shared.callTypeForIncomingCall == .video ? true : false)
-        vVc!.delegate = JitsiCallManager.shared
-        JitsiCallManager.shared.videoSdkView = vVc
-        
-        let nav = UINavigationController(rootViewController: vVc!)
-        nav.modalPresentationStyle = .overFullScreen
-        let vc = self.getLastVisibleController()
-        vc?.present(nav, animated: true, completion: nil)
+    func joinVideoSdkCall() {
+        let needsCamera = JitsiCallManager.shared.callTypeForIncomingCall == .video
+        withCameraPermission(cameraRequested: needsCamera) { [weak self] cameraGranted in
+            guard let self = self else { return }
+            let bundle = Bundle.init(identifier: "org.cocoapods.HippoCallClient")
+            let vVc = UIStoryboard.init(name: "VideoSdk", bundle: bundle).instantiateViewController(withIdentifier: "MeetingViewController") as? MeetingViewController
+            vVc!.meetingData = MeetingData(token: self.videoSdkToken, name: HippoCallClientUrl.shared.userName, meetingId: JitsiCallManager.shared.nativeMeetID, micEnabled: true, cameraEnabled: cameraGranted)
+            vVc!.delegate = JitsiCallManager.shared
+            JitsiCallManager.shared.videoSdkView = vVc
+            let nav = UINavigationController(rootViewController: vVc!)
+            nav.modalPresentationStyle = .overFullScreen
+            self.getLastVisibleController()?.present(nav, animated: true, completion: nil)
+        }
     }
     
-    func joinVideoSdkCallByMeetingID(serverToken: String, meetingID: String, meetingDuration: TimeInterval = 0 * 60 ){
-        let bundle = Bundle.init(identifier: "org.cocoapods.HippoCallClient")
-        let vVc = UIStoryboard.init(name: "VideoSdk", bundle: bundle).instantiateViewController(withIdentifier: "StartMeetingViewController") as? StartMeetingViewController
-        vVc?.serverToken = serverToken
-        vVc?.meetingID = meetingID
-        vVc?.meetingDuration = meetingDuration //minutes * seconds
-        let nav = UINavigationController(rootViewController: vVc!)
-        nav.modalPresentationStyle = .overFullScreen
-        let vc = self.getLastVisibleController()
-        vc?.present(nav, animated: true, completion: nil)
+    func joinVideoSdkCallByMeetingID(serverToken: String, meetingID: String, meetingDuration: TimeInterval = 0 * 60) {
+        withAVPermissions { [weak self] granted in
+            guard granted, let self = self else { return }
+            let bundle = Bundle(identifier: "org.cocoapods.HippoCallClient")
+            guard let vVc = UIStoryboard(name: "VideoSdk", bundle: bundle)
+                .instantiateViewController(withIdentifier: "StartMeetingViewController")
+                as? StartMeetingViewController else { return }
+            vVc.serverToken = serverToken
+            vVc.meetingID = meetingID
+            vVc.meetingDuration = meetingDuration
+            let nav = UINavigationController(rootViewController: vVc)
+            nav.modalPresentationStyle = .overFullScreen
+            self.getLastVisibleController()?.present(nav, animated: true, completion: nil)
+        }
     }
-    
-    func joinMeeting(serverToken: String, meetingID: String,name: String,micEnabled:Bool, cameraEnabled:Bool, meetingDuration: TimeInterval = 0 * 60 ){
-        
-        let bundle = Bundle.init(identifier: "org.cocoapods.HippoCallClient")
-        let vVc = UIStoryboard.init(name: "VideoSdk", bundle: bundle).instantiateViewController(withIdentifier: "MeetingViewController") as? MeetingViewController
-        vVc?.meetingDuration = meetingDuration //minutes * seconds
-        vVc!.meetingData = MeetingData(token: serverToken, name: name, meetingId: meetingID, micEnabled: micEnabled, cameraEnabled: cameraEnabled)
-        vVc!.delegate = JitsiCallManager.shared
-        JitsiCallManager.shared.videoSdkView = vVc
-        let nav = UINavigationController(rootViewController: vVc!)
-        nav.modalPresentationStyle = .overFullScreen
-        let vc = self.getLastVisibleController()
-        vc?.present(nav, animated: true, completion: nil)
+
+    func joinMeeting(serverToken: String, meetingID: String, name: String, micEnabled: Bool, cameraEnabled: Bool, meetingDuration: TimeInterval = 0 * 60) {
+        withCameraPermission(cameraRequested: cameraEnabled) { [weak self] cameraGranted in
+            guard let self = self else { return }
+            let bundle = Bundle.init(identifier: "org.cocoapods.HippoCallClient")
+            let vVc = UIStoryboard.init(name: "VideoSdk", bundle: bundle).instantiateViewController(withIdentifier: "MeetingViewController") as? MeetingViewController
+            vVc?.meetingDuration = meetingDuration
+            vVc!.meetingData = MeetingData(token: serverToken, name: name, meetingId: meetingID, micEnabled: micEnabled, cameraEnabled: cameraGranted)
+            vVc!.delegate = JitsiCallManager.shared
+            JitsiCallManager.shared.videoSdkView = vVc
+            let nav = UINavigationController(rootViewController: vVc!)
+            nav.modalPresentationStyle = .overFullScreen
+            self.getLastVisibleController()?.present(nav, animated: true, completion: nil)
+        }
     }
     
     func appSecretFromHippoCallClient(key: String, agentToken: String, userType: userType){
@@ -212,6 +219,115 @@ class CallClient{
         HippoCallClientUrl.shared.userType = userType
     }
     
+    private func withCameraPermission(cameraRequested: Bool, completion: @escaping (Bool) -> Void) {
+        guard cameraRequested else {
+            completion(false)
+            return
+        }
+        switch AVCaptureDevice.authorizationStatus(for: .video) {
+        case .authorized:
+            completion(true)
+        case .notDetermined:
+            AVCaptureDevice.requestAccess(for: .video) { [weak self] granted in
+                DispatchQueue.main.async {
+                    if !granted { self?.showCameraRequiredAlert() }
+                    completion(granted)
+                }
+            }
+        case .denied, .restricted:
+            showCameraRequiredAlert()
+            completion(false)
+        @unknown default:
+            completion(false)
+        }
+    }
+
+    private func withAVPermissions(completion: @escaping (Bool) -> Void) {
+        switch AVCaptureDevice.authorizationStatus(for: .video) {
+        case .authorized:
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { completion(false); return }
+                self.checkMicPermission(completion: completion)
+            }
+        case .notDetermined:
+            AVCaptureDevice.requestAccess(for: .video) { [weak self] granted in
+                DispatchQueue.main.async {
+                    guard let self = self else { completion(false); return }
+                    if granted {
+                        self.checkMicPermission(completion: completion)
+                    } else {
+                        self.showAVPermissionPopup(isCamera: true)
+                        completion(false)
+                    }
+                }
+            }
+        case .denied, .restricted:
+            DispatchQueue.main.async { [weak self] in
+                self?.showAVPermissionPopup(isCamera: true)
+                completion(false)
+            }
+        @unknown default:
+            completion(false)
+        }
+    }
+
+    private func checkMicPermission(completion: @escaping (Bool) -> Void) {
+        switch AVAudioSession.sharedInstance().recordPermission {
+        case .granted:
+            DispatchQueue.main.async {
+                completion(true)
+            }
+        case .undetermined:
+            AVAudioSession.sharedInstance().requestRecordPermission { [weak self] granted in
+                DispatchQueue.main.async {
+                    guard let self = self else { completion(false); return }
+                    if granted {
+                        completion(true)
+                    } else {
+                        self.showAVPermissionPopup(isCamera: false)
+                        completion(false)
+                    }
+                }
+            }
+        case .denied:
+            DispatchQueue.main.async { [weak self] in
+                self?.showAVPermissionPopup(isCamera: false)
+                completion(false)
+            }
+        @unknown default:
+            completion(false)
+        }
+    }
+
+    private func showAVPermissionPopup(isCamera: Bool) {
+        DispatchQueue.main.async {
+            let popup = AVPermissionPopupView(
+                icon: isCamera ? "camera.fill" : "mic.fill",
+                title: isCamera ? "Camera Access Required" : "Microphone Access Required",
+                message: isCamera
+                    ? "Camera access is needed for video calls. Please enable it in Settings."
+                    : "Microphone access is needed for video calls. Please enable it in Settings."
+            )
+            popup.present()
+        }
+    }
+
+    private func showCameraRequiredAlert() {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(
+                title: "Camera Access Required",
+                message: "Camera access is required for video calls. Please enable it in Settings.",
+                preferredStyle: .alert
+            )
+            alert.addAction(UIAlertAction(title: "Open Settings", style: .default) { _ in
+                guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+                UIApplication.shared.open(url)
+            })
+            alert.addAction(UIAlertAction(title: "Continue Without Camera", style: .cancel))
+            self.getLastVisibleController()?.present(alert, animated: true)
+        }
+    }
+
     fileprivate func showAlert(with message: String) {
         let alert = UIAlertController(title: "Alert", message: message, preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
@@ -946,6 +1062,104 @@ extension CallClient: WebRTCClientDelegate {
     
     func rtcConnecetd() {
         self.connected()
+    }
+}
+
+// MARK: - AVPermissionPopupView
+
+private class AVPermissionPopupView: UIView {
+
+    private let cardView = UIView()
+    private let iconImageView = UIImageView()
+    private let titleLabel = UILabel()
+    private let messageLabel = UILabel()
+    private let settingsButton = UIButton(type: .custom)
+
+    init(icon: String, title: String, message: String) {
+        super.init(frame: UIScreen.main.bounds)
+        autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        setupCard(icon: icon, title: title, message: message)
+    }
+
+    required init?(coder: NSCoder) { fatalError() }
+
+    private func setupCard(icon: String, title: String, message: String) {
+        cardView.backgroundColor = UIColor(red: 28/255, green: 28/255, blue: 30/255, alpha: 1)
+        cardView.layer.cornerRadius = 16
+        cardView.clipsToBounds = true
+        cardView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(cardView)
+
+        iconImageView.image = UIImage(systemName: icon)
+        iconImageView.tintColor = .systemBlue
+        iconImageView.contentMode = .scaleAspectFit
+        iconImageView.translatesAutoresizingMaskIntoConstraints = false
+
+        titleLabel.text = title
+        titleLabel.font = .boldSystemFont(ofSize: 18)
+        titleLabel.textColor = .white
+        titleLabel.textAlignment = .center
+        titleLabel.numberOfLines = 0
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        messageLabel.text = message
+        messageLabel.font = .systemFont(ofSize: 14)
+        messageLabel.textColor = .lightGray
+        messageLabel.textAlignment = .center
+        messageLabel.numberOfLines = 0
+        messageLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        settingsButton.setTitle("Open Settings", for: .normal)
+        settingsButton.titleLabel?.font = .boldSystemFont(ofSize: 16)
+        settingsButton.backgroundColor = .systemBlue
+        settingsButton.setTitleColor(.white, for: .normal)
+        settingsButton.layer.cornerRadius = 10
+        settingsButton.clipsToBounds = true
+        settingsButton.translatesAutoresizingMaskIntoConstraints = false
+        settingsButton.addTarget(self, action: #selector(openSettingsTapped), for: .touchUpInside)
+
+        cardView.addSubview(iconImageView)
+        cardView.addSubview(titleLabel)
+        cardView.addSubview(messageLabel)
+        cardView.addSubview(settingsButton)
+
+        NSLayoutConstraint.activate([
+            cardView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            cardView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            cardView.widthAnchor.constraint(equalToConstant: 300),
+
+            iconImageView.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 28),
+            iconImageView.centerXAnchor.constraint(equalTo: cardView.centerXAnchor),
+            iconImageView.widthAnchor.constraint(equalToConstant: 40),
+            iconImageView.heightAnchor.constraint(equalToConstant: 40),
+
+            titleLabel.topAnchor.constraint(equalTo: iconImageView.bottomAnchor, constant: 16),
+            titleLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 20),
+            titleLabel.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -20),
+
+            messageLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
+            messageLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 20),
+            messageLabel.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -20),
+
+            settingsButton.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 24),
+            settingsButton.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 20),
+            settingsButton.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -20),
+            settingsButton.heightAnchor.constraint(equalToConstant: 44),
+            settingsButton.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -28),
+        ])
+    }
+
+    func present() {
+        guard superview == nil else { return }
+        let keyWindow = UIApplication.shared.windows.first(where: { $0.isKeyWindow })
+        keyWindow?.addSubview(self)
+    }
+
+    @objc private func openSettingsTapped() {
+        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+        UIApplication.shared.open(url)
+        removeFromSuperview()
     }
 }
 

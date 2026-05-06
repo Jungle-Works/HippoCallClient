@@ -88,7 +88,8 @@ class MeetingViewController: UIViewController, UICollectionViewDataSource {
 
     
     var meetingDuration: TimeInterval = 0 * 60 // 10 minutes, set your desired value here (in seconds)
-    
+    private var audioRouteObserver: NSObjectProtocol?
+
     // MARK: - Life Cycle
 
     override var prefersStatusBarHidden: Bool { true }
@@ -129,6 +130,13 @@ class MeetingViewController: UIViewController, UICollectionViewDataSource {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.navigationBar.isHidden = false
+    }
+
+    deinit {
+        if let observer = audioRouteObserver {
+            NotificationCenter.default.removeObserver(observer)
+            audioRouteObserver = nil
+        }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -742,8 +750,13 @@ private extension MeetingViewController {
     }
 
     func addAudioChangeObserver() {
+        guard audioRouteObserver == nil else { return }
         // change audio output to louder speaker
-        NotificationCenter.default.addObserver(forName: AVAudioSession.routeChangeNotification, object: nil, queue: nil) { notification in
+        audioRouteObserver = NotificationCenter.default.addObserver(
+            forName: AVAudioSession.routeChangeNotification,
+            object: nil,
+            queue: .main
+        ) { notification in
             guard let info = notification.userInfo,
                   let value = info[AVAudioSessionRouteChangeReasonKey] as? UInt,
                   let reason = AVAudioSession.RouteChangeReason(rawValue: value) else { return }

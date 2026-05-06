@@ -134,17 +134,18 @@ class ParticipantViewCell: UICollectionViewCell {
     }
     
     func reset() {
+        if let videoTrack = participant?.streams.first(where: { $1.kind == .state(value: .video) })?.value.track as? RTCVideoTrack {
+            videoTrack.remove(videoView)
+        }
         participant = nil
+        showVideoView(false)
+        updateMic(false)
         livestreamIndicator.isHidden = true
         contentView.layer.borderColor = UIColor.clear.cgColor
         videoView.transform = .identity
-        
+
         [nameLabel, nameInitialsLabel].forEach {
             $0?.text = ""
-        }
-        
-        if let videoTrack = participant?.streams.first(where: { $1.kind == .state(value: .video) })?.value.track as? RTCVideoTrack {
-            videoTrack.remove(videoView)
         }
     }
     
