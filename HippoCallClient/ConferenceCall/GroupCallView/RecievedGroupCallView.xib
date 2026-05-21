@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="Z8U-e8-RCd" customClass="RecievedGroupCallView" customModule="HippoCallClient" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MFg-tk-LPD">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="yKz-2L-Qv5">
+                            <rect key="frame" x="30" y="488" width="354" height="83"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Conference Call" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GWQ-C6-pjT">
+                                    <rect key="frame" x="0.0" y="0.0" width="354" height="30"/>
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="25"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" has invited you to join video conference" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hq1-VJ-dUv">
+                                    <rect key="frame" x="0.0" y="30" width="354" height="53"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                        </stackView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="team" translatesAutoresizingMaskIntoConstraints="NO" id="FNU-Nh-lgS">
+                            <rect key="frame" x="107" y="248" width="200" height="200"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="FNU-Nh-lgS" secondAttribute="height" multiplier="1:1" id="DQz-6D-J9X"/>
+                                <constraint firstAttribute="width" constant="200" id="y11-Yt-8en"/>
+                            </constraints>
+                        </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zyp-Xh-g3D">
+                            <rect key="frame" x="40" y="796" width="50" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="50" id="BVS-Hf-9RZ"/>
+                                <constraint firstAttribute="width" constant="50" id="iBQ-RJ-dQO"/>
+                            </constraints>
+                            <state key="normal" image="disconnectCall">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="cancelCallTapped:" destination="Z8U-e8-RCd" eventType="touchUpInside" id="bx7-In-i1G"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qh6-u6-JX1">
+                            <rect key="frame" x="334" y="796" width="50" height="50"/>
+                            <state key="normal" image="connectCall"/>
+                            <connections>
+                                <action selector="ansButtonTapped:" destination="Z8U-e8-RCd" eventType="touchUpInside" id="3a3-6w-nQX"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="yKz-2L-Qv5" firstAttribute="leading" secondItem="MFg-tk-LPD" secondAttribute="leading" constant="30" id="1oK-Vv-JMU"/>
+                        <constraint firstItem="FNU-Nh-lgS" firstAttribute="centerX" secondItem="MFg-tk-LPD" secondAttribute="centerX" id="2IK-tA-ewi"/>
+                        <constraint firstItem="GWQ-C6-pjT" firstAttribute="centerX" secondItem="FNU-Nh-lgS" secondAttribute="centerX" id="YrO-4F-AYG"/>
+                        <constraint firstAttribute="trailing" secondItem="Qh6-u6-JX1" secondAttribute="trailing" constant="30" id="aH3-hB-v0h"/>
+                        <constraint firstItem="hq1-VJ-dUv" firstAttribute="centerX" secondItem="FNU-Nh-lgS" secondAttribute="centerX" id="fA3-U9-yez"/>
+                        <constraint firstItem="Qh6-u6-JX1" firstAttribute="height" secondItem="zyp-Xh-g3D" secondAttribute="height" id="gk0-Yy-Fcy"/>
+                        <constraint firstItem="Qh6-u6-JX1" firstAttribute="width" secondItem="zyp-Xh-g3D" secondAttribute="width" id="jC1-Ts-Apn"/>
+                        <constraint firstItem="yKz-2L-Qv5" firstAttribute="top" secondItem="FNU-Nh-lgS" secondAttribute="bottom" constant="40" id="lGm-1K-L91"/>
+                        <constraint firstItem="Qh6-u6-JX1" firstAttribute="top" secondItem="zyp-Xh-g3D" secondAttribute="top" id="lgc-SC-9x8"/>
+                        <constraint firstItem="FNU-Nh-lgS" firstAttribute="centerY" secondItem="MFg-tk-LPD" secondAttribute="centerY" constant="-100" id="pcT-VH-YXJ"/>
+                        <constraint firstItem="Qh6-u6-JX1" firstAttribute="bottom" secondItem="zyp-Xh-g3D" secondAttribute="bottom" id="pyr-UF-KRv"/>
+                        <constraint firstAttribute="bottom" secondItem="zyp-Xh-g3D" secondAttribute="bottom" constant="50" id="s8Z-qW-DqD"/>
+                        <constraint firstItem="zyp-Xh-g3D" firstAttribute="top" relation="greaterThanOrEqual" secondItem="yKz-2L-Qv5" secondAttribute="bottom" constant="20" id="tKC-n7-UII"/>
+                        <constraint firstItem="zyp-Xh-g3D" firstAttribute="leading" secondItem="MFg-tk-LPD" secondAttribute="leading" constant="40" id="zDL-QD-axZ"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="MFg-tk-LPD" secondAttribute="bottom" id="6tK-z7-sG2"/>
+                <constraint firstItem="MFg-tk-LPD" firstAttribute="top" secondItem="Z8U-e8-RCd" secondAttribute="top" id="Ovk-lP-3JY"/>
+                <constraint firstItem="rXV-ni-0y1" firstAttribute="trailing" secondItem="MFg-tk-LPD" secondAttribute="trailing" id="ovw-SN-b5g"/>
+                <constraint firstItem="MFg-tk-LPD" firstAttribute="leading" secondItem="rXV-ni-0y1" secondAttribute="leading" id="xAh-kh-Fv3"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="rXV-ni-0y1"/>
+            <connections>
+                <outlet property="ansButton" destination="Qh6-u6-JX1" id="24T-m9-GHm"/>
+                <outlet property="cancelButton" destination="zyp-Xh-g3D" id="UlC-0f-8bb"/>
+                <outlet property="image_Conference" destination="FNU-Nh-lgS" id="8Fd-S7-wJZ"/>
+                <outlet property="label_Calling" destination="hq1-VJ-dUv" id="JjM-pY-gX7"/>
+                <outlet property="label_Heading" destination="GWQ-C6-pjT" id="ZMI-WU-Pdk"/>
+            </connections>
+            <point key="canvasLocation" x="340.57971014492756" y="135.9375"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="connectCall" width="60" height="60"/>
+        <image name="disconnectCall" width="60" height="60"/>
+        <image name="team" width="182" height="183"/>
+    </resources>
+</document>

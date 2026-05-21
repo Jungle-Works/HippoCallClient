@@ -1,0 +1,34 @@
+Pod::Spec.new do |s|
+    s.name         = 'HippoCallClient'
+    s.version      = '1.1.0'
+    s.summary      = 'Hippo Call Client'
+    s.description  = <<-DESC
+                      Hippo Call Client to perform high quality video call and audio call
+                     DESC
+
+    s.homepage     = 'https://github.com/Jungle-Works/HippoCallClient.git'
+    s.license      = { :type => 'MIT', :file => 'FILE_LICENSE' }
+    s.author       = { 'Vishal Jhanjhri' => 'jhanjhri.vishal@gmail.com' }
+
+    s.ios.deployment_target = '15.1'
+    s.source       = { :git => 'https://github.com/Jungle-Works/HippoCallClient.git', :tag => s.version }
+
+    s.swift_version = '5.0'
+    s.source_files  = 'HippoCallClient/**/*.{h,m,swift,xib,storyboard}'
+    
+    s.resource_bundles = {
+      'HippoCallClient' => [
+        'HippoCallClient/**/*.xcassets',
+        'HippoCallClient/Assets/**/*.imageset',
+        'HippoCallClient/ConferenceCall/NewConferenceViewAndLogic/**/*.xib'
+      ]
+    }
+
+    s.static_framework = false
+    s.preserve_paths = 'README.md'
+    s.exclude_files = ['HippoCallClient/Classes/Exclude']
+
+    s.dependency 'JitsiMeetSDK', '10.2.0'
+
+    s.pod_target_xcconfig = { 'ENABLE_BITCODE' => 'NO' }
+end

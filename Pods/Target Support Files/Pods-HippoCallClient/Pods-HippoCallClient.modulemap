@@ -1,0 +1,6 @@
+framework module Pods_HippoCallClient {
+  umbrella header "Pods-HippoCallClient-umbrella.h"
+
+  export *
+  module * { export * }
+}
