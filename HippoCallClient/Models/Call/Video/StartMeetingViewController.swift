@@ -68,7 +68,7 @@ class StartMeetingViewController: UIViewController {
         prepareUI()
         VideoSDK.getAudioPermission()
         self.requestNotificationAuthorization()
-        previewLayer.isHidden = !self.webCamEnabled
+        previewLayer?.isHidden = !self.webCamEnabled
 
     }
     
@@ -120,7 +120,7 @@ class StartMeetingViewController: UIViewController {
     @IBAction func btnVideoEnableDisableTapped(_ sender: Any) {
         self.webCamEnabled = !self.webCamEnabled
         updateVideoButton(status: self.webCamEnabled)
-        previewLayer.isHidden = !self.webCamEnabled
+        previewLayer?.isHidden = !self.webCamEnabled
     }
     
     @IBAction func btnJoinMeetingTapped(_ sender: Any) {
@@ -389,7 +389,7 @@ extension StartMeetingViewController: AVCaptureVideoDataOutputSampleBufferDelega
     func stopCamera(){
         if session.isRunning {
                session.stopRunning()
-            previewLayer.isHidden = true
+            previewLayer?.isHidden = true
             updateVideoButton(status: false)
                 
            }
