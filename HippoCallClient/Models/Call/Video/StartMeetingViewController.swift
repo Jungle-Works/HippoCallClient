@@ -43,8 +43,20 @@ class StartMeetingViewController: UIViewController {
     @IBOutlet weak var joinAMeetingStackView: UIStackView!
     @IBOutlet weak var initialOptionStackView: UIStackView!
     
+    @IBOutlet weak var joinAMeetingLabel: UILabel!
     // MARK: Properties
-    
+
+    var presetName: String? = nil
+    var meetingStartTime: String? = nil
+    var meetingEndTime: String? = nil
+    private var countdownTimer: Timer?
+    private let meetingDateFormatter: DateFormatter = {
+        let f = DateFormatter()
+        f.locale = Locale(identifier: "en_US_POSIX")
+        f.dateFormat = "dd/MM/yyyy HH:mm:ss"
+        return f
+    }()
+
     var isJoinMeetingAction = true
     var isRequestInProgress = false
    
@@ -66,15 +78,81 @@ class StartMeetingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         prepareUI()
+        addBackButton()
         VideoSDK.getAudioPermission()
         self.requestNotificationAuthorization()
         previewLayer?.isHidden = !self.webCamEnabled
+    }
 
+    private func addBackButton() {
+        let backButton = UIBarButtonItem(
+            image: UIImage(systemName: "chevron.left"),
+            style: .plain,
+            target: self,
+            action: #selector(backButtonTapped)
+        )
+        backButton.tintColor = .white
+        navigationItem.leftBarButtonItem = backButton
+    }
+
+    @objc private func backButtonTapped() {
+        stopCamera()
+        navigationController?.dismiss(animated: true)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        countdownTimer?.invalidate()
+        countdownTimer = nil
         valueOfVideoDevice = "Front Camera"
         valueOfAudioDevice = "Speaker"
+    }
+
+    // MARK: - Time Window
+
+    private func configureJoinButtonForTimeWindow() {
+        guard let startStr = meetingStartTime, let endStr = meetingEndTime,
+              let start = meetingDateFormatter.date(from: startStr),
+              let end = meetingDateFormatter.date(from: endStr) else {
+            return
+        }
+        let now = Date()
+        if now > end {
+            print("[Meeting] Meeting has ended")
+            setJoinButtonState(enabled: false, title: "Meeting Ended")
+        } else if now < start {
+            setJoinButtonState(enabled: false, title: "")
+            startCountdownTimer(to: start)
+        } else {
+            setJoinButtonState(enabled: true, title: "Join Meeting")
+        }
+    }
+
+    private func setJoinButtonState(enabled: Bool, title: String) {
+        btnJoinAMeeting.isEnabled = enabled
+        btnJoinAMeeting.alpha = enabled ? 1.0 : 0.5
+        joinAMeetingLabel.text = title
+    }
+
+    private func startCountdownTimer(to startTime: Date) {
+        countdownTimer?.invalidate()
+        countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] timer in
+            let remaining = startTime.timeIntervalSinceNow
+            if remaining <= 0 {
+                timer.invalidate()
+                self?.setJoinButtonState(enabled: true, title: "Join Meeting")
+            } else {
+                let h = Int(remaining) / 3600
+                let m = (Int(remaining) % 3600) / 60
+                let s = Int(remaining) % 60
+                let title = h > 0
+                    ? String(format: "Starting in %02d:%02d:%02d", h, m, s)
+                    : String(format: "Starting in %02d:%02d", m, s)
+                print("[Countdown] \(title)")
+                self?.setJoinButtonState(enabled: false, title: title)
+            }
+        }
+        countdownTimer?.fire()
     }
     
     func prepareUI() {
@@ -88,6 +166,21 @@ class StartMeetingViewController: UIViewController {
         txtEnterNameField.delegate = self
         txtMeetingCodeField.delegate = self
         txtMeetingCodeField.text = meetingID
+
+        if let name = presetName {
+            txtEnterNameField.text = name
+            txtEnterNameField.isUserInteractionEnabled = false
+            txtEnterNameField.alpha = 0.6
+        }
+
+        if let mid = meetingID, !mid.isEmpty {
+            txtMeetingCodeField.isUserInteractionEnabled = false
+            txtMeetingCodeField.alpha = 0.6
+            initialOptionStackView.isHidden = true
+            joinAMeetingStackView.isHidden = false
+        }
+
+        configureJoinButtonForTimeWindow()
         
         [viewCameraViewContainer, viewJoinAMeetingButton, viewTestAudioVideoContainer].forEach {
             $0?.roundCorners(corners: [.allCorners], radius: 12.0)

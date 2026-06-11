@@ -167,10 +167,10 @@ public class HippoCallClient {
         }
     }
     
-    public func joinCall(transaction_id: String, meetingDuration: TimeInterval = 0 * 60) {
-        CallClient.shared.getVideoSdkTokenNative(comingFrom: "deeplink", transaction_id: transaction_id, meetingDuration: meetingDuration) { meetId in
+    public func joinCall(transaction_id: String, meetingDuration: TimeInterval = 0 * 60, name: String? = nil, startTime: String? = nil, endTime: String? = nil) {
+        CallClient.shared.getVideoSdkTokenNative(comingFrom: "deeplink", transaction_id: transaction_id, meetingDuration: meetingDuration, name: name, startTime: startTime, endTime: endTime) { meetId in
         }
-       
+
     }
     
     public func randomString(length: Int = 10) -> String {
@@ -221,8 +221,8 @@ public class HippoCallClient {
         JitsiCallManager.shared.unHideJitsiView()
     }
     
-    public func joinVideoSdkCallByMeetingID(serverToken: String, meetingID: String, meetingDuration: TimeInterval = 0 * 60){
-        CallClient.shared.joinVideoSdkCallByMeetingID(serverToken: serverToken, meetingID: meetingID, meetingDuration: meetingDuration)
+    public func joinVideoSdkCallByMeetingID(serverToken: String, meetingID: String, meetingDuration: TimeInterval = 0 * 60, name: String? = nil, startTime: String? = nil, endTime: String? = nil){
+        CallClient.shared.joinVideoSdkCallByMeetingID(serverToken: serverToken, meetingID: meetingID, meetingDuration: meetingDuration, name: name, startTime: startTime, endTime: endTime)
     }
     
     public func endVideoCall(){

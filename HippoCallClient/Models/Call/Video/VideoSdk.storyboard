@@ -724,6 +724,7 @@
                         <outlet property="imgAudioButton" destination="O4y-03-2G0" id="cXG-3j-cfJ"/>
                         <outlet property="imgVideoButton" destination="DRC-ve-gv9" id="8yL-Dc-b7E"/>
                         <outlet property="initialOptionStackView" destination="Db7-a7-BRq" id="ogB-fg-mbw"/>
+                        <outlet property="joinAMeetingLabel" destination="1al-rm-GeE" id="pN3-zI-gbf"/>
                         <outlet property="joinAMeetingStackView" destination="waL-gg-o0U" id="f1C-fV-4ns"/>
                         <outlet property="txtEnterNameField" destination="gsI-KK-Z4U" id="fRy-2F-5vc"/>
                         <outlet property="txtMeetingCodeField" destination="qEI-eT-X72" id="2Sn-gf-vXw"/>
