@@ -71,7 +71,6 @@ class StartMeetingViewController: UIViewController {
     var captureDevice: AVCaptureDevice!
     var rootLayer: CALayer!
     let session = AVCaptureSession()
-    var meetingDuration: TimeInterval = 0 * 60
     // MARK: - UI Elements
     let flipCameraButton = UIButton(type: .system)
     let switchAudioButton = UIButton(type: .system)
@@ -486,11 +485,19 @@ class StartMeetingViewController: UIViewController {
     // MARK: - Navigation
     
     func startMeeting() {
+        let effectiveDuration = remainingMeetingDuration()
         DispatchQueue.main.async {
             self.dismiss(animated: true) {
-                CallClient.shared.joinMeeting(serverToken: self.serverToken, meetingID: self.txtMeetingCodeField.text ?? "", name: self.txtEnterNameField.text ?? "Guest", micEnabled: self.micEnabled, cameraEnabled: self.webCamEnabled, meetingDuration:self.meetingDuration )
+                CallClient.shared.joinMeeting(serverToken: self.serverToken, meetingID: self.txtMeetingCodeField.text ?? "", name: self.txtEnterNameField.text ?? "Guest", micEnabled: self.micEnabled, cameraEnabled: self.webCamEnabled, meetingDuration: effectiveDuration)
             }
         }
+    }
+
+    private func remainingMeetingDuration() -> TimeInterval {
+        guard let endStr = meetingEndTime,
+              let endDate = meetingDateFormatter.date(from: endStr) else { return 0 }
+        let remaining = endDate.timeIntervalSinceNow
+        return remaining > 0 ? remaining : 0
     }
 }
 

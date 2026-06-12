@@ -182,7 +182,7 @@ class CallClient{
         }
     }
     
-    func joinVideoSdkCallByMeetingID(serverToken: String, meetingID: String, meetingDuration: TimeInterval = 0 * 60, name: String? = nil, startTime: String? = nil, endTime: String? = nil) {
+    func joinVideoSdkCallByMeetingID(serverToken: String, meetingID: String, name: String? = nil, startTime: String? = nil, endTime: String? = nil) {
         withAVPermissions { [weak self] granted in
             guard granted, let self = self else { return }
             let bundle = Bundle(identifier: "org.cocoapods.HippoCallClient")
@@ -191,7 +191,6 @@ class CallClient{
                 as? StartMeetingViewController else { return }
             vVc.serverToken = serverToken
             vVc.meetingID = meetingID
-            vVc.meetingDuration = meetingDuration
             vVc.presetName = name
             vVc.meetingStartTime = startTime
             vVc.meetingEndTime = endTime
@@ -201,7 +200,7 @@ class CallClient{
         }
     }
 
-    func joinMeeting(serverToken: String, meetingID: String, name: String, micEnabled: Bool, cameraEnabled: Bool, meetingDuration: TimeInterval = 0 * 60) {
+    func joinMeeting(serverToken: String, meetingID: String, name: String, micEnabled: Bool, cameraEnabled: Bool, meetingDuration: TimeInterval) {
         withCameraPermission(cameraRequested: cameraEnabled) { [weak self] cameraGranted in
             guard let self = self else { return }
             let bundle = Bundle.init(identifier: "org.cocoapods.HippoCallClient")
@@ -348,7 +347,7 @@ class CallClient{
         }
     }
     
-    func getVideoSdkTokenNative(comingFrom: String = "",transaction_id: String = "", meetingDuration: TimeInterval = 0 * 60, name: String? = nil, startTime: String? = nil, endTime: String? = nil, completion: ((String) -> Void)? = nil){
+    func getVideoSdkTokenNative(comingFrom: String = "", transaction_id: String = "", name: String? = nil, startTime: String? = nil, endTime: String? = nil, completion: ((String) -> Void)? = nil){
         var params = getParamsForVideoSDKNative()
         if comingFrom == "deeplink"{
             params["transaction_id"] = transaction_id
@@ -389,7 +388,7 @@ class CallClient{
                     print("token ------>>>>>>>", results["token"] as? String ?? "", "\n meeting id ---->>>>>", results["meeting_id"] as? String ?? "")
                     if comingFrom == "deeplink"{
                         DispatchQueue.main.async {
-                            self?.joinVideoSdkCallByMeetingID(serverToken: results["token"] as? String ?? "", meetingID: results["meeting_id"] as? String ?? "", meetingDuration: meetingDuration, name: name, startTime: startTime, endTime: endTime)
+                            self?.joinVideoSdkCallByMeetingID(serverToken: results["token"] as? String ?? "", meetingID: results["meeting_id"] as? String ?? "", name: name, startTime: startTime, endTime: endTime)
                         }
                     }else{
                         if completion == nil{
