@@ -47,7 +47,7 @@ class ParticipantViewCell: UICollectionViewCell {
         super.awakeFromNib()
     
         // border
-        contentView.layer.borderWidth = 4.0
+        contentView.layer.borderWidth = 0 //active mic 
         
         setupVideoView()
         setupNameView()

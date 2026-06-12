@@ -59,6 +59,10 @@ class StartMeetingViewController: UIViewController {
 
     var isJoinMeetingAction = true
     var isRequestInProgress = false
+
+    // MARK: - Mic level monitoring
+    private let audioEngine = AVAudioEngine()
+    private var isTestingAV = false
    
     //Camera Capture requiered properties
     var videoDataOutput: AVCaptureVideoDataOutput!
@@ -82,6 +86,7 @@ class StartMeetingViewController: UIViewController {
         VideoSDK.getAudioPermission()
         self.requestNotificationAuthorization()
         previewLayer?.isHidden = !self.webCamEnabled
+        setupTestAudioVideoButton()
     }
 
     private func addBackButton() {
@@ -104,11 +109,96 @@ class StartMeetingViewController: UIViewController {
         super.viewDidDisappear(animated)
         countdownTimer?.invalidate()
         countdownTimer = nil
+        stopMicMonitoring()
         valueOfVideoDevice = "Front Camera"
         valueOfAudioDevice = "Speaker"
     }
 
+    // MARK: - Test Audio & Video
+
+    private func setupTestAudioVideoButton() {
+        viewTestAudioVideoContainer.isUserInteractionEnabled = true
+        let tap = UITapGestureRecognizer(target: self, action: #selector(testAudioVideoTapped))
+        viewTestAudioVideoContainer.addGestureRecognizer(tap)
+    }
+
+    @objc private func testAudioVideoTapped() {
+        isTestingAV.toggle()
+        if isTestingAV {
+            webCamEnabled = true
+            updateVideoButton(status: true)
+            previewLayer?.isHidden = false
+            micEnabled = true
+            updateAudioButton(status: true)
+            startMicMonitoring()
+        } else {
+            webCamEnabled = false
+            updateVideoButton(status: false)
+            micEnabled = false
+            updateAudioButton(status: false)
+            stopMicMonitoring()
+        }
+    }
+
+    private func startMicMonitoring() {
+        let inputNode = audioEngine.inputNode
+        let format = inputNode.outputFormat(forBus: 0)
+        guard format.sampleRate > 0 else { return }
+
+        inputNode.removeTap(onBus: 0)
+        inputNode.installTap(onBus: 0, bufferSize: 1024, format: format) { [weak self] buffer, _ in
+            guard let self = self else { return }
+            let level = self.rmsLevel(from: buffer)
+            DispatchQueue.main.async { self.updateCameraBorder(level: level) }
+        }
+
+        viewCameraViewContainer.layer.borderWidth = 2.0
+
+        do {
+            try audioEngine.start()
+        } catch {
+            print("[Mic] AVAudioEngine failed to start: \(error)")
+        }
+    }
+
+    private func stopMicMonitoring() {
+        audioEngine.inputNode.removeTap(onBus: 0)
+        if audioEngine.isRunning { audioEngine.stop() }
+        DispatchQueue.main.async {
+            self.viewCameraViewContainer.layer.borderColor = UIColor.clear.cgColor
+        }
+    }
+
+    private func rmsLevel(from buffer: AVAudioPCMBuffer) -> Float {
+        guard let channelData = buffer.floatChannelData?[0] else { return 0 }
+        let frameCount = Int(buffer.frameLength)
+        var sum: Float = 0
+        for i in 0..<frameCount { sum += channelData[i] * channelData[i] }
+        return frameCount > 0 ? sqrt(sum / Float(frameCount)) : 0
+    }
+
+    private func updateCameraBorder(level: Float) {
+        guard micEnabled else {
+            viewCameraViewContainer.layer.borderColor = UIColor.clear.cgColor
+            return
+        }
+        let isSpeaking = level > 0.04
+        viewCameraViewContainer.layer.borderColor = isSpeaking ? UIColor.systemGreen.cgColor : UIColor.clear.cgColor
+    }
+
     // MARK: - Time Window
+
+    enum MeetingWindowState: Equatable {
+        case beforeStart
+        case active
+        case ended
+    }
+
+    static func windowState(start: Date, end: Date, now: Date = Date()) -> MeetingWindowState {
+        if now > end { return .ended }
+        if now < start { return .beforeStart }
+        return .active
+    }
 
     private func configureJoinButtonForTimeWindow() {
         guard let startStr = meetingStartTime, let endStr = meetingEndTime,
@@ -116,14 +206,14 @@ class StartMeetingViewController: UIViewController {
               let end = meetingDateFormatter.date(from: endStr) else {
             return
         }
-        let now = Date()
-        if now > end {
+        switch StartMeetingViewController.windowState(start: start, end: end) {
+        case .ended:
             print("[Meeting] Meeting has ended")
             setJoinButtonState(enabled: false, title: "Meeting Ended")
-        } else if now < start {
+        case .beforeStart:
             setJoinButtonState(enabled: false, title: "")
             startCountdownTimer(to: start)
-        } else {
+        case .active:
             setJoinButtonState(enabled: true, title: "Join Meeting")
         }
     }
@@ -140,7 +230,8 @@ class StartMeetingViewController: UIViewController {
             let remaining = startTime.timeIntervalSinceNow
             if remaining <= 0 {
                 timer.invalidate()
-                self?.setJoinButtonState(enabled: true, title: "Join Meeting")
+                self?.setJoinButtonState(enabled: false, title: "Joining...")
+                self?.btnJoinAMeetingTapped(self as Any)
             } else {
                 let h = Int(remaining) / 3600
                 let m = (Int(remaining) % 3600) / 60
@@ -208,6 +299,11 @@ class StartMeetingViewController: UIViewController {
     @IBAction func btnAudioEnableDisableTapped(_ sender: Any) {
         self.micEnabled = !self.micEnabled
         updateAudioButton(status: self.micEnabled)
+        if self.micEnabled {
+            startMicMonitoring()
+        } else {
+            stopMicMonitoring()
+        }
     }
     
     @IBAction func btnVideoEnableDisableTapped(_ sender: Any) {
@@ -234,6 +330,7 @@ class StartMeetingViewController: UIViewController {
     
     
     @IBAction func btnJoinAMeetingTapped(_ sender: Any) {
+        stopMicMonitoring()
         stopCamera()
             guard !isRequestInProgress else { return }
             isRequestInProgress = true
