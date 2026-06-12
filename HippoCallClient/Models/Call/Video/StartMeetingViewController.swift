@@ -63,6 +63,10 @@ class StartMeetingViewController: UIViewController {
     // MARK: - Mic level monitoring
     private let audioEngine = AVAudioEngine()
     private var isTestingAV = false
+
+    // MARK: - Network indicator
+    private let networkDot = UIView()
+    private let networkLabel = UILabel()
    
     //Camera Capture requiered properties
     var videoDataOutput: AVCaptureVideoDataOutput!
@@ -97,6 +101,40 @@ class StartMeetingViewController: UIViewController {
         )
         backButton.tintColor = .white
         navigationItem.leftBarButtonItem = backButton
+        setupNetworkIndicator()
+    }
+
+    // MARK: - Network Indicator
+
+    private func setupNetworkIndicator() {
+        // Dot
+        networkDot.translatesAutoresizingMaskIntoConstraints = false
+        networkDot.backgroundColor = .systemGray
+        networkDot.layer.cornerRadius = 5
+        NSLayoutConstraint.activate([
+            networkDot.widthAnchor.constraint(equalToConstant: 10),
+            networkDot.heightAnchor.constraint(equalToConstant: 10)
+        ])
+
+        // Label
+        networkLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+        networkLabel.textColor = .white
+        networkLabel.text = "..."
+
+        // Stack
+        let stack = UIStackView(arrangedSubviews: [networkDot, networkLabel])
+        stack.axis = .horizontal
+        stack.spacing = 5
+        stack.alignment = .center
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: stack)
+
+        // Start monitoring
+        NetworkSpeedMonitor.shared.onUpdate = { [weak self] color, text in
+            self?.networkDot.backgroundColor = color
+            self?.networkLabel.text = text
+        }
+        NetworkSpeedMonitor.shared.start()
     }
 
     @objc private func backButtonTapped() {
@@ -109,6 +147,7 @@ class StartMeetingViewController: UIViewController {
         countdownTimer?.invalidate()
         countdownTimer = nil
         stopMicMonitoring()
+        NetworkSpeedMonitor.shared.stop()
         valueOfVideoDevice = "Front Camera"
         valueOfAudioDevice = "Speaker"
     }
@@ -119,6 +158,16 @@ class StartMeetingViewController: UIViewController {
         viewTestAudioVideoContainer.isUserInteractionEnabled = true
         let tap = UITapGestureRecognizer(target: self, action: #selector(testAudioVideoTapped))
         viewTestAudioVideoContainer.addGestureRecognizer(tap)
+        updateTestButtonAppearance(testing: false)
+    }
+
+    private func updateTestButtonAppearance(testing: Bool) {
+        UIView.animate(withDuration: 0.2) {
+            self.viewTestAudioVideoContainer.backgroundColor = testing
+                ? UIColor(red: 0.18, green: 0.72, blue: 0.35, alpha: 1)   // green
+            : UIColor.red   // red
+            self.viewTestAudioVideoContainer.layer.borderWidth = 0
+        }
     }
 
     @objc private func testAudioVideoTapped() {
@@ -137,6 +186,7 @@ class StartMeetingViewController: UIViewController {
             updateAudioButton(status: false)
             stopMicMonitoring()
         }
+        updateTestButtonAppearance(testing: isTestingAV)
     }
 
     private func startMicMonitoring() {
@@ -208,6 +258,12 @@ class StartMeetingViewController: UIViewController {
         switch StartMeetingViewController.windowState(start: start, end: end) {
         case .ended:
             print("[Meeting] Meeting has ended")
+            //show popup meeting ended
+            let alert = UIAlertController(title: nil,
+                                          message: "The Video Chat has expired.",
+                                          preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
             setJoinButtonState(enabled: false, title: "Meeting Ended")
         case .beforeStart:
             setJoinButtonState(enabled: false, title: "")
