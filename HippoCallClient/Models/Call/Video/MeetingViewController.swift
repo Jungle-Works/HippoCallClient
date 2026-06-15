@@ -437,7 +437,8 @@ extension MeetingViewController: ParticipantEventListener {
 extension MeetingViewController {
 
     func openChat() {
-        let chatViewController = ChatViewController(meeting: meeting!, topic: CHAT_TOPIC)
+        guard let meeting = meeting else { return }
+        let chatViewController = ChatViewController(meeting: meeting, topic: CHAT_TOPIC)
         navigationController?.pushViewController(chatViewController, animated: true)
     }
 }
@@ -486,21 +487,9 @@ private extension MeetingViewController {
         }
 
         // onEndMeetingTapped
-        buttonControlsView.onEndMeetingTapped = {
-            //            let menuOptions: [MenuOption] = [.leaveMeeting, .endMeeting]
-            //
-            //            self.showActionsheet(options: menuOptions, fromView: self.buttonControlsView.leaveMeetingButton) { option in
-            //                switch option {
-            //                case .leaveMeeting:
-            //                    self.meeting?.leave()
-            //                case .endMeeting:
-            //                    self.meeting?.end()
-            //                default:
-            //                    break
-            //                }
-            //            }
-            self.delegate?.userDidTerminatedConference()
-            self.meeting?.leave()
+        buttonControlsView.onEndMeetingTapped = { [weak self] in
+            self?.delegate?.userDidTerminatedConference()
+            self?.meeting?.leave()
             UIApplication.shared.isIdleTimerDisabled = false
         }
 
@@ -528,24 +517,26 @@ private extension MeetingViewController {
 
         /// Menu tap
         buttonControlsView.onMenuButtonTapped = { [weak self] in
+            guard let self = self else { return }
             var menuOptions: [MenuOption] = []
-            menuOptions.append(!self!.recordingStarted ? .startRecording : .stopRecording)
-            menuOptions.append(!self!.liveStreamStarted ? .startLivestream : .stopLivestream)
+            menuOptions.append(!self.recordingStarted ? .startRecording : .stopRecording)
+            menuOptions.append(!self.liveStreamStarted ? .startLivestream : .stopLivestream)
 
-            self?.showActionsheet(options: menuOptions, fromView: self!.buttonControlsView.menuButton) { option in
+            self.showActionsheet(options: menuOptions, fromView: self.buttonControlsView.menuButton) { [weak self] option in
                 switch option {
                 case .startRecording:
-                    self?.showAlertWithTextField(title: "Enter Webhook Url", value: recordingWebhookUrl) { url in
-                        self?.meeting?.startRecording(webhookUrl: url!)
+                    self?.showAlertWithTextField(title: "Enter Webhook Url", value: recordingWebhookUrl) { [weak self] url in
+                        guard let url = url, !url.isEmpty else { return }
+                        self?.meeting?.startRecording(webhookUrl: url)
                     }
                 case .stopRecording:
                     self?.stopRecording()
 
                 case .startLivestream:
-                    let bundle = Bundle.init(identifier: "org.cocoapods.HippoCallClient")
-                    let vVc = UIStoryboard.init(name: "VideoSdk", bundle: bundle).instantiateViewController(withIdentifier: "AddStreamOutputiewController") as? AddStreamOutputiewController
-                    self?.present(vVc!, animated: true, completion:  nil)
-                    //                    self.performSegue(withIdentifier: addStreamOutputSegueIdentifier, sender: nil)
+                    let bundle = Bundle(identifier: "org.cocoapods.HippoCallClient")
+                    guard let vVc = UIStoryboard(name: "VideoSdk", bundle: bundle).instantiateViewController(withIdentifier: "AddStreamOutputiewController") as? AddStreamOutputiewController else { return }
+                    self?.present(vVc, animated: true, completion: nil)
+
                 case .stopLivestream:
                     self?.stopLivestream()
 

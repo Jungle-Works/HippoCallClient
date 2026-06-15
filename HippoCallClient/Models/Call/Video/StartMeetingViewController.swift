@@ -127,7 +127,11 @@ class StartMeetingViewController: UIViewController {
         stack.spacing = 5
         stack.alignment = .center
 
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: stack)
+        let networkBarItem = UIBarButtonItem(customView: stack)
+        let cameraBarItem = UIBarButtonItem(customView: flipCameraButton)
+        let audioBarItem = UIBarButtonItem(customView: switchAudioButton)
+        // rightBarButtonItems are displayed right-to-left: latency | speaker | camera
+        navigationItem.rightBarButtonItems = [networkBarItem, audioBarItem, cameraBarItem]
 
         // Start monitoring
         NetworkSpeedMonitor.shared.onUpdate = { [weak self] color, text in
@@ -468,35 +472,15 @@ class StartMeetingViewController: UIViewController {
     }
 
     func configureCameraControls() {
-        
-        // Add Flip Camera Button
         flipCameraButton.setImage(UIImage(systemName: "camera.rotate"), for: .normal)
         flipCameraButton.tintColor = .systemBlue
         flipCameraButton.addTarget(self, action: #selector(flipCameraAction), for: .touchUpInside)
-        flipCameraButton.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(flipCameraButton) // Add to the main view, outside of the preview container
-        
-        // Add Switch Audio Button
+        flipCameraButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+
         switchAudioButton.setImage(UIImage(systemName: "speaker.wave.2"), for: .normal)
         switchAudioButton.tintColor = .systemBlue
         switchAudioButton.addTarget(self, action: #selector(switchAudioAction), for: .touchUpInside)
-        switchAudioButton.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(switchAudioButton) // Add to the main view, outside of the preview container
-        
-        // Apply Auto Layout Constraints
-        NSLayoutConstraint.activate([
-            // Flip Camera Button Constraints (Outside of the preview container)
-            flipCameraButton.leadingAnchor.constraint(equalTo: view.trailingAnchor, constant: -100),
-            flipCameraButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 60),
-            flipCameraButton.widthAnchor.constraint(equalToConstant: 40),
-            flipCameraButton.heightAnchor.constraint(equalToConstant: 40),
-            
-            // Switch Audio Button Constraints (Outside of the preview container)
-            switchAudioButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -19),
-            switchAudioButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 60),
-            switchAudioButton.widthAnchor.constraint(equalToConstant: 40),
-            switchAudioButton.heightAnchor.constraint(equalToConstant: 40),
-        ])
+        switchAudioButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
     }
 
     private func getSelectedCameraPosition() -> AVCaptureDevice.Position? {

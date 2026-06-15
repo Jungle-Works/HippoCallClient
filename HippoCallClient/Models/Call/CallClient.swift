@@ -171,12 +171,12 @@ class CallClient{
         let needsCamera = JitsiCallManager.shared.callTypeForIncomingCall == .video
         withCameraPermission(cameraRequested: needsCamera) { [weak self] cameraGranted in
             guard let self = self else { return }
-            let bundle = Bundle.init(identifier: "org.cocoapods.HippoCallClient")
-            let vVc = UIStoryboard.init(name: "VideoSdk", bundle: bundle).instantiateViewController(withIdentifier: "MeetingViewController") as? MeetingViewController
-            vVc!.meetingData = MeetingData(token: self.videoSdkToken, name: HippoCallClientUrl.shared.userName, meetingId: JitsiCallManager.shared.nativeMeetID, micEnabled: true, cameraEnabled: cameraGranted)
-            vVc!.delegate = JitsiCallManager.shared
+            let bundle = Bundle(identifier: "org.cocoapods.HippoCallClient")
+            guard let vVc = UIStoryboard(name: "VideoSdk", bundle: bundle).instantiateViewController(withIdentifier: "MeetingViewController") as? MeetingViewController else { return }
+            vVc.meetingData = MeetingData(token: self.videoSdkToken, name: HippoCallClientUrl.shared.userName, meetingId: JitsiCallManager.shared.nativeMeetID, micEnabled: true, cameraEnabled: cameraGranted)
+            vVc.delegate = JitsiCallManager.shared
             JitsiCallManager.shared.videoSdkView = vVc
-            let nav = UINavigationController(rootViewController: vVc!)
+            let nav = UINavigationController(rootViewController: vVc)
             nav.modalPresentationStyle = .overFullScreen
             self.getLastVisibleController()?.present(nav, animated: true, completion: nil)
         }
@@ -203,13 +203,13 @@ class CallClient{
     func joinMeeting(serverToken: String, meetingID: String, name: String, micEnabled: Bool, cameraEnabled: Bool, meetingDuration: TimeInterval) {
         withCameraPermission(cameraRequested: cameraEnabled) { [weak self] cameraGranted in
             guard let self = self else { return }
-            let bundle = Bundle.init(identifier: "org.cocoapods.HippoCallClient")
-            let vVc = UIStoryboard.init(name: "VideoSdk", bundle: bundle).instantiateViewController(withIdentifier: "MeetingViewController") as? MeetingViewController
-            vVc?.meetingDuration = meetingDuration
-            vVc!.meetingData = MeetingData(token: serverToken, name: name, meetingId: meetingID, micEnabled: micEnabled, cameraEnabled: cameraGranted)
-            vVc!.delegate = JitsiCallManager.shared
+            let bundle = Bundle(identifier: "org.cocoapods.HippoCallClient")
+            guard let vVc = UIStoryboard(name: "VideoSdk", bundle: bundle).instantiateViewController(withIdentifier: "MeetingViewController") as? MeetingViewController else { return }
+            vVc.meetingDuration = meetingDuration
+            vVc.meetingData = MeetingData(token: serverToken, name: name, meetingId: meetingID, micEnabled: micEnabled, cameraEnabled: cameraGranted)
+            vVc.delegate = JitsiCallManager.shared
             JitsiCallManager.shared.videoSdkView = vVc
-            let nav = UINavigationController(rootViewController: vVc!)
+            let nav = UINavigationController(rootViewController: vVc)
             nav.modalPresentationStyle = .overFullScreen
             self.getLastVisibleController()?.present(nav, animated: true, completion: nil)
         }
