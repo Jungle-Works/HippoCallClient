@@ -37,6 +37,9 @@
 		6B55AB2E24C588A200DB61B2 /* RecievedGroupCallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B55AB2D24C588A200DB61B2 /* RecievedGroupCallView.swift */; };
 		6B55AB3024C5890200DB61B2 /* RecievedGroupCallView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B55AB2F24C5890200DB61B2 /* RecievedGroupCallView.xib */; };
 		6BCD891524A33F2000FD0A22 /* HippoCallClientStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BCD891424A33F2000FD0A22 /* HippoCallClientStrings.swift */; };
+		912FAC912FF29FDE00F63827 /* EstablishingConnectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912FAC8E2FF29FDE00F63827 /* EstablishingConnectionView.swift */; };
+		912FAC922FF29FDE00F63827 /* EstablishingConnectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 912FAC8F2FF29FDE00F63827 /* EstablishingConnectionView.xib */; };
+		912FAC942FF2A05400F63827 /* FuguImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912FAC932FF2A05400F63827 /* FuguImage.swift */; };
 		C980E2DA23588D6F004433FF /* HippoCallClient.h in Headers */ = {isa = PBXBuildFile; fileRef = C980E2D823588D6F004433FF /* HippoCallClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C980E2F323588D9E004433FF /* HippoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C980E2DF23588D9D004433FF /* HippoHelper.swift */; };
 		C980E2F423588D9E004433FF /* CustomData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C980E2E123588D9D004433FF /* CustomData.swift */; };
@@ -60,11 +63,6 @@
 		CD1EFB4A2444D235008C093B /* JitsiCallSignal.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1EFB232444D235008C093B /* JitsiCallSignal.swift */; };
 		CD1EFB4B2444D235008C093B /* CallStartAndReceivedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1EFB242444D235008C093B /* CallStartAndReceivedView.swift */; };
 		CD1EFB4E2444D235008C093B /* CallStartAndReceivedView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD1EFB272444D235008C093B /* CallStartAndReceivedView.xib */; };
-		CD1EFB4F2444D235008C093B /* TitilliumWeb-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CD1EFB292444D235008C093B /* TitilliumWeb-Bold.ttf */; };
-		CD1EFB502444D235008C093B /* TitilliumWeb-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CD1EFB2A2444D235008C093B /* TitilliumWeb-Regular.ttf */; };
-		CD1EFB512444D235008C093B /* TitilliumWeb-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CD1EFB2B2444D235008C093B /* TitilliumWeb-SemiBold.ttf */; };
-		CD1EFB522444D235008C093B /* OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = CD1EFB2C2444D235008C093B /* OFL.txt */; };
-		CD1EFB532444D235008C093B /* TitilliumWeb-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CD1EFB2D2444D235008C093B /* TitilliumWeb-Italic.ttf */; };
 		CD1EFB542444D235008C093B /* FuguColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1EFB2F2444D235008C093B /* FuguColor.swift */; };
 		CD1EFB552444D235008C093B /* FuguFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1EFB302444D235008C093B /* FuguFont.swift */; };
 		CD1EFB582444D235008C093B /* MicAndCameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1EFB342444D235008C093B /* MicAndCameraManager.swift */; };
@@ -108,6 +106,9 @@
 		6B55AB2D24C588A200DB61B2 /* RecievedGroupCallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecievedGroupCallView.swift; sourceTree = "<group>"; };
 		6B55AB2F24C5890200DB61B2 /* RecievedGroupCallView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecievedGroupCallView.xib; sourceTree = "<group>"; };
 		6BCD891424A33F2000FD0A22 /* HippoCallClientStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HippoCallClientStrings.swift; sourceTree = "<group>"; };
+		912FAC8E2FF29FDE00F63827 /* EstablishingConnectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstablishingConnectionView.swift; sourceTree = "<group>"; };
+		912FAC8F2FF29FDE00F63827 /* EstablishingConnectionView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EstablishingConnectionView.xib; sourceTree = "<group>"; };
+		912FAC932FF2A05400F63827 /* FuguImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FuguImage.swift; sourceTree = "<group>"; };
 		C980E2D623588D6E004433FF /* HippoCallClient.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = HippoCallClient.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C980E2D823588D6F004433FF /* HippoCallClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HippoCallClient.h; sourceTree = "<group>"; };
 		C980E2D923588D6F004433FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -136,11 +137,6 @@
 		CD1EFB232444D235008C093B /* JitsiCallSignal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JitsiCallSignal.swift; sourceTree = "<group>"; };
 		CD1EFB242444D235008C093B /* CallStartAndReceivedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallStartAndReceivedView.swift; sourceTree = "<group>"; };
 		CD1EFB272444D235008C093B /* CallStartAndReceivedView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallStartAndReceivedView.xib; sourceTree = "<group>"; };
-		CD1EFB292444D235008C093B /* TitilliumWeb-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TitilliumWeb-Bold.ttf"; sourceTree = "<group>"; };
-		CD1EFB2A2444D235008C093B /* TitilliumWeb-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TitilliumWeb-Regular.ttf"; sourceTree = "<group>"; };
-		CD1EFB2B2444D235008C093B /* TitilliumWeb-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TitilliumWeb-SemiBold.ttf"; sourceTree = "<group>"; };
-		CD1EFB2C2444D235008C093B /* OFL.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OFL.txt; sourceTree = "<group>"; };
-		CD1EFB2D2444D235008C093B /* TitilliumWeb-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TitilliumWeb-Italic.ttf"; sourceTree = "<group>"; };
 		CD1EFB2F2444D235008C093B /* FuguColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FuguColor.swift; sourceTree = "<group>"; };
 		CD1EFB302444D235008C093B /* FuguFont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FuguFont.swift; sourceTree = "<group>"; };
 		CD1EFB342444D235008C093B /* MicAndCameraManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MicAndCameraManager.swift; sourceTree = "<group>"; };
@@ -210,6 +206,15 @@
 				6B55AB2F24C5890200DB61B2 /* RecievedGroupCallView.xib */,
 			);
 			path = GroupCallView;
+			sourceTree = "<group>";
+		};
+		912FAC902FF29FDE00F63827 /* WaitingView */ = {
+			isa = PBXGroup;
+			children = (
+				912FAC8E2FF29FDE00F63827 /* EstablishingConnectionView.swift */,
+				912FAC8F2FF29FDE00F63827 /* EstablishingConnectionView.xib */,
+			);
+			path = WaitingView;
 			sourceTree = "<group>";
 		};
 		C980E2D723588D6F004433FF /* HippoCallClient */ = {
@@ -304,11 +309,11 @@
 		CD1EFB1D2444D235008C093B /* ConferenceCall */ = {
 			isa = PBXGroup;
 			children = (
+				912FAC902FF29FDE00F63827 /* WaitingView */,
 				6B55AB2C24C5885900DB61B2 /* GroupCallView */,
 				CD1EFB1E2444D235008C093B /* Extensions.swift */,
 				CD1EFB1F2444D235008C093B /* JitsiConstants.swift */,
 				CD1EFB202444D235008C093B /* NewConferenceViewAndLogic */,
-				CD1EFB282444D235008C093B /* Fonts */,
 				CD1EFB2E2444D235008C093B /* Themes */,
 				CD1EFB312444D235008C093B /* src */,
 			);
@@ -329,21 +334,10 @@
 			path = NewConferenceViewAndLogic;
 			sourceTree = "<group>";
 		};
-		CD1EFB282444D235008C093B /* Fonts */ = {
-			isa = PBXGroup;
-			children = (
-				CD1EFB292444D235008C093B /* TitilliumWeb-Bold.ttf */,
-				CD1EFB2A2444D235008C093B /* TitilliumWeb-Regular.ttf */,
-				CD1EFB2B2444D235008C093B /* TitilliumWeb-SemiBold.ttf */,
-				CD1EFB2C2444D235008C093B /* OFL.txt */,
-				CD1EFB2D2444D235008C093B /* TitilliumWeb-Italic.ttf */,
-			);
-			path = Fonts;
-			sourceTree = "<group>";
-		};
 		CD1EFB2E2444D235008C093B /* Themes */ = {
 			isa = PBXGroup;
 			children = (
+				912FAC932FF2A05400F63827 /* FuguImage.swift */,
 				CD1EFB2F2444D235008C093B /* FuguColor.swift */,
 				CD1EFB302444D235008C093B /* FuguFont.swift */,
 			);
@@ -444,16 +438,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				CD1EFB6C2444D3C1008C093B /* JitsiConfrenceCallView.xib in Resources */,
-				CD1EFB522444D235008C093B /* OFL.txt in Resources */,
-				CD1EFB4F2444D235008C093B /* TitilliumWeb-Bold.ttf in Resources */,
 				6B55AB3024C5890200DB61B2 /* RecievedGroupCallView.xib in Resources */,
 				CD1EFB4E2444D235008C093B /* CallStartAndReceivedView.xib in Resources */,
 				CD1EFB5E2444D235008C093B /* Conference.storyboard in Resources */,
-				CD1EFB502444D235008C093B /* TitilliumWeb-Regular.ttf in Resources */,
-				CD1EFB512444D235008C093B /* TitilliumWeb-SemiBold.ttf in Resources */,
+				912FAC922FF29FDE00F63827 /* EstablishingConnectionView.xib in Resources */,
 				2B1167862450B922008FA330 /* Assets.xcassets in Resources */,
 				6B041B6B24695E4D00A96DBD /* Info.plist in Resources */,
-				CD1EFB532444D235008C093B /* TitilliumWeb-Italic.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -513,6 +503,7 @@
 				C980E2F823588D9E004433FF /* CallPresenter.swift in Sources */,
 				C980E2F423588D9E004433FF /* CustomData.swift in Sources */,
 				C980E30223588D9E004433FF /* HippoCallClient.swift in Sources */,
+				912FAC942FF2A05400F63827 /* FuguImage.swift in Sources */,
 				6B041B5724695E4D00A96DBD /* Kingfisher.swift in Sources */,
 				6B041B5624695E4D00A96DBD /* ThreadHelper.swift in Sources */,
 				6B041B6A24695E4D00A96DBD /* KingfisherOptionsInfo.swift in Sources */,
@@ -521,6 +512,7 @@
 				C980E2F323588D9E004433FF /* HippoHelper.swift in Sources */,
 				6B041B6824695E4D00A96DBD /* Filter.swift in Sources */,
 				6B041B6224695E4D00A96DBD /* KingfisherManager.swift in Sources */,
+				912FAC912FF29FDE00F63827 /* EstablishingConnectionView.swift in Sources */,
 				CD1EFB5B2444D235008C093B /* FloatRatingView.swift in Sources */,
 				C980E2FD23588D9E004433FF /* WebRTCClient.swift in Sources */,
 				6B041B5C24695E4D00A96DBD /* CacheSerializer.swift in Sources */,
