@@ -11,6 +11,9 @@ import UIKit
 import CallKit
 import AVFoundation
 import JitsiMeetSDK
+import os.log
+
+private let callLog = OSLog(subsystem: "com.hippo.callclient", category: "CallSignal")
 
 
 typealias VersionMismatchCallBack = ((_ versionMismatch: Bool) -> Void)
@@ -711,14 +714,20 @@ extension JitsiCallManager {
     }
     
     func sendData(dict: [String : Any], completion: VersionMismatchCallBack? = nil) {
-        //Logger.shared.printVar(for: dict)
-        activeCall?.signalingClient.connectClient(completion: { (success) in
-            guard self.activeCall != nil else {
-                return
-            }
-            self.activeCall.signalingClient.sendJitsiObject(json: dict) { [weak self] (mark, error) in
-                if !mark{
-                    // Logger.shared.printVar(for: error?.localizedDescription)
+        // Capture signalingClient before any async path so signals (reject/hangup) are
+        // delivered even when activeCall is cleared before the socket callback fires —
+        // which happens in kill-state where connectClient must subscribe asynchronously.
+        guard let signalingClient = activeCall?.signalingClient else { return }
+        let signalType = dict["video_call_type"] as? String ?? "UNKNOWN"
+        os_log("[CallSignal] QUEUED: %{public}@", log: callLog, type: .default, signalType)
+        signalingClient.connectClient(completion: { [weak self] (success) in
+            os_log("[CallSignal] SOCKET READY (success=%{public}@), publishing: %{public}@", log: callLog, type: .default, "\(success)", signalType)
+            signalingClient.sendJitsiObject(json: dict) { [weak self] (mark, error) in
+                if mark {
+                    os_log("[CallSignal] PUBLISHED: %{public}@", log: callLog, type: .default, signalType)
+                    completion?(false)
+                } else {
+                    os_log("[CallSignal] FAILED: %{public}@, error=%{public}@, code=%{public}d", log: callLog, type: .error, signalType, error?.localizedDescription ?? "nil", error?.code ?? -1)
                     if (error?.code == 415){
                         self?.removeDialAndReceivedView()
                         self?.removeStartConTimer(for: false, createCall: true)
@@ -728,8 +737,6 @@ extension JitsiCallManager {
                         self?.endRepeatStartGroupCall()
                         completion?(true)
                     }
-                }else{
-                    completion?(false)
                 }
             }
         })
@@ -1133,11 +1140,10 @@ extension JitsiCallManager {
     
     
     func sendSignalWith(json: [String: Any], completion: VersionMismatchCallBack? = nil) {
-        activeCall?.signalingClient.connectClient(completion: { [weak self]  (success) in
-            self?.activeCall?.signalingClient.sendJitsiObject(json: json, completion: {(success, error) in
-                
+        guard let signalingClient = activeCall?.signalingClient else { return }
+        signalingClient.connectClient(completion: { [weak self] (success) in
+            signalingClient.sendJitsiObject(json: json, completion: { [weak self] (success, error) in
                 if !success{
-                    // Logger.shared.printVar(for: error?.localizedDescription)
                     if (error?.code == 415){
                         self?.removeDialAndReceivedView()
                         self?.removeStartConTimer(for: false, createCall: true)
