@@ -53,12 +53,21 @@ class JitsiConfrenceCallView: UIView {
             ptionsBuilder.setAudioOnly(data.audioOnly)
             ptionsBuilder.serverURL = data.serverURL
             ptionsBuilder.room = data.roomID
-            ptionsBuilder.setAudioMuted(data.isMuted)
+            //ptionsBuilder.setAudioMuted(data.isMuted)
             ptionsBuilder.userInfo = userInfo
             ptionsBuilder.setFeatureFlag("prejoinpage.enabled", withBoolean: false)
             ptionsBuilder.setFeatureFlag("welcomepage.enabled", withBoolean: false)
             ptionsBuilder.setFeatureFlag("chat.enabled", withValue: false)
-            ptionsBuilder.setFeatureFlag("call-integration.enabled", withBoolean: true)
+            // call-integration MUST be disabled.
+            // When enabled, Jitsi always fires CXStartCallAction(callUUID) which creates a
+            // NEW outgoing CXCall. Our UUID is already registered as an incoming CXCall from
+            // the VoIP push. iOS sees two incompatible CXCall states → providerDidReset →
+            // CallKit screen dismissed. setCallUUID does NOT prevent this — Jitsi still calls
+            // startCall internally regardless of whether the UUID exists.
+            // With integration disabled: no Jitsi CallKit interference, our incoming CXCall
+            // stays alive, audio session remains active, audio works via RTCAudioSession.
+            ptionsBuilder.setFeatureFlag("filmstrip.enabled", withBoolean: false)
+            ptionsBuilder.setFeatureFlag("call-integration.enabled", withBoolean: false)
             ptionsBuilder.setFeatureFlag("pip.enabled", withBoolean: true)
             ptionsBuilder.setFeatureFlag("invite.enabled", withValue: data.isInviteEnabled)
             ptionsBuilder.setFeatureFlag("security-options.enabled", withValue: false)
@@ -207,7 +216,8 @@ class JitsiMeetDataModel {
     let roomID: String
     var isMuted : Bool
     var isInviteEnabled : Bool = false
-    
+    var callUUID: UUID?
+
     init(userName: String?, userEmail: String?, userImage: URL?, audioOnly: Bool, serverURl: URL, roomID: String, isMuted : Bool) {
         self.userName = userName
         self.userEmail = userEmail

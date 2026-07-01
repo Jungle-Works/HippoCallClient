@@ -48,17 +48,36 @@ class JitsiCallManager : NSObject{
     private var offerWaitTimer: Timer?
     var isCallJoinedFromLink: Bool = false
     var isInviteEnabled: Bool = false
+    var isAnswerFlowInProgress: Bool = false
     var callingType = UserDefaults.standard.value(forKey: "callingType") as? Int            //2 for jitsi, 3 for videosdk
     var idForHungUpSent: String? = nil
     
     
     private override init() {
         super.init()
-        
+
         if !(JMCallKitProxy.isProviderConfigured()){
             JMCallKitProxy.configureProvider(localizedName: "", ringtoneSound: nil, iconTemplateImageData: nil)
         }
         JMCallKitProxy.addListener(self)
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleDeviceUnlock),
+            name: UIApplication.protectedDataDidBecomeAvailableNotification,
+            object: nil
+        )
+    }
+
+    // Device unlocked while call was active on lock screen.
+    // CallKit is still alive (we no longer kill it in userDidJoinConference),
+    // so just re-position the Jitsi view onto the now-visible window.
+    @objc private func handleDeviceUnlock() {
+        os_log("[LockedScreen] device UNLOCKED — isCallJoined=%{public}@, hasActiveCall=%{public}@",
+               log: callLog, type: .default,
+               "\(isCallJoined)", "\(activeCall != nil)")
+        guard isCallJoined, activeCall != nil else { return }
+        keyWindowChanged()
     }
     
     func startCall(with call: Call,isInviteEnabled: Bool, meetingId: String? = "", completion: VersionMismatchCallBack? = nil) {
@@ -551,8 +570,20 @@ extension JitsiCallManager {
                     }
                     strongSelf.sendOffer()
                 case .ANSWER_CONFERENCE:
+                    // Faye echoes every sent message back to the sender. When WE send
+                    // ANSWER_CONFERENCE, sendAnswered() immediately sets
+                    // muidOne2oneDic[callUID] = true. When the echo arrives ~1s later,
+                    // sender.peerId == activeCall.currentUser.peerId (both are us), which
+                    // normally means "another of my devices answered". But it's really just
+                    // our own echo. Without this guard, resetAllResourceForNewCall() fires
+                    // and kills the CallKit session with reason=.failed.
+                    if self?.muidOne2oneDic?[signal?.callUID ?? ""] == true {
+                        os_log("[LockedScreen] ANSWER_CONFERENCE echo ignored (muid already processed)", log: callLog, type: .default)
+                        break
+                    }
                     guard signal?.sender.peerId != self?.activeCall?.currentUser.peerId  else {
                         ///if answer_conference recieved from same user (peerid) from another device
+                        os_log("[LockedScreen] ANSWER_CONFERENCE from same user on another device — resetting this device", log: callLog, type: .default)
                         self?.endRepeatStartCalliOS()
                         self?.endRepeatStartCall()
                         self?.removeDialAndReceivedView()
@@ -812,6 +843,7 @@ extension JitsiCallManager {
     func sendReadyToConnect() {
         guard let call = activeCall, !call.isCallByMe,
               let signal = makeCallSignal(type: .READY_TO_CONNECT_CONFERENCE_IOS, silent: true) else { return }
+        os_log("[LockedScreen] QUEUED: READY_TO_CONNECT — callUID=%{public}@", log: callLog, type: .default, call.uID)
         sendData(dict: signal.getJsonToSendToFaye())
         startTimerForConference(createCall: false)
     }
@@ -825,9 +857,12 @@ extension JitsiCallManager {
     
     func sendCallRejected() {
         if activeCall == nil {
+            os_log("[LockedScreen] sendCallRejected — SKIPPED, activeCall is nil", log: callLog, type: .error)
             return
         }
-        
+
+        os_log("[LockedScreen] QUEUED: REJECT_CONFERENCE — callUID=%{public}@, isCallJoined=%{public}@",
+               log: callLog, type: .default, activeCall!.uID, "\(isCallJoined)")
         let signal = JitsiCallSignal(signalType: .REJECT_CONFERENCE, callUID: activeCall!.uID, sender: activeCall!.currentUser, senderDeviceID: activeCall?.uID ?? "", callType: activeCall!.type , link: link, isFSilent: true, jitsiUrl: jitsiUrl ?? "")
         let dict = signal.getJsonToSendToFaye()
         sendData(dict: dict, completion: {(mark) in
@@ -873,9 +908,14 @@ extension JitsiCallManager {
     
     func sendCallHungup() {
         if let signal = makeCallSignal(type: .HUNGUP_CONFERENCE, silent: true) {
+            os_log("[LockedScreen] QUEUED: HUNGUP_CONFERENCE — callUID=%{public}@, isCallJoined=%{public}@",
+                   log: callLog, type: .default, activeCall?.uID ?? "nil", "\(isCallJoined)")
             sendData(dict: signal.getJsonToSendToFaye())
             idForHungUpSent = activeCall?.uID
             resetAllResourceForNewCall()
+        } else {
+            os_log("[LockedScreen] sendCallHungup — SKIPPED, makeCallSignal returned nil (activeCall=%{public}@)",
+                   log: callLog, type: .error, activeCall == nil ? "nil" : "set")
         }
         if JitsiConfrenceCallView.shared != nil {
             JitsiConfrenceCallView.shared.removeFromSuperview()
@@ -1016,7 +1056,7 @@ extension JitsiCallManager {
     func userDataForOutgoingCall() -> JitsiMeetDataModel? {
         let tempLink = getLinkAfertRemoveAudio(link: (jitsiUrl ?? "") == "" ? link : jitsiUrl ?? "")
         guard let data = getURLOrRoomId(for: tempLink) else { return nil }
-        return JitsiMeetDataModel(
+        let model = JitsiMeetDataModel(
             userName: activeCall.currentUser.name,
             userEmail: "",
             userImage: URL(string: activeCall.currentUser.image),
@@ -1025,12 +1065,22 @@ extension JitsiCallManager {
             roomID: data.roomId,
             isMuted: false
         )
+        // Pass the backend call UUID so Jitsi reuses the existing CXCall that was
+        // reported for this incoming call, rather than creating a second CXCall.
+        // Without this, Jitsi generates its own UUID → two CXCalls → providerDidReset.
+        model.callUUID = UUID(uuidString: activeCall.uID)
+        return model
     }
     
     func resetAllResourceForNewCall() {
-        if let actCall = activeCall {
-            reportEndCallToCallKit(actCall.uID, .failed)
-        }
+        // NOTE: reportEndCallToCallKit is intentionally NOT called here.
+        // All callers that legitimately end a call (sendCallHungup, sendCallRejected,
+        // userDidTerminatedConference, remote signal handlers) already call
+        // reportEndCallToCallKit with the correct reason before reaching this function.
+        // Calling it here with .failed would double-end the CallKit session and would
+        // incorrectly kill CallKit when reset is called for non-error reasons (e.g. echo
+        // dedup, multi-device dismiss, or joining the Jitsi room).
+        os_log("[LockedScreen] resetAllResourceForNewCall — clearing state (no CallKit end here)", log: callLog, type: .default)
         isCallJoinedFromLink = false
         isInviteEnabled = false
         activeCall = nil
@@ -1051,6 +1101,7 @@ extension JitsiCallManager {
         timeElapsedSinceWaitingForOffer = 0
         receivedCallData = nil
         isCallJoined = false
+        isAnswerFlowInProgress = false
         isOfferRecieved = nil
         jitsiUrl = nil
     }
@@ -1162,9 +1213,15 @@ extension JitsiCallManager : JitsiConfrenceCallViewDelegate  {
     func userDidJoinConference() {
         isCallJoined = true
         isCallStarted?(true)
-        if UIApplication.shared.isProtectedDataAvailable{
-            reportEndCallToCallKit(activeCall?.uID ?? "", .remoteEnded)
-        }
+        let protectedData = UIApplication.shared.isProtectedDataAvailable
+        os_log("[LockedScreen] CALL JOINED — isProtectedDataAvailable=%{public}@, callUID=%{public}@",
+               log: callLog, type: .default,
+               "\(protectedData)", activeCall?.uID ?? "nil")
+        // Do NOT end CallKit here. Ending at join time dismisses the native in-call
+        // screen/Dynamic Island immediately, which prevents the user from pressing X
+        // and ensures no HUNGUP signal reaches the caller.
+        // CallKit is ended by: userDidTerminatedConference (user leaves meeting),
+        // sendCallHungup (reject/timeout), or remote-end signal handlers.
     }
     
     func userWillLeaveConference() {
@@ -1172,10 +1229,13 @@ extension JitsiCallManager : JitsiConfrenceCallViewDelegate  {
     }
     
     func userDidTerminatedConference() {
-        
+
         isCallJoinedFromLink = false
+        os_log("[LockedScreen] CALL TERMINATED by user — isGroupCall=%{public}@, callUID=%{public}@",
+               log: callLog, type: .default,
+               "\(activeCall?.isGroupCall ?? false)", activeCall?.uID ?? "nil")
         self.reportEndCallToCallKit(self.activeCall?.uID ?? "", .remoteEnded)
-        
+
         if (activeCall?.isGroupCall ?? false) == false{
             sendCallHungup()
         }else{
