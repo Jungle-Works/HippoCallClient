@@ -221,6 +221,7 @@ extension MeetingViewController: MeetingEventListener {
 
         // handle local participant on start
         guard let localParticipant = self.meeting?.localParticipant else { return }
+        guard !participants.contains(where: { $0.id == localParticipant.id }) else { return }
 
         // add to list
         participants.append(localParticipant)
@@ -256,6 +257,7 @@ extension MeetingViewController: MeetingEventListener {
 
     /// A new participant joined
     func onParticipantJoined(_ participant: Participant) {
+        guard !participants.contains(where: { $0.id == participant.id }) else { return }
 
         // add new participant to list
         participants.append(participant)

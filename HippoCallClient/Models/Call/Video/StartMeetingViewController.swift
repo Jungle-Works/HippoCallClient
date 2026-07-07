@@ -292,12 +292,18 @@ class StartMeetingViewController: UIViewController {
                 self?.setJoinButtonState(enabled: false, title: "Joining...")
                 self?.btnJoinAMeetingTapped(self as Any)
             } else {
-                let h = Int(remaining) / 3600
+                let d = Int(remaining) / 86400
+                let h = (Int(remaining) % 86400) / 3600
                 let m = (Int(remaining) % 3600) / 60
                 let s = Int(remaining) % 60
-                let title = h > 0
-                    ? String(format: "Starting in %02d:%02d:%02d", h, m, s)
-                    : String(format: "Starting in %02d:%02d", m, s)
+                let title: String
+                if d > 0 {
+                    title = String(format: "Starting in %dd %dh %dm %ds", d, h, m, s)
+                } else if h > 0 {
+                    title = String(format: "Starting in %02d:%02d:%02d", h, m, s)
+                } else {
+                    title = String(format: "Starting in %02d:%02d", m, s)
+                }
                 print("[Countdown] \(title)")
                 self?.setJoinButtonState(enabled: false, title: title)
             }
