@@ -49,6 +49,15 @@ public class HippoCallClient {
         CallClient.shared.voipNotificationRecievedForGroupCall(dictionary: dictionary, peer: peer, signalingClient: signalingClient, currentUser: currentUser, isInviteEnabled: isInviteEnabled)
     }
     
+    /// Called when a push reports the call ended before it was joined (e.g. caller
+    /// cancelled while the Jitsi "connecting" view was still showing). Dismisses that
+    /// view only if `muid` matches the call currently in progress.
+    ///
+    /// - Parameter muid: the `muid` field from the push payload
+    public func handleCallCancelledPush(muid: String?) {
+        JitsiCallManager.shared.dismissIfMatchingActiveCall(muid: muid)
+    }
+
     public func appSecretkeyFromCallManager(key : String){
         CallClient.shared.appSecretFromHippoCallClient(key : key)
     }

@@ -905,7 +905,16 @@ extension JitsiCallManager {
         }
         self.removeStartConTimer(for: false, createCall: false)
     }
-    
+
+    // Called when a push (not the live Faye socket) reports the call ended/missed
+    // (e.g. caller cancelled while we were still connecting to the Jitsi room).
+    // Gated on muid so an unrelated push can't dismiss a different in-progress call.
+    func dismissIfMatchingActiveCall(muid: String?) {
+        guard let muid = muid, activeCall?.uID == muid else { return }
+        reportEndCallToCallKit(muid, .answeredElsewhere)
+        otherUserCallHungup()
+    }
+
     func sendCallHungup() {
         if let signal = makeCallSignal(type: .HUNGUP_CONFERENCE, silent: true) {
             os_log("[LockedScreen] QUEUED: HUNGUP_CONFERENCE — callUID=%{public}@, isCallJoined=%{public}@",
