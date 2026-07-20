@@ -9,7 +9,7 @@
 import UIKit
 import JitsiMeetSDK
 import AVFoundation
-
+import WebRTC
 
 protocol JitsiConfrenceCallViewDelegate: class {
     func userDidJoinConference()
@@ -78,7 +78,7 @@ class JitsiConfrenceCallView: UIView {
         }
         
         print("room id ---->>>>", data.roomID, "\n server url --->>>>", data.serverURL)
-        
+
         jitsiView.join(conferenceOptions)
         jitsiView.delegate = self
         animateLabelDots(label: label_Loading)
@@ -141,14 +141,28 @@ class JitsiConfrenceCallView: UIView {
 
 extension JitsiConfrenceCallView : JitsiMeetViewDelegate {
     func conferenceJoined(_ data: [AnyHashable : Any]!) {
+        // call-integration.enabled is off (see setupJitsi), so Jitsi never gets a CallKit
+        // activation callback to keep the AVAudioSession in .playAndRecord — its own join
+        // sequence otherwise leaves the session on category .ambient, which cannot record.
+        // JitsiAudioSession.activate(with:) alone does not restore the category, so set it
+        // directly the same way HippoConfig.enableAudioSession() does for incoming calls,
+        // then mirror providerDidActivateAudioSession's RTCAudioSession activation so
+        // WebRTC's own audio unit actually starts.
+        try? AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .voiceChat, options: [.allowBluetooth, .mixWithOthers])
+        try? AVAudioSession.sharedInstance().setActive(true)
+        JitsiAudioSession.activate(with: AVAudioSession.sharedInstance())
+        RTCAudioSession.sharedInstance().useManualAudio = true
+        RTCAudioSession.sharedInstance().audioSessionDidActivate(AVAudioSession.sharedInstance())
+        RTCAudioSession.sharedInstance().isAudioEnabled = true
         delegate?.userDidJoinConference()
         view_JitsiTopView.isHidden = true
         displayLink?.invalidate()
         displayLink = nil
     }
-    
-    
+
+
     func conferenceTerminated(_ data: [AnyHashable : Any]!) {
+        JitsiAudioSession.deactivate(with: AVAudioSession.sharedInstance())
         removeNotification()
         delegate?.userDidTerminatedConference()
         pipViewCoordinator?.exitPictureInPicture()

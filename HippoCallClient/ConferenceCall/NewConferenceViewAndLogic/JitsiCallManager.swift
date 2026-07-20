@@ -11,6 +11,7 @@ import UIKit
 import CallKit
 import AVFoundation
 import JitsiMeetSDK
+import WebRTC
 import os.log
 
 private let callLog = OSLog(subsystem: "com.hippo.callclient", category: "CallSignal")
@@ -81,7 +82,15 @@ class JitsiCallManager : NSObject{
     }
     
     func startCall(with call: Call,isInviteEnabled: Bool, meetingId: String? = "", completion: VersionMismatchCallBack? = nil) {
-        
+
+        // Outgoing calls never go through CallKit (call-integration.enabled is disabled in
+        // JitsiConfrenceCallView to avoid duplicate CXCalls — see setupJitsi), so
+        // providerDidActivateAudioSession never fires for them. If useManualAudio was left
+        // true by an earlier incoming call, WebRTC's audio unit would wait forever for an
+        // activation signal that never comes, and mic capture would silently never start.
+        // Reset to automatic session handling so outgoing calls don't depend on that signal.
+        RTCAudioSession.sharedInstance().useManualAudio = false
+
         var finalMeetId : String!
         
         if let meetId = meetingId, !meetId.isEmpty{
