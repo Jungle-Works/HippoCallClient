@@ -182,7 +182,7 @@ class CallClient{
         }
     }
     
-    func joinVideoSdkCallByMeetingID(serverToken: String, meetingID: String, name: String? = nil, startTime: String? = nil, endTime: String? = nil) {
+    func joinVideoSdkCallByMeetingID(serverToken: String, meetingID: String, name: String? = nil, startTime: String? = nil, endTime: String? = nil, transactionId: String? = nil) {
         withAVPermissions { [weak self] granted in
             guard granted, let self = self else { return }
             let bundle = Bundle(identifier: "org.cocoapods.HippoCallClient")
@@ -194,6 +194,7 @@ class CallClient{
             vVc.presetName = name
             vVc.meetingStartTime = startTime
             vVc.meetingEndTime = endTime
+            vVc.transactionId = transactionId
             let nav = UINavigationController(rootViewController: vVc)
             nav.modalPresentationStyle = .overFullScreen
             self.getLastVisibleController()?.present(nav, animated: true, completion: nil)
@@ -347,7 +348,7 @@ class CallClient{
         }
     }
     
-    func getVideoSdkTokenNative(comingFrom: String = "", transaction_id: String = "", name: String? = nil, startTime: String? = nil, endTime: String? = nil, completion: ((String) -> Void)? = nil){
+    func getVideoSdkTokenNative(comingFrom: String = "", transaction_id: String = "", name: String? = nil, startTime: String? = nil, endTime: String? = nil, presentLobby: Bool = true, completion: ((String) -> Void)? = nil){
         var params = getParamsForVideoSDKNative()
         if comingFrom == "deeplink"{
             params["transaction_id"] = transaction_id
@@ -387,8 +388,12 @@ class CallClient{
                     
                     print("token ------>>>>>>>", results["token"] as? String ?? "", "\n meeting id ---->>>>>", results["meeting_id"] as? String ?? "")
                     if comingFrom == "deeplink"{
-                        DispatchQueue.main.async {
-                            self?.joinVideoSdkCallByMeetingID(serverToken: results["token"] as? String ?? "", meetingID: results["meeting_id"] as? String ?? "", name: name, startTime: startTime, endTime: endTime)
+                        if presentLobby {
+                            DispatchQueue.main.async {
+                                self?.joinVideoSdkCallByMeetingID(serverToken: results["token"] as? String ?? "", meetingID: results["meeting_id"] as? String ?? "", name: name, startTime: startTime, endTime: endTime, transactionId: transaction_id)
+                            }
+                        } else {
+                            completion?(results["token"] as? String ?? "")
                         }
                     }else{
                         if completion == nil{

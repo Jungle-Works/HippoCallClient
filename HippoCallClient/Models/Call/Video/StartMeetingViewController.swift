@@ -49,6 +49,12 @@ class StartMeetingViewController: UIViewController {
     var presetName: String? = nil
     var meetingStartTime: String? = nil
     var meetingEndTime: String? = nil
+    var transactionId: String? = nil
+    private var tokenMintedAt = Date()
+    private var tokenRefreshRequested = false
+    private var joinPending = false
+    private static let tokenRefreshLead: TimeInterval = 15
+    private static let tokenMaxAge: TimeInterval = 45
     private var countdownTimer: Timer?
     private let meetingDateFormatter: DateFormatter = {
         let f = DateFormatter()
@@ -286,12 +292,16 @@ class StartMeetingViewController: UIViewController {
     private func startCountdownTimer(to startTime: Date) {
         countdownTimer?.invalidate()
         countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] timer in
+            guard let self = self else { return }
             let remaining = startTime.timeIntervalSinceNow
             if remaining <= 0 {
                 timer.invalidate()
-                self?.setJoinButtonState(enabled: false, title: "Joining...")
-                self?.btnJoinAMeetingTapped(self as Any)
+                self.setJoinButtonState(enabled: false, title: "Joining...")
+                self.btnJoinAMeetingTapped(self as Any)
             } else {
+                if remaining <= StartMeetingViewController.tokenRefreshLead {
+                    self.refreshTokenIfNeeded()
+                }
                 let d = Int(remaining) / 86400
                 let h = (Int(remaining) % 86400) / 3600
                 let m = (Int(remaining) % 3600) / 60
@@ -305,7 +315,7 @@ class StartMeetingViewController: UIViewController {
                     title = String(format: "Starting in %02d:%02d", m, s)
                 }
                 print("[Countdown] \(title)")
-                self?.setJoinButtonState(enabled: false, title: title)
+                self.setJoinButtonState(enabled: false, title: title)
             }
         }
         countdownTimer?.fire()
@@ -518,13 +528,44 @@ class StartMeetingViewController: UIViewController {
     
     func joinMeeting() {
         txtEnterNameField.resignFirstResponder()
-        
-        if !serverToken.isEmpty {
-            // use provided token for the meeting
-            self.startMeeting()
-        }else {
+
+        guard !serverToken.isEmpty else {
             // show error popup
             self.showAlert(title: "Auth Token Required", message: "Please provide auth token to start the meeting.")
+            return
+        }
+        guard !joinPending else { return }
+
+        let tokenAge = Date().timeIntervalSince(tokenMintedAt)
+        if tokenAge >= StartMeetingViewController.tokenMaxAge, let transactionId = transactionId, !transactionId.isEmpty {
+            joinPending = true
+            setJoinButtonState(enabled: false, title: "Joining...")
+            fetchFreshToken(transactionId: transactionId) { [weak self] in
+                self?.joinPending = false
+                self?.startMeeting()
+            }
+        } else {
+            self.startMeeting()
+        }
+    }
+
+    // MARK: - Token refresh
+
+    private func refreshTokenIfNeeded() {
+        guard !tokenRefreshRequested, let transactionId = transactionId, !transactionId.isEmpty else { return }
+        tokenRefreshRequested = true
+        fetchFreshToken(transactionId: transactionId) { }
+    }
+
+    private func fetchFreshToken(transactionId: String, onComplete: @escaping () -> Void) {
+        CallClient.shared.getVideoSdkTokenNative(comingFrom: "deeplink", transaction_id: transactionId, name: presetName, startTime: meetingStartTime, endTime: meetingEndTime, presentLobby: false) { [weak self] token in
+            DispatchQueue.main.async {
+                if !token.isEmpty {
+                    self?.serverToken = token
+                    self?.tokenMintedAt = Date()
+                }
+                onComplete()
+            }
         }
     }
     
