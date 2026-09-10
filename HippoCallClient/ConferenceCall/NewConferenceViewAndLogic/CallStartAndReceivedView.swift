@@ -121,24 +121,83 @@ class CallStartAndReceivedView: UIView {
         callStateMessageLabel.textColor = UIColor.iLightBlack
         ansButton.layer.cornerRadius = ansButton.frame.height / 2
         ansButton.layer.masksToBounds = true
-         ansButton.setImage(UIImage(named: "connectCall", in: self.bundle, compatibleWith: nil), for: .normal)
+        // Keep the nib-loaded image if the runtime lookup fails (e.g. resource bundle
+        // not resolvable) rather than blanking the button.
+        if let accept = UIImage(named: "connectCall", in: self.bundle, compatibleWith: nil) ?? FuguImage.callAccept {
+            ansButton.setImage(accept, for: .normal)
+        }
         cancelButton.layer.cornerRadius = cancelButton.frame.height / 2
         cancelButton.layer.masksToBounds = true
-        cancelButton.setImage(UIImage(named: "disconnectCall", in: self.bundle, compatibleWith: nil), for: .normal)
+        if let reject = UIImage(named: "disconnectCall", in: self.bundle, compatibleWith: nil) ?? FuguImage.callReject {
+            cancelButton.setImage(reject, for: .normal)
+        }
         userImageView.layer.cornerRadius = userImageView.frame.height / 2
         dailCallCancelButton.layer.cornerRadius = dailCallCancelButton.frame.height / 2
         dailCallCancelButton.layer.masksToBounds = true
-        dailCallCancelButton.setImage(UIImage(named: "disconnectCall", in: self.bundle, compatibleWith: nil), for: .normal)
+        if let reject = UIImage(named: "disconnectCall", in: self.bundle, compatibleWith: nil) ?? FuguImage.callReject {
+            dailCallCancelButton.setImage(reject, for: .normal)
+        }
         userImageView.layer.borderWidth = 0.5
         userImageView.layer.borderColor = UIColor.lightGray.cgColor
-        nameLabel.text = userInfo["label"] as? String
-        let url =  URL(string: userInfo["user_thumbnail_image"] as? String ?? "")
-        if let someUrl = url {
-            userImageView.kf.setImage(with: someUrl)
-        } else {
-            userImageView.image = FuguImage.userImagePlaceholder
+        userImageView.layer.masksToBounds = true
+        userImageView.contentMode = .scaleAspectFill
+        let name = userInfo["label"] as? String
+        nameLabel.text = name
+
+        // Same as the conversation list / chat header: no photo -> show the name's
+        // first letter (e.g. "V" for Visitor), not a generic placeholder / blank.
+        // `URL(string: "")` is non-nil, so check for a real host before loading.
+        let thumb = (userInfo["user_thumbnail_image"] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        userImageView.image = CallStartAndReceivedView.initialsImage(for: name, size: userImageView.bounds.size)
+        if !thumb.isEmpty, let url = URL(string: thumb), url.host != nil {
+            userImageView.kf.setImage(with: url, placeholder: userImageView.image)
         }
-        
+    }
+
+    /// Same per-initial pastel palette as the Hippo SDK's conversation list /
+    /// chat header (FuguHelpers.material + getColor), duplicated here because those
+    /// globals aren't visible from this module.
+    private static let initialsPalette = [
+        "B8E9F3", "D8C8FF", "C9E7CF", "FFD4B3", "FFCDDC",
+        "FFEBA3", "C4EEEA", "DCC6F3", "C5E2FF", "CFF2DA"
+    ]
+
+    private static func color(fromHex hex: String) -> UIColor {
+        var value: UInt64 = 0
+        Scanner(string: hex).scanHexInt64(&value)
+        return UIColor(red: CGFloat((value & 0xFF0000) >> 16) / 255,
+                       green: CGFloat((value & 0x00FF00) >> 8) / 255,
+                       blue: CGFloat(value & 0x0000FF) / 255,
+                       alpha: 1)
+    }
+
+    /// Draws a circular avatar with the first letter of `name` on the palette colour
+    /// for that letter — a self-contained stand-in for the SDK's `setTextInImage`.
+    static func initialsImage(for name: String?, size: CGSize) -> UIImage? {
+        let side = max(size.width, size.height, 60)
+        let canvas = CGSize(width: side, height: side)
+        let trimmedName = name?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        let letter = trimmedName.isEmpty ? "?" : String(trimmedName.first!).uppercased()
+        let idx = Int(letter.unicodeScalars.first?.value ?? 0) % initialsPalette.count
+        let fill = color(fromHex: initialsPalette[idx])
+
+        let renderer = UIGraphicsImageRenderer(size: canvas)
+        return renderer.image { ctx in
+            let rect = CGRect(origin: .zero, size: canvas)
+            fill.setFill()
+            ctx.cgContext.fillEllipse(in: rect)
+            let font = UIFont.systemFont(ofSize: side * 0.42, weight: .regular)
+            let attrs: [NSAttributedString.Key: Any] = [
+                .font: font,
+                .foregroundColor: UIColor.white
+            ]
+            let textSize = (letter as NSString).size(withAttributes: attrs)
+            let textRect = CGRect(x: (side - textSize.width) / 2,
+                                  y: (side - textSize.height) / 2,
+                                  width: textSize.width,
+                                  height: textSize.height)
+            (letter as NSString).draw(in: textRect, withAttributes: attrs)
+        }
     }
     
     @IBAction func ansButtonTapped(_ sender: Any) {
@@ -183,13 +242,24 @@ extension CallStartAndReceivedView {
     func dailCallSetup() {
         setup()
         receivedCallOptionView.isHidden = true
+        ansButton.isHidden = true
+        cancelButton.isHidden = true
         dailCallCancelButton.isHidden = false
         dailCallCancelButton.isEnabled = true
         callStateMessageLabel.text = HippoCallClientStrings.calling
     }
-    
+
     func receivedCallSetup() {
         setup()
+        // `CallStartAndReceivedView.shared` is a reused static instance — after an
+        // outgoing call, dailCallSetup() has left receivedCallOptionView hidden, and
+        // this method only reset the dial button. Explicitly restore the answer/
+        // decline row so the decline button reappears on the next incoming call.
+        receivedCallOptionView.isHidden = false
+        ansButton.isHidden = false
+        ansButton.isEnabled = true
+        cancelButton.isHidden = false
+        cancelButton.isEnabled = true
         dailCallCancelButton.isHidden = true
         dailCallCancelButton.isEnabled = false
         callStateMessageLabel.text = HippoCallClientStrings.callingYou

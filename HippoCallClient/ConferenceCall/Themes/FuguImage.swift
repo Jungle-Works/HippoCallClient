@@ -11,12 +11,24 @@ import UIKit
 class FuguImage {
     
     fileprivate class var bundle: Bundle? {
-        
+
         let podBundle = Bundle(for: FuguImage.self)
-        guard let bundleURL = podBundle.url(forResource: "HippoCallClient", withExtension: "bundle"), let fetchBundle = Bundle(url: bundleURL) else {
-            return nil
+        // Resources may sit in a nested `HippoCallClient.bundle` (resource_bundles) or,
+        // depending on packaging, directly inside the framework bundle. Try the nested
+        // one first, then fall back to the framework itself, then the main app bundle.
+        if let bundleURL = podBundle.url(forResource: "HippoCallClient", withExtension: "bundle"),
+           let fetchBundle = Bundle(url: bundleURL) {
+            return fetchBundle
         }
-        return fetchBundle
+        if podBundle.url(forResource: "connectCall", withExtension: "png") != nil
+            || podBundle.path(forResource: "Assets", ofType: "car") != nil {
+            return podBundle
+        }
+        if let mainNested = Bundle.main.url(forResource: "HippoCallClient", withExtension: "bundle"),
+           let fetchBundle = Bundle(url: mainNested) {
+            return fetchBundle
+        }
+        return podBundle
     }
     
     class var userImagePlaceholder:UIImage? {
