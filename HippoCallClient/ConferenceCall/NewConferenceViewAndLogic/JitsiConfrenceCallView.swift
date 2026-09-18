@@ -12,9 +12,14 @@ import AVFoundation
 import WebRTC
 
 protocol JitsiConfrenceCallViewDelegate: class {
+    /// `join` has been requested; the conference has not come up yet.
+    func userIsConnectingToConference()
     func userDidJoinConference()
     func userWillLeaveConference()
     func userDidTerminatedConference()
+    /// Jitsi reported the conference ended. `error` is its `error` key, absent on a
+    /// graceful hangup — see JitsiConnectionErrors.js / JitsiConferenceErrors.js.
+    func conferenceDidTerminate(error: String?)
     func userDidEnterPictureInPicture()
 }
 
@@ -79,8 +84,11 @@ class JitsiConfrenceCallView: UIView {
         
         print("room id ---->>>>", data.roomID, "\n server url --->>>>", data.serverURL)
 
-        jitsiView.join(conferenceOptions)
         jitsiView.delegate = self
+        // Announced before join so the connect watchdog is armed even if the React Native
+        // bridge is wedged and conferenceWillJoin never arrives.
+        delegate?.userIsConnectingToConference()
+        jitsiView.join(conferenceOptions)
         animateLabelDots(label: label_Loading)
     }
     
@@ -135,11 +143,20 @@ class JitsiConfrenceCallView: UIView {
     }
     
     func removeNotification() {
-        NotificationCenter.default.removeObserver(JitsiConfrenceCallView.shared, name: NSNotification.Name(rawValue: "SEND_URL_JITSI"), object: nil)
+        // `self` is the observer loadView registered, and unlike the shared static it is
+        // still valid here: conferenceTerminated arrives after teardown has already nilled
+        // `shared`, and reading that implicitly unwrapped static would trap.
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "SEND_URL_JITSI"), object: nil)
     }
 }
 
 extension JitsiConfrenceCallView : JitsiMeetViewDelegate {
+    func conferenceWillJoin(_ data: [AnyHashable : Any]!) {
+        // Nothing to do beyond confirming the join actually started — the watchdog was
+        // already armed in setupJitsi. If this never fires, the problem is before the
+        // network: a bad room id / server URL, or a dead RN bridge.
+    }
+
     func conferenceJoined(_ data: [AnyHashable : Any]!) {
         // call-integration.enabled is off (see setupJitsi), so Jitsi never gets a CallKit
         // activation callback to keep the AVAudioSession in .playAndRecord — its own join
@@ -164,10 +181,12 @@ extension JitsiConfrenceCallView : JitsiMeetViewDelegate {
     func conferenceTerminated(_ data: [AnyHashable : Any]!) {
         JitsiAudioSession.deactivate(with: AVAudioSession.sharedInstance())
         removeNotification()
-        delegate?.userDidTerminatedConference()
+        displayLink?.invalidate()
+        displayLink = nil
+        // `error` is only present when the conference failed; a graceful hangup omits it.
+        delegate?.conferenceDidTerminate(error: data?["error"] as? String)
         pipViewCoordinator?.exitPictureInPicture()
         pipViewCoordinator = nil
-//        Logger.shared.printVar(for: data)
     }
     
     func enterPicture(inPicture data: [AnyHashable : Any]!) {

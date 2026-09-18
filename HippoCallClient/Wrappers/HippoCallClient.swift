@@ -18,6 +18,23 @@ public class HippoCallClient {
     public var activeCallUUID: String? {
         return CallClient.shared.activeCall?.uID
     }
+
+    /// How long to wait for the Jitsi conference to finish joining before giving the
+    /// call up, in seconds. Default is 30.
+    ///
+    /// If the conference has not been joined by then the call is hung up, the call view
+    /// is dismissed and the delegate is told `.timedOut`. Set to `0` to wait forever.
+    public var callConnectTimeout: TimeInterval {
+        get { return JitsiCallManager.shared.callConnectTimeout }
+        set { JitsiCallManager.shared.callConnectTimeout = newValue }
+    }
+
+    /// Reports a call lifecycle change to the host app. Always delivered on the main thread.
+    func notifyCallState(_ state: HippoCallState) {
+        DispatchQueue.main.async { [weak self] in
+            self?.delegate?.callStateChanged(state)
+        }
+    }
     
     /// set the delegate to communicate with callClient
     ///
@@ -98,6 +115,20 @@ public class HippoCallClient {
     
     public func checkIfUserIsBusy(newCallUID: String) -> Bool {
         JitsiCallManager.shared.checkIfUserIsBusy(newCallUID: newCallUID)
+    }
+
+    /// `true` when this call has already ended on this device and must not be reported to
+    /// CallKit again.
+    ///
+    /// `checkIfUserIsBusy` only knows about the call in progress, so once a call is torn
+    /// down — the connect watchdog timing out, a hangup, a reject — it stops recognising
+    /// that muid. A push still in flight would then raise a fresh incoming CallKit call
+    /// that no call state exists to end, leaving the call screen up for good. Push
+    /// handlers must consult this alongside `checkIfUserIsBusy`.
+    ///
+    /// - Parameter uid: the `muid` field from the push payload.
+    public func isCallAlreadyFinished(uid: String) -> Bool {
+        return JitsiCallManager.shared.hasCallAlreadyFinished(uid)
     }
     
     public func startCall(call: Call, isInviteEnabled: Bool, completion: @escaping (Bool, NSError?) -> Void) {

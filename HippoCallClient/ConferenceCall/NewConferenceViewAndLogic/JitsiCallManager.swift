@@ -52,6 +52,17 @@ class JitsiCallManager : NSObject{
     var isAnswerFlowInProgress: Bool = false
     var callingType = UserDefaults.standard.value(forKey: "callingType") as? Int            //2 for jitsi, 3 for videosdk
     var idForHungUpSent: String? = nil
+
+    /// Seconds to wait for the Jitsi conference to join. Set by the host app through
+    /// `HippoCallClient.shared.callConnectTimeout`. Zero waits forever.
+    var callConnectTimeout: TimeInterval = CallConnectWatchdog.defaultTimeout
+    /// Covers only the Jitsi join. The ringing/signalling phase keeps its own
+    /// `startConTimer` / `maxRepeatTime` budget.
+    private let connectWatchdog = CallConnectWatchdog()
+    /// muids already ended on this device. Read by the push handler so a late push cannot
+    /// report a finished call to CallKit again — see FinishedCallLedger. Not `private`:
+    /// the CallKit extension lives in another file.
+    let finishedCalls = FinishedCallLedger()
     
     
     private override init() {
@@ -930,15 +941,31 @@ extension JitsiCallManager {
                    log: callLog, type: .default, activeCall?.uID ?? "nil", "\(isCallJoined)")
             sendData(dict: signal.getJsonToSendToFaye())
             idForHungUpSent = activeCall?.uID
+            // Also recorded here, not just in reportEndCallToCallKit: when the user ends
+            // the call from the CallKit screen, CallKit tears its own call down and we
+            // never report an end, so this is the only place that learns the muid is done.
+            finishedCalls.markFinished(activeCall?.uID)
             resetAllResourceForNewCall()
         } else {
             os_log("[LockedScreen] sendCallHungup — SKIPPED, makeCallSignal returned nil (activeCall=%{public}@)",
                    log: callLog, type: .error, activeCall == nil ? "nil" : "set")
         }
-        if JitsiConfrenceCallView.shared != nil {
-            JitsiConfrenceCallView.shared.removeFromSuperview()
-            JitsiConfrenceCallView.shared.delegate = nil
+        // Actually leave the Jitsi room. Dropping the view alone left the conference — and
+        // the microphone with it — running after the screen was gone, which is what the
+        // connect watchdog's teardown used to do for 1:1 calls. The group branch of
+        // userDidTerminatedConference and otherUserCallHungup have always left properly.
+        //
+        // `shared` is cleared and the delegate detached up front, so this device is out of
+        // the call immediately and Jitsi's later conferenceTerminated cannot loop back into
+        // userDidTerminatedConference. The completion holds the view alive until leave()
+        // has run.
+        if let callView = JitsiConfrenceCallView.shared {
             JitsiConfrenceCallView.shared = nil
+            callView.delegate = nil
+            callView.leaveConfrence { _ in
+                callView.removeNotification()
+                callView.removeFromSuperview()
+            }
         }
     }
     
@@ -1016,8 +1043,8 @@ extension JitsiCallManager {
             model.isInviteEnabled = isInviteEnabled
             
             JitsiConfrenceCallView.shared = JitsiConfrenceCallView.loadView(with: window.frame)
-            JitsiConfrenceCallView.shared.setupJitsi(for: model)
             JitsiConfrenceCallView.shared.delegate = self
+            JitsiConfrenceCallView.shared.setupJitsi(for: model)
             window.addSubview(JitsiConfrenceCallView.shared)
         }
     }
@@ -1035,8 +1062,8 @@ extension JitsiCallManager {
             let model = JitsiMeetDataModel(userName: activeCall.currentUser.name, userEmail: "", userImage: imageURL, audioOnly: activeCall.type == .audio ? true : false, serverURl: inviteLink, roomID: roomId, isMuted: groupCallData.isMuted ?? false)
             model.isInviteEnabled = isInviteEnabled
             JitsiConfrenceCallView.shared = JitsiConfrenceCallView.loadView(with: window.frame)
-            JitsiConfrenceCallView.shared.setupJitsi(for: model)
             JitsiConfrenceCallView.shared.delegate = self
+            JitsiConfrenceCallView.shared.setupJitsi(for: model)
             window.addSubview(JitsiConfrenceCallView.shared)
             self.sendStartGroupCall()
             if groupCallData.userType == "customer"{
@@ -1061,8 +1088,8 @@ extension JitsiCallManager {
                 }
                 model.isInviteEnabled = self.isInviteEnabled
                 JitsiConfrenceCallView.shared = JitsiConfrenceCallView.loadView(with: window.frame)
-                JitsiConfrenceCallView.shared.setupJitsi(for: model)
                 JitsiConfrenceCallView.shared.delegate = self
+                JitsiConfrenceCallView.shared.setupJitsi(for: model)
                 window.addSubview(JitsiConfrenceCallView.shared)
             }
             
@@ -1105,6 +1132,7 @@ extension JitsiCallManager {
         link = nil
         [repeatTimer, repeatTimeriOS, startConTimer,
          repeatGroupCallTimer, repeatShowingPopupTimer, offerWaitTimer].forEach { $0?.invalidate() }
+        connectWatchdog.disarm()
         repeatTimer = nil
         repeatTimeriOS = nil
         startConTimer = nil
@@ -1228,7 +1256,45 @@ extension JitsiCallManager {
 
 
 extension JitsiCallManager : JitsiConfrenceCallViewDelegate  {
+
+    func userIsConnectingToConference() {
+        os_log("[ConnectTimeout] CONNECTING — armed for %{public}@s, callUID=%{public}@",
+               log: callLog, type: .default,
+               "\(callConnectTimeout)", activeCall?.uID ?? "nil")
+        notifyHost(.connecting)
+        connectWatchdog.arm(timeout: callConnectTimeout) { [weak self] in
+            self?.handleConnectTimeout()
+        }
+    }
+
+    /// The conference never came up. Give the call up the same way a user hangup does,
+    /// so the other party stops ringing and CallKit is ended, then tell the host app.
+    private func handleConnectTimeout() {
+        guard !isCallJoined, JitsiConfrenceCallView.shared != nil else { return }
+        os_log("[ConnectTimeout] TIMED OUT after %{public}@s — tearing call down, callUID=%{public}@",
+               log: callLog, type: .error,
+               "\(callConnectTimeout)", activeCall?.uID ?? "nil")
+        notifyHost(.timedOut)
+        userDidTerminatedConference()
+    }
+
+    func conferenceDidTerminate(error: String?) {
+        connectWatchdog.disarm()
+        if let error = error {
+            os_log("[ConnectTimeout] conference terminated with error=%{public}@, callUID=%{public}@",
+                   log: callLog, type: .error, error, activeCall?.uID ?? "nil")
+        }
+        notifyHost(.ended)
+        userDidTerminatedConference()
+    }
+
+    private func notifyHost(_ state: HippoCallState) {
+        HippoCallClient.shared.notifyCallState(state)
+    }
+
     func userDidJoinConference() {
+        connectWatchdog.disarm()
+        notifyHost(.connected)
         isCallJoined = true
         isCallStarted?(true)
         let protectedData = UIApplication.shared.isProtectedDataAvailable

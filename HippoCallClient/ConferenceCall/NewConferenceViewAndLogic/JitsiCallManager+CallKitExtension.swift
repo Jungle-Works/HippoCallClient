@@ -111,7 +111,18 @@ extension JitsiCallManager : JMCallKitListener{
             os_log("[CallKit] reportEndCallToCallKit — INVALID uid, cannot create UUID", log: ckLog, type: .error)
             return
         }
+        // Every reason that reaches here is terminal for this muid, and this is the single
+        // choke point all legitimate ends pass through. Record it before ending so a push
+        // that lands afterwards cannot report the same call as a fresh incoming CXCall —
+        // see FinishedCallLedger.
+        finishedCalls.markFinished(uid)
         JMCallKitProxy.reportCall(with: uuid, endedAt: nil, reason: reason)
+    }
+
+    /// `true` when this muid has already been ended on this device, so reporting it to
+    /// CallKit again would strand a call screen nothing can dismiss.
+    func hasCallAlreadyFinished(_ uid: String) -> Bool {
+        return finishedCalls.isFinished(uid)
     }
 
 
