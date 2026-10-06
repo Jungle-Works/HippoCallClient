@@ -1080,7 +1080,7 @@ extension JitsiCallManager {
             guard let window = UIApplication.shared.currentKeyWindow else { return }
             if JitsiConfrenceCallView.shared == nil && self.activeCall != nil {
                 guard let model = self.userDataForOutgoingCall() else { return }
-                if self.link.contains("startWithVideoMuted"){
+                if self.link.contains("startWithVideoMuted=true"){
                     model.audioOnly = true
                 }
                 if self.link.contains("startWithAudioMuted"){

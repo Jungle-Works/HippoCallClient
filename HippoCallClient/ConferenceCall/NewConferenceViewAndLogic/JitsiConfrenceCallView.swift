@@ -52,10 +52,18 @@ class JitsiConfrenceCallView: UIView {
     
     func setupJitsi(for data: JitsiMeetDataModel) {
         
+        #if DEBUG
+        JitsiConsoleLogHandler.registerOnce()
+        #endif
         let userInfo =  JitsiMeetUserInfo(displayName: data.userName, andEmail: data.userEmail, andAvatar: data.userImage)
         let conferenceOptions =  JitsiMeetConferenceOptions.fromBuilder { (ptionsBuilder) in
             ptionsBuilder.setSubject(" ")
-            ptionsBuilder.setAudioOnly(data.audioOnly)
+            // Audio calls start with the camera muted, NOT in audio-only mode.
+            // Audio-only stops this device from receiving/rendering remote video, so if
+            // the other side turns its camera on mid-call it would never show here.
+            // Must match Android (HippoCallConfig.java).
+            ptionsBuilder.setAudioOnly(false)
+            ptionsBuilder.setVideoMuted(data.audioOnly)
             ptionsBuilder.serverURL = data.serverURL
             ptionsBuilder.room = data.roomID
             //ptionsBuilder.setAudioMuted(data.isMuted)
@@ -80,6 +88,8 @@ class JitsiConfrenceCallView: UIView {
             ptionsBuilder.setFeatureFlag("video-share.enabled", withBoolean: false)
             ptionsBuilder.setFeatureFlag("meeting-name.enabled", withBoolean: false)
             ptionsBuilder.setFeatureFlag("ios.screensharing.enabled", withValue: true)
+            // Audio calls: no camera button, so the call stays audio-only for this user.
+            ptionsBuilder.setFeatureFlag("video-mute.enabled", withBoolean: !data.audioOnly)
         }
         
         print("room id ---->>>>", data.roomID, "\n server url --->>>>", data.serverURL)
@@ -261,3 +271,24 @@ class JitsiMeetDataModel {
         self.isMuted = isMuted
     }
 }
+
+#if DEBUG
+/// Jitsi's iOS SDK only emits logs to registered handlers — none are registered by
+/// default, so nothing reaches the Xcode console. Debug builds only; filter on "[JITSI]".
+final class JitsiConsoleLogHandler: JitsiMeetBaseLogHandler {
+    static let shared = JitsiConsoleLogHandler()
+    private static var isRegistered = false
+
+    static func registerOnce() {
+        guard !isRegistered else { return }
+        isRegistered = true
+        JitsiMeetLogger.add(shared)
+    }
+
+    override func logVerbose(_ msg: String!) { print("[JITSI][V]", msg ?? "") }
+    override func logDebug(_ msg: String!) { print("[JITSI][D]", msg ?? "") }
+    override func logInfo(_ msg: String!) { print("[JITSI][I]", msg ?? "") }
+    override func logWarn(_ msg: String!) { print("[JITSI][W]", msg ?? "") }
+    override func logError(_ msg: String!) { print("[JITSI][E]", msg ?? "") }
+}
+#endif

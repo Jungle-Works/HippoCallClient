@@ -57,15 +57,6 @@ class CallStartAndReceivedView: UIView {
         return view
     }
     
-    fileprivate var bundle: Bundle? {
-
-        let podBundle = Bundle(for: FuguImage.self)
-        guard let bundleURL = podBundle.url(forResource: "HippoCallClient", withExtension: "bundle"), let fetchBundle = Bundle(url: bundleURL) else {
-            return nil
-        }
-        return fetchBundle
-    }
-    
     func openSafariViewController(url:URL){
         
         var presentedVC: UIViewController?
@@ -121,20 +112,21 @@ class CallStartAndReceivedView: UIView {
         callStateMessageLabel.textColor = UIColor.iLightBlack
         ansButton.layer.cornerRadius = ansButton.frame.height / 2
         ansButton.layer.masksToBounds = true
-        // Keep the nib-loaded image if the runtime lookup fails (e.g. resource bundle
-        // not resolvable) rather than blanking the button.
-        if let accept = UIImage(named: "connectCall", in: self.bundle, compatibleWith: nil) ?? FuguImage.callAccept {
+        // FuguImage searches every bundle the assets can land in and falls back to a
+        // drawn button. The nib's own reference resolves to a 1x1 placeholder, which
+        // left these buttons white and apparently empty.
+        if let accept = FuguImage.callAccept {
             ansButton.setImage(accept, for: .normal)
         }
         cancelButton.layer.cornerRadius = cancelButton.frame.height / 2
         cancelButton.layer.masksToBounds = true
-        if let reject = UIImage(named: "disconnectCall", in: self.bundle, compatibleWith: nil) ?? FuguImage.callReject {
+        if let reject = FuguImage.callReject {
             cancelButton.setImage(reject, for: .normal)
         }
         userImageView.layer.cornerRadius = userImageView.frame.height / 2
         dailCallCancelButton.layer.cornerRadius = dailCallCancelButton.frame.height / 2
         dailCallCancelButton.layer.masksToBounds = true
-        if let reject = UIImage(named: "disconnectCall", in: self.bundle, compatibleWith: nil) ?? FuguImage.callReject {
+        if let reject = FuguImage.callReject {
             dailCallCancelButton.setImage(reject, for: .normal)
         }
         userImageView.layer.borderWidth = 0.5
