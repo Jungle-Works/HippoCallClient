@@ -38,7 +38,9 @@ class JitsiConfrenceCallView: UIView {
     fileprivate var pipViewCoordinator: PiPViewCoordinator?
     var loadingLabeltext : String?
     var displayLink : CADisplayLink?
-    
+    private var pipDefaultDragInsets: UIEdgeInsets = .zero
+    private var pipOriginBeforeKeyboard: CGPoint?
+
     
     class func loadView(with frame: CGRect)-> JitsiConfrenceCallView? {
         if let view = Bundle.init(identifier: "org.cocoapods.HippoCallClient")?.loadNibNamed("JitsiConfrenceCallView", owner: nil, options: nil)?.first as? JitsiConfrenceCallView {
@@ -49,7 +51,21 @@ class JitsiConfrenceCallView: UIView {
         }
         return nil
     }
-    
+
+    override func didMoveToWindow() {
+        super.didMoveToWindow()
+        // The call screen sits on top of whatever was open (e.g. chat). Close that
+        // screen's keyboard so it doesn't cover the call. Sent to nil so it reaches the
+        // first responder in any window, not just this one.
+        if window != nil {
+            dismissKeyboard()
+        }
+    }
+
+    private func dismissKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+
     func setupJitsi(for data: JitsiMeetDataModel) {
         
         #if DEBUG
@@ -79,8 +95,12 @@ class JitsiConfrenceCallView: UIView {
             // startCall internally regardless of whether the UUID exists.
             // With integration disabled: no Jitsi CallKit interference, our incoming CXCall
             // stays alive, audio session remains active, audio works via RTCAudioSession.
-            ptionsBuilder.setFeatureFlag("filmstrip.enabled", withBoolean: false)
             ptionsBuilder.setFeatureFlag("call-integration.enabled", withBoolean: false)
+            // Filmstrip is the small self-view tile in the corner during a video call.
+            ptionsBuilder.setFeatureFlag("filmstrip.enabled", withBoolean: true)
+            // 1:1 calls show only the self-view tile; the other person is already full screen.
+            // Overrides the server's config.js in case it sets disable1On1Mode: true.
+            ptionsBuilder.setConfigOverride("disable1On1Mode", withBoolean: false)
             ptionsBuilder.setFeatureFlag("pip.enabled", withBoolean: true)
             ptionsBuilder.setFeatureFlag("invite.enabled", withValue: data.isInviteEnabled)
             ptionsBuilder.setFeatureFlag("security-options.enabled", withValue: false)
@@ -106,6 +126,45 @@ class JitsiConfrenceCallView: UIView {
         pipViewCoordinator = PiPViewCoordinator(withView: self)
         pipViewCoordinator?.delegate = self
         pipViewCoordinator?.configureAsStickyView()
+        pipDefaultDragInsets = pipViewCoordinator?.dragBoundInsets ?? .zero
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(_:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+    }
+
+    /// The keyboard lives in its own window above the app, so the minimised call view
+    /// would sit underneath it. While minimised, lift the view above the keyboard and stop
+    /// it being dragged back under; put it back where it was when the keyboard closes.
+    @objc private func keyboardWillChangeFrame(_ notification: Notification) {
+        guard let coordinator = pipViewCoordinator, let container = superview,
+              let endFrame = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
+
+        let keyboardTop = container.convert(endFrame, from: nil).minY
+        let keyboardHeight = max(0, container.bounds.maxY - keyboardTop)
+
+        var insets = pipDefaultDragInsets
+        insets.bottom += keyboardHeight
+        coordinator.dragBoundInsets = insets
+
+        var target = frame
+        if keyboardHeight > 0 {
+            let maxY = keyboardTop - pipDefaultDragInsets.bottom
+            guard frame.maxY > maxY else { return }
+            if pipOriginBeforeKeyboard == nil { pipOriginBeforeKeyboard = frame.origin }
+            target.origin.y = max(container.safeAreaInsets.top + pipDefaultDragInsets.top, maxY - frame.height)
+        } else if let original = pipOriginBeforeKeyboard {
+            target.origin = original
+            pipOriginBeforeKeyboard = nil
+        } else {
+            return
+        }
+
+        let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double ?? 0.25
+        UIView.animate(withDuration: duration) { self.frame = target }
+    }
+
+    private func stopTrackingKeyboardForPiP() {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+        pipOriginBeforeKeyboard = nil
     }
     
     
@@ -195,10 +254,11 @@ extension JitsiConfrenceCallView : JitsiMeetViewDelegate {
         displayLink = nil
         // `error` is only present when the conference failed; a graceful hangup omits it.
         delegate?.conferenceDidTerminate(error: data?["error"] as? String)
+        stopTrackingKeyboardForPiP()
         pipViewCoordinator?.exitPictureInPicture()
         pipViewCoordinator = nil
     }
-    
+
     func enterPicture(inPicture data: [AnyHashable : Any]!) {
         setupPiP()
         delegate?.userDidEnterPictureInPicture()
@@ -211,6 +271,9 @@ extension JitsiConfrenceCallView : JitsiMeetViewDelegate {
 extension JitsiConfrenceCallView : PiPViewCoordinatorDelegate{
     
     func exitPictureInPicture() {
+        stopTrackingKeyboardForPiP()
+        // Back to full screen: don't leave the chat keyboard covering the call.
+        dismissKeyboard()
         pipViewCoordinator = nil
     }
 }
