@@ -22,7 +22,7 @@ class EstablishingConnectionView : UIView {
     //MARK:- Functions
     
     class  func loadView(with frame: CGRect)-> EstablishingConnectionView? {
-        let view = Bundle.init(identifier: "org.cocoapods.HippoCallClient")?.loadNibNamed("EstablishingConnectionView", owner: nil, options: nil)?.first as? EstablishingConnectionView
+        let view = Bundle(for: EstablishingConnectionView.self).loadNibNamed("EstablishingConnectionView", owner: nil, options: nil)?.first as? EstablishingConnectionView
         view?.frame = frame
         view?.clipsToBounds = true
         return view

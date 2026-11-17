@@ -759,12 +759,11 @@ extension JitsiCallManager {
     }
     
     func sendData(dict: [String : Any], completion: VersionMismatchCallBack? = nil) {
-        //Logger.shared.printVar(for: dict)
-        activeCall?.signalingClient.connectClient(completion: { (success) in
-            guard self.activeCall != nil else {
-                return
-            }
-            self.activeCall.signalingClient.sendJitsiObject(json: dict) { [weak self] (mark, error) in
+        // Capture signalingClient before the async socket path so reject/hangup signals are
+        // still delivered when activeCall is cleared first (kill-state VoIP answer/decline).
+        guard let signalingClient = activeCall?.signalingClient else { return }
+        signalingClient.connectClient(completion: { (success) in
+            signalingClient.sendJitsiObject(json: dict) { [weak self] (mark, error) in
                 if !mark{
                    // Logger.shared.printVar(for: error?.localizedDescription)
                     if (error?.code == 415){
@@ -1245,8 +1244,9 @@ extension JitsiCallManager {
     
     
     func sendSignalWith(json: [String: Any], completion: VersionMismatchCallBack? = nil) {
-        activeCall?.signalingClient.connectClient(completion: { [weak self]  (success) in
-            self?.activeCall?.signalingClient.sendJitsiObject(json: json, completion: {(success, error) in
+        guard let signalingClient = activeCall?.signalingClient else { return }
+        signalingClient.connectClient(completion: { [weak self] (success) in
+            signalingClient.sendJitsiObject(json: json, completion: { [weak self] (success, error) in
                 
                 if !success{
                    // Logger.shared.printVar(for: error?.localizedDescription)
