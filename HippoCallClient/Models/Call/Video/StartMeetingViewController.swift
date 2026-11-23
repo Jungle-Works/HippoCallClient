@@ -558,15 +558,13 @@ class StartMeetingViewController: UIViewController {
     }
 
     private func fetchFreshToken(transactionId: String, onComplete: @escaping () -> Void) {
-        CallClient.shared.getVideoSdkTokenNative(comingFrom: "deeplink", transaction_id: transactionId, name: presetName, startTime: meetingStartTime, endTime: meetingEndTime, presentLobby: false) { [weak self] token in
-            DispatchQueue.main.async {
-                if !token.isEmpty {
-                    self?.serverToken = token
-                    self?.tokenMintedAt = Date()
-                }
-                onComplete()
-            }
-        }
+        CallClient.shared.getVideoSdkTokenNative(comingFrom: "deeplink", transaction_id: transactionId, name: presetName, startTime: meetingStartTime, endTime: meetingEndTime, presentLobby: false, showErrorAlert: false, completion: { [weak self] token in
+            self?.serverToken = token
+            self?.tokenMintedAt = Date()
+            onComplete()
+        }, onFailure: { _ in
+            onComplete()
+        })
     }
     
     // MARK: - Navigation

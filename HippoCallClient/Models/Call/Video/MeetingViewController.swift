@@ -9,6 +9,7 @@
 import UIKit
 import VideoSDKRTC
 import AVFoundation
+import WebRTC
 
 struct MeetingData {
     let token: String
@@ -16,6 +17,7 @@ struct MeetingData {
     let meetingId: String
     let micEnabled: Bool
     let cameraEnabled: Bool
+    var isAudioCall = false
 }
 
 enum MenuOption: String {
@@ -89,6 +91,17 @@ class MeetingViewController: UIViewController, UICollectionViewDataSource {
     
     var meetingDuration: TimeInterval = 0 * 60 // 10 minutes, set your desired value here (in seconds)
     private var audioRouteObserver: NSObjectProtocol?
+    private var hasJoinedMeeting = false
+    private var shouldUnmuteAfterJoin = false
+    private(set) var isMinimized = false
+    private(set) var miniPlayer: MeetingMiniPlayer?
+    /// UIKit stops retaining the container once it is dismissed.
+    private var minimizedNavigation: UINavigationController?
+    var presentCallScreen: (UINavigationController) -> Void = { navigation in
+        CallClient.shared.getLastVisibleController()?.present(navigation, animated: true, completion: nil)
+    }
+    private var remoteVideoTrack: RTCVideoTrack?
+    private var remoteVideoParticipantID: String?
 
     // MARK: - Life Cycle
 
@@ -108,9 +121,7 @@ class MeetingViewController: UIViewController, UICollectionViewDataSource {
         // When meeting starts:
         if meetingDuration != 0.0{
             MeetingTimerManager.shared.start(duration: meetingDuration) { [weak self] in
-                self?.delegate?.userDidTerminatedConference()
-                self?.meeting?.leave()
-                UIApplication.shared.isIdleTimerDisabled = false
+                self?.endMeeting()
             }
         }
      
@@ -158,6 +169,133 @@ class MeetingViewController: UIViewController, UICollectionViewDataSource {
 
     // MARK: - Meeting
 
+    // MARK: - Minimize
+
+    /// Hides the full call screen while the meeting keeps running.
+    @objc func minimizeCall() {
+        guard !isMinimized else { return }
+        isMinimized = true
+        minimizedNavigation = navigationController
+        let showPlayer: () -> Void = { [weak self] in self?.showMiniPlayerIfNeeded() }
+        if let navigation = navigationController, navigation.presentingViewController != nil {
+            navigation.dismiss(animated: true, completion: showPlayer)
+        } else {
+            showPlayer()
+        }
+    }
+
+    func restoreFromMiniPlayer() {
+        guard isMinimized else { return }
+        let navigation = minimizedNavigation
+        removeMiniPlayer()
+        guard let callScreen = navigation, callScreen.presentingViewController == nil else { return }
+        presentCallScreen(callScreen)
+    }
+
+    func removeMiniPlayer() {
+        isMinimized = false
+        minimizedNavigation = nil
+        miniPlayer?.remove()
+        miniPlayer = nil
+    }
+
+    func setMiniPlayerHidden(_ hidden: Bool) {
+        miniPlayer?.setHidden(hidden)
+    }
+
+    /// Alerts raised while minimized appear over the screen the user is viewing.
+    override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
+        if isMinimized, let visible = CallClient.shared.getLastVisibleController(), visible !== self {
+            visible.present(viewControllerToPresent, animated: flag, completion: completion)
+        } else {
+            super.present(viewControllerToPresent, animated: flag, completion: completion)
+        }
+    }
+
+    private func showMiniPlayerIfNeeded() {
+        guard isMinimized, miniPlayer == nil, JitsiCallManager.shared.videoSdkView === self else { return }
+        let player = MeetingMiniPlayer(title: miniPlayerTitle, videoTrack: remoteVideoTrack) { [weak self] in
+            self?.restoreFromMiniPlayer()
+        }
+        miniPlayer = player
+        player.show()
+    }
+
+    private var miniPlayerTitle: String {
+        participants.first(where: { !$0.isLocal })?.displayName ?? meetingData?.name ?? "Call"
+    }
+
+    private func updateMiniPlayer() {
+        miniPlayer?.update(title: miniPlayerTitle, videoTrack: remoteVideoTrack)
+    }
+
+    private func updateRemoteVideo(_ stream: MediaStream, participant: Participant, enabled: Bool) {
+        guard !participant.isLocal, case .state(value: .video) = stream.kind else { return }
+        if enabled, let track = stream.track as? RTCVideoTrack {
+            remoteVideoTrack = track
+            remoteVideoParticipantID = participant.id
+        } else if remoteVideoParticipantID == participant.id {
+            remoteVideoTrack = nil
+            remoteVideoParticipantID = nil
+        }
+        updateMiniPlayer()
+    }
+
+    private func addMinimizeButton() {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(systemName: "chevron.left"), for: .normal)
+        button.tintColor = .white
+        button.backgroundColor = UIColor.black.withAlphaComponent(0.45)
+        button.layer.cornerRadius = 20
+        button.accessibilityLabel = "Minimize call"
+        button.addTarget(self, action: #selector(minimizeCall), for: .touchUpInside)
+        view.addSubview(button)
+        NSLayoutConstraint.activate([
+            button.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 12),
+            button.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
+            button.widthAnchor.constraint(equalToConstant: 40),
+            button.heightAnchor.constraint(equalToConstant: 40)
+        ])
+    }
+
+    /// A voice call has no camera, so its camera controls are not shown.
+    func applyCallTypeToControls() {
+        let isAudioCall = meetingData.isAudioCall
+        buttonControlsView.videoButton.isHidden = isAudioCall
+        buttonControlsView.cameraButton.isHidden = isAudioCall
+    }
+
+    /// Hangs up, leaves the room and closes this screen.
+    func endMeeting() {
+        delegate?.userDidTerminatedConference()
+        closeMeeting()
+    }
+
+    /// Clears the call state for this meeting. Safe to call more than once.
+    func finishMeeting() {
+        JitsiCallManager.shared.videoSdkMeetingDidEnd(self)
+    }
+
+    func micPermissionGranted() {
+        if isViewLoaded {
+            buttonControlsView.micEnabled = true
+        }
+        if hasJoinedMeeting {
+            meeting?.unmuteMic()
+        } else {
+            shouldUnmuteAfterJoin = true
+        }
+    }
+
+    private func closeMeeting() {
+        meeting?.localParticipant.removeEventListener(self)
+        meeting?.removeEventListener(self)
+        meeting?.leave()
+        finishMeeting()
+        dismiss(animated: true, completion: nil)
+    }
+
     private func initializeMeeting() {
 
         // initialize
@@ -169,6 +307,7 @@ class MeetingViewController: UIViewController, UICollectionViewDataSource {
         )
 
         print("Meeting id ---->>>>>>", meetingData.meetingId, "\n token ------->>>>>>>", meetingData.token)
+        NSLog("[HippoCall][DBG] initMeeting roomId=%@ name=%@ mic=%@ cam=%@", meetingData.meetingId, meetingData.name, "\(meetingData.micEnabled)", "\(meetingData.cameraEnabled)")
 
         // listener
         meeting?.addEventListener(self)
@@ -218,6 +357,13 @@ extension MeetingViewController: MeetingEventListener {
 
     /// Meeting started
     func onMeetingJoined() {
+        NSLog("[HippoCall][DBG] onMeetingJoined roomId=%@ localId=%@ knownParticipants=%@", meetingData?.meetingId ?? "-", meeting?.localParticipant.id ?? "-", participants.map { "\($0.displayName)[\($0.id)]" }.joined(separator: ", "))
+
+        hasJoinedMeeting = true
+        if shouldUnmuteAfterJoin {
+            shouldUnmuteAfterJoin = false
+            meeting?.unmuteMic()
+        }
 
         // handle local participant on start
         guard let localParticipant = self.meeting?.localParticipant else { return }
@@ -245,18 +391,21 @@ extension MeetingViewController: MeetingEventListener {
 
     /// Meeting ended
     func onMeetingLeft() {
+        NSLog("[HippoCall][DBG] onMeetingLeft roomId=%@", meetingData?.meetingId ?? "-")
 
         // remove listeners
         meeting?.localParticipant.removeEventListener(self)
         meeting?.removeEventListener(self)
 
         print("meeting left called")
+        finishMeeting()
         // dismiss controller
         dismiss(animated: true, completion: nil)
     }
 
     /// A new participant joined
     func onParticipantJoined(_ participant: Participant) {
+        NSLog("[HippoCall][DBG] onParticipantJoined %@[%@] isLocal=%@ roomId=%@", participant.displayName, participant.id, "\(participant.isLocal)", meetingData?.meetingId ?? "-")
         guard !participants.contains(where: { $0.id == participant.id }) else { return }
 
         // add new participant to list
@@ -267,14 +416,20 @@ extension MeetingViewController: MeetingEventListener {
 
         // show in ui
         addParticipantToGridView()
+        updateMiniPlayer()
     }
     
     /// A participant left from the meeting
     /// - Parameter participant: participant object
     func onParticipantLeft(_ participant: Participant) {
+        NSLog("[HippoCall][DBG] onParticipantLeft %@[%@] remainingBefore=%d", participant.displayName, participant.id, participants.count)
         
         // remove listener
         participant.removeEventListener(self)
+        if remoteVideoParticipantID == participant.id {
+            remoteVideoTrack = nil
+            remoteVideoParticipantID = nil
+        }
         
         // find participant
         guard let index = self.participants.firstIndex(where: { $0.id == participant.id }) else {
@@ -285,16 +440,11 @@ extension MeetingViewController: MeetingEventListener {
         participants.remove(at: index)
         // hide from ui
         removeParticipantFromGridView(at: index)
+        updateMiniPlayer()
         if participants.count <= 1{
-            meeting?.localParticipant.removeEventListener(self)
-            meeting?.removeEventListener(self)
-
             self.delegate?.userWillLeaveConference()
-            self.meeting?.leave()
-            UIApplication.shared.isIdleTimerDisabled = false
+            closeMeeting()
             print("meeting left called")
-            // dismiss controller
-            dismiss(animated: true, completion: nil)
         }
 
     }
@@ -365,6 +515,10 @@ extension MeetingViewController: MeetingEventListener {
 
     /// Called when host requests to turn on the camera/video
     func onWebcamRequested(participantId: String?, accept: @escaping () -> Void, reject: @escaping () -> Void) {
+        guard !meetingData.isAudioCall else {
+            reject()
+            return
+        }
         let requesterName = participants.first(where: { $0.id == participantId })?.displayName ?? "Meeting host"
 
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
@@ -390,6 +544,7 @@ extension MeetingViewController: ParticipantEventListener {
     ///   - stream: enabled stream object
     ///   - participant: participant object
     func onStreamEnabled(_ stream: MediaStream, forParticipant participant: Participant) {
+        NSLog("[HippoCall][DBG] onStreamEnabled kind=%@ from %@[%@]", "\(stream.kind)", participant.displayName, participant.id)
 
         if stream.kind == .share {
             // show screen share
@@ -402,6 +557,7 @@ extension MeetingViewController: ParticipantEventListener {
         if let cell = self.cellForParticipant(participant) {
             cell.updateView(forStream: stream, enabled: true)
         }
+        updateRemoteVideo(stream, participant: participant, enabled: true)
 
         if participant.isLocal {
             // turn on controls for local participant
@@ -426,6 +582,7 @@ extension MeetingViewController: ParticipantEventListener {
         if let cell = self.cellForParticipant(participant) {
             cell.updateView(forStream: stream, enabled: false)
         }
+        updateRemoteVideo(stream, participant: participant, enabled: false)
 
         if participant.isLocal {
             // turn off controls for local participant
@@ -490,9 +647,7 @@ private extension MeetingViewController {
 
         // onEndMeetingTapped
         buttonControlsView.onEndMeetingTapped = { [weak self] in
-            self?.delegate?.userDidTerminatedConference()
-            self?.meeting?.leave()
-            UIApplication.shared.isIdleTimerDisabled = false
+            self?.endMeeting()
         }
 
         // onCameraTapped
@@ -560,7 +715,7 @@ private extension MeetingViewController {
     func showParticipantControlOptions(_ participant: Participant) {
         guard let cell = cellForParticipant(participant) else { return }
 
-        let menuOptions: [MenuOption] = [.toggleMic, .toggleWebcam, .remove]
+        let menuOptions: [MenuOption] = meetingData.isAudioCall ? [.toggleMic, .remove] : [.toggleMic, .toggleWebcam, .remove]
         self.showActionsheet(options: menuOptions, fromView: cell.menuButton) { option in
             switch option {
             case .toggleMic:
@@ -717,6 +872,7 @@ private extension MeetingViewController {
     func setupUI() {
         // initially hide screensharing view
         screenSharingView.isHidden = true
+        addMinimizeButton()
         isCameraOn = meetingData.cameraEnabled
         buttonsView.addSubview(buttonControlsView)
         buttonControlsView.frame = buttonsView.bounds
@@ -725,6 +881,7 @@ private extension MeetingViewController {
 
         buttonControlsView.micEnabled = self.meetingData.micEnabled
         buttonControlsView.videoEnabled = self.meetingData.cameraEnabled
+        applyCallTypeToControls()
         buttonControlsView.unreadMessageView.isHidden = !isChatEnabled
         buttonControlsView.chatButton.isHidden = !isChatEnabled
     }

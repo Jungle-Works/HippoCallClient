@@ -59,6 +59,10 @@ class JitsiCallManager : NSObject{
     var provider: CXProvider?
     var nativeMeetID: String = ""
     var videoSdkView : MeetingViewController?
+    /// Fetches the room token and opens the meeting, then calls the closure.
+    var joinVideoSdkRoom: (@escaping () -> Void) -> Void = JitsiCallManager.defaultJoinVideoSdkRoom
+    /// Keeps a backgrounded or VoIP-launched app awake until a call signal is delivered.
+    var beginSignalDelivery: () -> (() -> Void) = JitsiCallManager.defaultBeginSignalDelivery
     
     private override init() {
         super.init()
@@ -81,6 +85,7 @@ class JitsiCallManager : NSObject{
         }
         
         JitsiCallManager.shared.jitsiUrl = finalMeetId
+        NSLog("[HippoCall][DBG] JitsiCallManager.startCall muid=%@ jitsiUrl(callId)=%@ nativeMeetID(roomId)=%@", call.uID, finalMeetId, nativeMeetID)
         
         if isCallJoinedFromLink {
             return
@@ -131,20 +136,23 @@ class JitsiCallManager : NSObject{
     
     func startReceivedCall(newCall: Call, signal: JitsiCallSignal, isInviteEnabled: Bool) {
         if muidOne2oneDic?.keys.first == newCall.uID, muidOne2oneDic?[newCall.uID] == true{
-            print("return 1111111")
+            NSLog("[HippoCall] STOP: call was already handled")
             return
         }
 
         if checkIfUserIsBusy(newCallUID: newCall.uID) {
+            NSLog("[HippoCall] STOP: user is busy on another call")
             sendBusy(with: newCall, and: signal)
             return
         }
         
         if RecievedGroupCallView.shared != nil || JitsiConfrenceCallView.shared != nil || CallStartAndReceivedView.shared != nil{
-            print("return 222222", RecievedGroupCallView.shared, JitsiConfrenceCallView.shared, CallStartAndReceivedView.shared)
+            NSLog("[HippoCall] STOP: another call screen is open")
             return
         }
+        NSLog("[HippoCall] incoming call is ready; decline can now be sent")
         self.isInviteEnabled = isInviteEnabled
+        callTypeForIncomingCall = newCall.type
         activeCall = newCall
         link = activeCall?.inviteLink ?? ""
         jitsiUrl = activeCall?.jitsiUrl ?? ""
@@ -179,6 +187,7 @@ extension JitsiCallManager{
         timeElapsedSinceGroupCallStart = 0
         activeCall = call
         addSignalReceiver()
+        callTypeForIncomingCall = call.type
         if self.callingType != 3{
             let links = createGroupCallLink(with: groupCallData, for: call)
             link = links.0
@@ -186,7 +195,14 @@ extension JitsiCallManager{
             showJitsiViewForGroupCall(groupCallData)
         } else {
             jitsiUrl = transactionID
-            CallClient.shared.getVideoSdkTokenNative()
+            joinVideoSdkRoom { [weak self] in
+                guard let self = self, self.activeCall != nil else { return }
+                self.sendStartGroupCall()
+                if groupCallData.userType == "customer" {
+                    self.acceptGroupCall(true)
+                }
+                self.activeCall?.signalingClient.sendSessionStatus(status: "START_GROUP_CALL", transactionId: self.transactionID ?? "")
+            }
         }
     }
     
@@ -200,6 +216,7 @@ extension JitsiCallManager{
             return
         }
         transactionID = signal.transationID
+        callTypeForIncomingCall = newCall.type
         activeCall = newCall
         link = activeCall?.inviteLink ?? ""
         jitsiUrl = activeCall?.jitsiUrl ?? ""
@@ -250,7 +267,6 @@ extension JitsiCallManager{
                 isOfferRecieved = true
             }
         }
-        CallClient.shared.getVideoSdkTokenNative()
     }
     
     //MARK:- Methods to start group call
@@ -545,6 +561,7 @@ extension JitsiCallManager {
                     return
                 }
                 
+                NSLog("[HippoCall][DBG] RECV %@ muid=%@ jitsi_url=%@ from user_id=%@ device_id=%@ | activeMuid=%@ myJitsiUrl=%@", signalTypeRaw, jsonDict["muid"] as? String ?? "-", jsonDict["jitsi_url"] as? String ?? "-", "\(jsonDict["user_id"] ?? "-")", "\(jsonDict["device_id"] ?? "-")", self?.activeCall?.uID ?? "-", self?.jitsiUrl ?? "-")
                 let signal = JitsiCallSignal.getFrom(json: jsonDict)
                 var  userId = jsonDict["user_id"] as? Int
                 if userId == nil {
@@ -594,6 +611,11 @@ extension JitsiCallManager {
                 case .ANSWER_CONFERENCE:
                     guard signal?.sender.peerId != self?.activeCall?.currentUser.peerId  else {
                         ///if answer_conference recieved from same user (peerid) from another device
+                        // End the CallKit ringing too; the in-app view alone is not what rings
+                        // in background/locked state. Must run before resetAllResourceForNewCall clears activeCall.
+                        let ringingUID = self?.activeCall?.uID ?? signal?.callUID ?? ""
+                        NSLog("[HippoCall] ANSWER_CONFERENCE from own other device -> end ringing muid=%@", ringingUID)
+                        self?.reportEndCallToCallKit(ringingUID, .answeredElsewhere)
                         self?.endRepeatStartCalliOS()
                         self?.endRepeatStartCall()
                         self?.removeDialAndReceivedView()
@@ -761,9 +783,19 @@ extension JitsiCallManager {
     func sendData(dict: [String : Any], completion: VersionMismatchCallBack? = nil) {
         // Capture signalingClient before the async socket path so reject/hangup signals are
         // still delivered when activeCall is cleared first (kill-state VoIP answer/decline).
-        guard let signalingClient = activeCall?.signalingClient else { return }
+        let signalName = dict["video_call_type"] as? String ?? "unknown"
+        guard let signalingClient = activeCall?.signalingClient else {
+            NSLog("[HippoCall] STOP: %@ not sent because there is no active call", signalName)
+            return
+        }
+        let finishDelivery = beginSignalDelivery()
+        NSLog("[HippoCall] waiting for socket before %@", signalName)
+        NSLog("[HippoCall][DBG] SEND %@ muid=%@ jitsi_url=%@ silent=%@", signalName, dict["muid"] as? String ?? "-", dict["jitsi_url"] as? String ?? "-", "\(dict["is_silent"] ?? "-")")
         signalingClient.connectClient(completion: { (success) in
+            NSLog("[HippoCall] socket step finished for %@ (success=%@)", signalName, "\(success)")
             signalingClient.sendJitsiObject(json: dict) { [weak self] (mark, error) in
+                defer { finishDelivery() }
+                NSLog("[HippoCall] %@ delivered=%@ error=%@", signalName, "\(mark)", error?.localizedDescription ?? "none")
                 if !mark{
                    // Logger.shared.printVar(for: error?.localizedDescription)
                     if (error?.code == 415){
@@ -911,8 +943,10 @@ extension JitsiCallManager {
     
     func sendCallRejected() {
         if activeCall == nil {
+            NSLog("[HippoCall] STOP: decline not sent because there is no active call")
             return
         }
+        NSLog("[HippoCall] sending decline")
         
         let signal = JitsiCallSignal(signalType: .REJECT_CONFERENCE, callUID: activeCall!.uID, sender: activeCall!.currentUser, senderDeviceID: activeCall?.uID ?? "", callType: activeCall!.type , link: callingType == 3 ? jitsiUrl ?? "" : link, isFSilent: true, jitsiUrl: jitsiUrl ?? "")
         let dict = signal.getJsonToSendToFaye()
@@ -931,8 +965,11 @@ extension JitsiCallManager {
     func sendBusy(with otherCall: Call, and signal: JitsiCallSignal) {
         let signal = JitsiCallSignal(signalType: .USER_BUSY_CONFERENCE, callUID: otherCall.uID, sender: otherCall.currentUser, senderDeviceID: otherCall.uID , callType: otherCall.type , link: callingType == 3 ? jitsiUrl ?? "" : signal.conferenceLink ?? "", isFSilent: true, jitsiUrl: jitsiUrl ?? "")
         let dict = signal.getJsonToSendToFaye()
+        let finishDelivery = beginSignalDelivery()
         otherCall.signalingClient.connectClient(completion: { (success) in
-            otherCall.signalingClient.sendJitsiObject(json: dict) { (mark, error) in}
+            otherCall.signalingClient.sendJitsiObject(json: dict) { (mark, error) in
+                finishDelivery()
+            }
         })
     }
     
@@ -955,6 +992,9 @@ extension JitsiCallManager {
             resetAllResourceForNewCall()
         }
         
+        MeetingTimerManager.shared.stop()
+        UIApplication.shared.isIdleTimerDisabled = false
+        videoSdkView?.removeMiniPlayer()
         videoSdkView?.meeting?.leave()
         videoSdkView?.dismiss(animated: true, completion: nil)
         videoSdkView = nil
@@ -966,8 +1006,10 @@ extension JitsiCallManager {
         if activeCall != nil {
             let signal = JitsiCallSignal(signalType: .HUNGUP_CONFERENCE, callUID: activeCall!.uID, sender: activeCall!.currentUser, senderDeviceID: activeCall?.uID ?? "", callType: activeCall!.type , link: callingType == 3 ? jitsiUrl ?? "" : link, isFSilent: true , jitsiUrl: jitsiUrl ?? "")
             let dict = signal.getJsonToSendToFaye()
-            sendData(dict: dict){ (mismatch) in
-                self.resetAllResourceForNewCall()
+            let finishedCallID = activeCall!.uID
+            sendData(dict: dict){ [weak self] (mismatch) in
+                guard self?.activeCall?.uID == finishedCallID else { return }
+                self?.resetAllResourceForNewCall()
                 print("CALLL Continue")
             }
         }
@@ -1049,7 +1091,7 @@ extension JitsiCallManager {
                 }
             }else{
                 HippoCallClientUrl.shared.userName = customerName
-                CallClient.shared.getVideoSdkTokenNative()
+                joinVideoSdkRoom { }
             }
         }
     }
@@ -1108,7 +1150,7 @@ extension JitsiCallManager {
                     }
                 }
             }else {
-                CallClient.shared.getVideoSdkTokenNative()
+                self.joinVideoSdkRoom { }
                 
                 //                CallClient.shared.GetTokenRequest(calltype: JitsiCallSignal.VideoSdkCallType.incomingCall.rawValue)
             }
@@ -1327,12 +1369,14 @@ extension JitsiCallManager : RecievedGroupCallDelegate{
 
 extension JitsiCallManager{
     func hideJitsiView(){
+        videoSdkView?.setMiniPlayerHidden(true)
         if JitsiConfrenceCallView.shared != nil{
             JitsiConfrenceCallView.shared.hideJitsiView()
         }
     }
     
     func unHideJitsiView(){
+        videoSdkView?.setMiniPlayerHidden(false)
         if JitsiConfrenceCallView.shared != nil{
             JitsiConfrenceCallView.shared.showJitsiView()
         }
@@ -1368,3 +1412,82 @@ extension JitsiCallManager{
 //      session.unlockForConfiguration()
 //   }
 //}
+
+//MARK: - VideoSDK meeting lifecycle
+
+extension JitsiCallManager {
+    static func defaultJoinVideoSdkRoom(onOpened: @escaping () -> Void) {
+        CallClient.shared.getVideoSdkTokenNative(completion: { _ in
+            let manager = JitsiCallManager.shared
+            guard manager.activeCall != nil || manager.isCallJoinedFromLink else { return }
+            CallClient.shared.joinVideoSdkCall()
+            onOpened()
+        }, onFailure: { _ in
+            JitsiCallManager.shared.videoSdkJoinFailed()
+        })
+    }
+
+    static func defaultBeginSignalDelivery() -> () -> Void {
+        let lock = NSLock()
+        var task = UIBackgroundTaskIdentifier.invalid
+        var isFinished = false
+        let finish = {
+            lock.lock()
+            let taskToEnd = isFinished ? UIBackgroundTaskIdentifier.invalid : task
+            isFinished = true
+            task = .invalid
+            lock.unlock()
+            if taskToEnd != .invalid {
+                UIApplication.shared.endBackgroundTask(taskToEnd)
+            }
+        }
+        let newTask = UIApplication.shared.beginBackgroundTask(withName: "HippoCallSignal", expirationHandler: finish)
+        lock.lock()
+        task = newTask
+        lock.unlock()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 25, execute: finish)
+        return finish
+    }
+
+    /// Ends the current VideoSDK meeting from code or from the CallKit end button.
+    func endVideoSdkMeeting() {
+        guard Thread.isMainThread else {
+            DispatchQueue.main.async { self.endVideoSdkMeeting() }
+            return
+        }
+        if let view = videoSdkView {
+            view.endMeeting()
+        } else {
+            userDidTerminatedConference()
+        }
+    }
+
+    /// Every way out of a meeting ends here. A meeting that is no longer the current
+    /// one is ignored, so it cannot clear a newer call.
+    func videoSdkMeetingDidEnd(_ view: MeetingViewController) {
+        guard videoSdkView === view else { return }
+        view.removeMiniPlayer()
+        videoSdkView = nil
+        MeetingTimerManager.shared.stop()
+        UIApplication.shared.isIdleTimerDisabled = false
+        reportEndCallToCallKit(activeCall?.uID ?? "", .remoteEnded)
+        resetAllResourceForNewCall()
+    }
+
+    /// The room could not be opened for a call already answered or started.
+    func videoSdkJoinFailed() {
+        guard activeCall != nil || isCallJoinedFromLink else { return }
+        reportEndCallToCallKit(activeCall?.uID ?? "", .failed)
+        if activeCall?.isGroupCall != true {
+            sendCallHungup()
+        }
+        removeConnectingView()
+        removeDialAndReceivedView()
+        resetAllResourceForNewCall()
+    }
+
+    func videoSdkOutgoingCallFailed(callID: String) {
+        reportEndCallToCallKit(callID, .failed)
+        resetAllResourceForNewCall()
+    }
+}

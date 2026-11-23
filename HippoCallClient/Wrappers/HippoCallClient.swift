@@ -69,10 +69,13 @@ public class HippoCallClient {
     }
     
     public func actionFromCallKit(isAnswered: Bool, completion: @escaping (Bool) -> Void){
+        NSLog("[HippoCall] CallKit action: %@", isAnswered ? "answer" : "end")
         if isAnswered{
             JitsiCallManager.shared.checkIfOfferIsSent { (status) in
                 completion(status)
             }
+        }else if JitsiCallManager.shared.videoSdkView != nil {
+            JitsiCallManager.shared.endVideoSdkMeeting()
         }else{
             if JitsiCallManager.shared.activeCall?.isGroupCall ?? false{
                 if JitsiCallManager.shared.isCallJoined{
@@ -126,6 +129,7 @@ public class HippoCallClient {
     }
     
     public func startCall(call: Call, isInviteEnabled: Bool, completion: @escaping (Bool, NSError?) -> Void) {
+        NSLog("[HippoCall][DBG] OUTGOING startCall muid=%@ type=%@ transactionId=%@\nCALLED FROM:\n%@", call.uID, "\(call.type)", call.transactionId ?? "-", Thread.callStackSymbols.prefix(12).joined(separator: "\n"))
         
 //        HippoCallClientUrl.shared.id = Int(call.currentUser.peerId)
 //        HippoCallClientUrl.shared.enUserId = call.currentUser.enUserId
@@ -137,7 +141,7 @@ public class HippoCallClient {
                 JitsiCallManager.shared.jitsiUrl = call.transactionId!
             }
             
-            CallClient.shared.getVideoSdkTokenNative() { meetId in
+            CallClient.shared.getVideoSdkTokenNative(completion: { meetId in
                 
                 JitsiCallManager.shared.callTypeForIncomingCall = call.type
                 
@@ -152,7 +156,11 @@ public class HippoCallClient {
                         completion(true,nil)
                     }
                 }
-            }
+            }, onFailure: { message in
+                JitsiCallManager.shared.videoSdkOutgoingCallFailed(callID: call.uID)
+                let error = NSError(domain: "error.hippo", code: 500, userInfo: [NSLocalizedDescriptionKey: message])
+                completion(false, error)
+            })
         }else{
             JitsiCallManager.shared.startCall(with: call, isInviteEnabled: isInviteEnabled) { (versionMismatch) in
                 if versionMismatch {
@@ -168,8 +176,7 @@ public class HippoCallClient {
     }
     
     public func joinCall(transaction_id: String, name: String? = nil, startTime: String? = nil, endTime: String? = nil) {
-        CallClient.shared.getVideoSdkTokenNative(comingFrom: "deeplink", transaction_id: transaction_id, name: name, startTime: startTime, endTime: endTime) { meetId in
-        }
+        CallClient.shared.getVideoSdkTokenNative(comingFrom: "deeplink", transaction_id: transaction_id, name: name, startTime: startTime, endTime: endTime)
 
     }
     
@@ -226,6 +233,6 @@ public class HippoCallClient {
     }
     
     public func endVideoCall(){
-    JitsiCallManager.shared.userDidTerminatedConference()
+        JitsiCallManager.shared.endVideoSdkMeeting()
     }
 }

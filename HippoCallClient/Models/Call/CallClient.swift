@@ -88,12 +88,13 @@ class CallClient{
         }
         //        jsonSignalDictionary = dictionary
         guard credentials != nil else {
-            NSLog("Credential Not found")
+            NSLog("[HippoCall] STOP: call client credentials missing")
             return
         }
         
         func handleForGitSi() {
             guard let signal = JitsiCallSignal.getFrom(json: jsonDict) else {
+                NSLog("[HippoCall] STOP: push could not be read as a call signal")
                 return
             }
             let call = Call(peer: peer, signalingClient: signalingClient, uID: signal.callUID, currentUser: currentUser, type: signal.callType, link: signal.conferenceLink ?? "",jitsiUrl: signal.jitsiUrl, transactionId: nil)
@@ -167,19 +168,66 @@ class CallClient{
         }
     }
     
+    enum MicJoinAction: Equatable {
+        case joinWithMic
+        case joinMuted
+        case askThenJoin
+        case joinMutedThenAsk
+    }
+
+    /// A permission prompt cannot be answered on the lock screen, so a background
+    /// answer joins muted and turns the mic on once permission is granted.
+    static func micJoinAction(permission: AVAudioSession.RecordPermission, isAppActive: Bool) -> MicJoinAction {
+        switch permission {
+        case .granted:
+            return .joinWithMic
+        case .undetermined:
+            return isAppActive ? .askThenJoin : .joinMutedThenAsk
+        default:
+            return .joinMuted
+        }
+    }
+
     func joinVideoSdkCall() {
         let needsCamera = JitsiCallManager.shared.callTypeForIncomingCall == .video
         withCameraPermission(cameraRequested: needsCamera) { [weak self] cameraGranted in
             guard let self = self else { return }
-            let bundle = Bundle(identifier: "org.cocoapods.HippoCallClient")
-            guard let vVc = UIStoryboard(name: "VideoSdk", bundle: bundle).instantiateViewController(withIdentifier: "MeetingViewController") as? MeetingViewController else { return }
-            vVc.meetingData = MeetingData(token: self.videoSdkToken, name: HippoCallClientUrl.shared.userName, meetingId: JitsiCallManager.shared.nativeMeetID, micEnabled: true, cameraEnabled: cameraGranted)
-            vVc.delegate = JitsiCallManager.shared
-            JitsiCallManager.shared.videoSdkView = vVc
-            let nav = UINavigationController(rootViewController: vVc)
-            nav.modalPresentationStyle = .overFullScreen
-            self.getLastVisibleController()?.present(nav, animated: true, completion: nil)
+            let audioSession = AVAudioSession.sharedInstance()
+            let isAppActive = UIApplication.shared.applicationState == .active
+            switch CallClient.micJoinAction(permission: audioSession.recordPermission, isAppActive: isAppActive) {
+            case .joinWithMic:
+                self.presentVideoSdkMeeting(micEnabled: true, cameraEnabled: cameraGranted)
+            case .joinMuted:
+                self.showAVPermissionPopup(isCamera: false)
+                self.presentVideoSdkMeeting(micEnabled: false, cameraEnabled: cameraGranted)
+            case .askThenJoin:
+                audioSession.requestRecordPermission { granted in
+                    DispatchQueue.main.async {
+                        if !granted { self.showAVPermissionPopup(isCamera: false) }
+                        self.presentVideoSdkMeeting(micEnabled: granted, cameraEnabled: cameraGranted)
+                    }
+                }
+            case .joinMutedThenAsk:
+                self.presentVideoSdkMeeting(micEnabled: false, cameraEnabled: cameraGranted)
+                audioSession.requestRecordPermission { granted in
+                    guard granted else { return }
+                    DispatchQueue.main.async {
+                        JitsiCallManager.shared.videoSdkView?.micPermissionGranted()
+                    }
+                }
+            }
         }
+    }
+
+    private func presentVideoSdkMeeting(micEnabled: Bool, cameraEnabled: Bool) {
+        let bundle = Bundle(identifier: "org.cocoapods.HippoCallClient")
+        guard let vVc = UIStoryboard(name: "VideoSdk", bundle: bundle).instantiateViewController(withIdentifier: "MeetingViewController") as? MeetingViewController else { return }
+        vVc.meetingData = MeetingData(token: videoSdkToken, name: HippoCallClientUrl.shared.userName, meetingId: JitsiCallManager.shared.nativeMeetID, micEnabled: micEnabled, cameraEnabled: cameraEnabled, isAudioCall: JitsiCallManager.shared.callTypeForIncomingCall == .audio)
+        vVc.delegate = JitsiCallManager.shared
+        JitsiCallManager.shared.videoSdkView = vVc
+        let nav = UINavigationController(rootViewController: vVc)
+        nav.modalPresentationStyle = .overFullScreen
+        getLastVisibleController()?.present(nav, animated: true, completion: nil)
     }
     
     func joinVideoSdkCallByMeetingID(serverToken: String, meetingID: String, name: String? = nil, startTime: String? = nil, endTime: String? = nil, transactionId: String? = nil) {
@@ -202,6 +250,7 @@ class CallClient{
     }
 
     func joinMeeting(serverToken: String, meetingID: String, name: String, micEnabled: Bool, cameraEnabled: Bool, meetingDuration: TimeInterval) {
+        CallKitAudioBridge.shared.reset()
         withCameraPermission(cameraRequested: cameraEnabled) { [weak self] cameraGranted in
             guard let self = self else { return }
             let bundle = Bundle(identifier: "org.cocoapods.HippoCallClient")
@@ -348,7 +397,7 @@ class CallClient{
         }
     }
     
-    func getVideoSdkTokenNative(comingFrom: String = "", transaction_id: String = "", name: String? = nil, startTime: String? = nil, endTime: String? = nil, presentLobby: Bool = true, completion: ((String) -> Void)? = nil){
+    func getVideoSdkTokenNative(comingFrom: String = "", transaction_id: String = "", name: String? = nil, startTime: String? = nil, endTime: String? = nil, presentLobby: Bool = true, showErrorAlert: Bool = true, completion: ((String) -> Void)? = nil, onFailure: ((String) -> Void)? = nil){
         var params = getParamsForVideoSDKNative()
         if comingFrom == "deeplink"{
             params["transaction_id"] = transaction_id
@@ -373,45 +422,49 @@ class CallClient{
         
         print("===== Req ====== \(urlRequest.httpMethod)\n \(urlRequest)")
         print("===== Param ======\n \(params.toJSONString())")
+        let fail: (String) -> Void = { [weak self] message in
+            DispatchQueue.main.async {
+                if showErrorAlert { self?.showAlert(with: message) }
+                onFailure?(message)
+            }
+        }
+        let defaultError = "Unable to connect the call. Please try again."
         let task = URLSession.shared.dataTask(with: urlRequest) { [weak self] data, response, error in
             guard let data = data else {
                 print(String(describing: error))
+                fail(defaultError)
                 return
             }
             do {
                 let jsonObject = try JSONSerialization.jsonObject(with: data)
-                if let dictionary = jsonObject as? [String: Any],
-                   let results = dictionary["data"] as? [String: Any], let statusCode = dictionary["statusCode"] as? Int, (200...299).contains(statusCode) {
-                    print(results)
-                    self?.videoSdkToken = results["token"] as? String ?? ""
-                    JitsiCallManager.shared.nativeMeetID = results["meeting_id"] as? String ?? ""
-                    
-                    print("token ------>>>>>>>", results["token"] as? String ?? "", "\n meeting id ---->>>>>", results["meeting_id"] as? String ?? "")
-                    if comingFrom == "deeplink"{
+                guard let dictionary = jsonObject as? [String: Any],
+                      let results = dictionary["data"] as? [String: Any],
+                      let statusCode = dictionary["statusCode"] as? Int,
+                      (200...299).contains(statusCode),
+                      let token = results["token"] as? String, !token.isEmpty else {
+                    fail((jsonObject as? [String: Any])?["message"] as? String ?? defaultError)
+                    return
+                }
+                let meetingID = results["meeting_id"] as? String ?? ""
+                NSLog("[HippoCall][DBG] videoSdkToken mode=%@ sent transaction_id=%@ -> meeting_id(roomId)=%@", comingFrom == "deeplink" ? "request_token" : "create_meet", params["transaction_id"] as? String ?? "-", meetingID)
+                DispatchQueue.main.async {
+                    self?.videoSdkToken = token
+                    JitsiCallManager.shared.nativeMeetID = meetingID
+                    if comingFrom == "deeplink" {
                         if presentLobby {
-                            DispatchQueue.main.async {
-                                self?.joinVideoSdkCallByMeetingID(serverToken: results["token"] as? String ?? "", meetingID: results["meeting_id"] as? String ?? "", name: name, startTime: startTime, endTime: endTime, transactionId: transaction_id)
-                            }
+                            self?.joinVideoSdkCallByMeetingID(serverToken: token, meetingID: meetingID, name: name, startTime: startTime, endTime: endTime, transactionId: transaction_id)
                         } else {
-                            completion?(results["token"] as? String ?? "")
+                            completion?(token)
                         }
-                    }else{
-                        if completion == nil{
-                            DispatchQueue.main.async {
-                                self?.joinVideoSdkCall()
-                            }
-                        }else{
-                            completion?(params["transaction_id"] as? String ?? "")
-                        }
-                    }
-                    
-                }else{
-                    if let jsonDict = jsonObject as? [String: Any], let msg = jsonDict["message"], let errorMsg = msg as? String{
-                        self?.showAlert(with: errorMsg)
+                    } else if let completion = completion {
+                        completion(params["transaction_id"] as? String ?? "")
+                    } else {
+                        self?.joinVideoSdkCall()
                     }
                 }
             } catch {
                 print("JSONSerialization error:", error)
+                fail(defaultError)
             }
         }
         task.resume()
@@ -441,6 +494,10 @@ class CallClient{
         JitsiCallManager.shared.activeCall?.signalingClient.signalReceivedFromPeer?(data)
         
         let jsonDict = data
+        let pushDeviceID = (jsonDict["device_payload"] as? [String: Any])?["device_id"] as? String ?? jsonDict["device_id"] as? String
+        NSLog("[HippoCall] signal=%@ hasDeviceID=%@ sameDevice=%@ sameUser=%@",
+              String(describing: jsonDict["video_call_type"]), "\(pushDeviceID != nil)",
+              "\(pushDeviceID == CallClient.shared.currentDeviceID)", "\(call.currentUser.peerId == jitsiSignal.sender.peerId)")
         if let signal = jsonDict["video_call_type"] as? String, let signalType = JitsiCallSignal.JitsiSignalType(rawValue:signal) {
             HippoCallClient.shared.delgate?.didReceiveCallSignalType(signalType)
             print("handleCallEvent callClient 87", signalType,  CallClient.shared.currentDeviceID)
